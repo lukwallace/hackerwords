@@ -1,4 +1,4 @@
-# Project Name #
+# HackerWords #
 
 <!-- 
 > This material was originally posted [here](http://www.quora.com/What-is-Amazons-approach-to-product-development-and-product-management). It is reproduced here for posterities sake.
@@ -17,28 +17,31 @@ Once the project moves into development, the press release can be used as a touc
  -->
  
 ## Heading ##
-  > Name the product in a way the reader (i.e. your target customers) will understand.
+  > HackerWords
 
 ## Sub-Heading ##
-  > Describe who the market for the product is and what benefit they get. One sentence only underneath the title.
+  > A challenging game to boost your vocabulary and play live against your friends!
 
 ## Summary ##
-  > Give a summary of the product and the benefit. Assume the reader will not read anything else so make this paragraph good.
+  > Play head to head against your friends to find the most words and get the highest score! 
+  > Register your account to relive your triumphs and defeats!
+  > The clock is ticking as you race to find the most words you can from a 3x3, 4x4 or 5x5 game board. Find the longest words you can by connecting adjacent letter tiles.
+  > Play against your friends or against a random opponent.
 
 ## Problem ##
-  > Describe the problem your product solves.
+  > Random letters on a 3x3, 4x4 or 5x5 game board.
 
 ## Solution ##
-  > Describe how your product elegantly solves the problem.
-
+  > Use your wits to find the longest words and get the high score!
+  
 ## Quote from You ##
-  > A quote from a spokesperson in your company.
+  > "Words. Hackers. Together at last."
 
 ## How to Get Started ##
-  > Describe how easy it is to get started.
+  > Make an account and start playing!
 
 ## Customer Quote ##
-  > Provide a quote from a hypothetical customer that describes how they experienced the benefit.
+  > "I wuz dum. Now I is not. I have the best words." - Wallace
 
 ## Closing and Call to Action ##
-  > Wrap it up and give pointers where the reader should go next.
+  > Why are you still here? Log on and play today!
