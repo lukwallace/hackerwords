@@ -1,4 +1,4 @@
-export default class Login extends React.Component {
+export default class Signin extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -19,7 +19,7 @@ export default class Login extends React.Component {
         <input type='text' id='username' name='username'></input>
         <label> Password </label>
         <input type='password'id='password' name='password'></input>
-        <input type="button" id='login' value="Login" onClick={this.submitFn}></input>
+        <input type="button" id='Login' value="Login" onClick={this.submitFn}></input>
       </div>
     );
   }
