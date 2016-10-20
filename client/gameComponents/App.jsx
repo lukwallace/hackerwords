@@ -101,8 +101,6 @@ export default class App extends React.Component {
           <Timer />
           Current Word: {this.state.curWord}
           <PlayedWords />
-          <Login />
-          <Signup />
         </div>
       );
   }

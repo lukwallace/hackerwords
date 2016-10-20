@@ -16,7 +16,8 @@
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-http-request": "^1.0.2",
-    "webpack": "^1.13.2"
+    "webpack": "^1.13.2",
+    "react-router": "^2.8.1"
   },
   "devDependencies": {
     "babel-core": "^6.0.20",
