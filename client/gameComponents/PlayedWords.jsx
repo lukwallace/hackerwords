@@ -1,4 +1,4 @@
-class PlayedWords extends React.Component {
+export default class PlayedWords extends React.Component {
   constructor(props) {
     super(props);
   }
