@@ -9,6 +9,7 @@ var createUser = Q.nbind(User.create, User);
 
 module.exports = {
   signin: function (req, res, next) {
+    console.log('signin in');
     var username = req.body.username;
     var password = req.body.password;
 
