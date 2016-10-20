@@ -1,4 +1,4 @@
-class Board extends React.Component {
+export default class Board extends React.Component {
   constructor(props, boardStr) {
     super(props);
     

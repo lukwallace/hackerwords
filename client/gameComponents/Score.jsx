@@ -1,16 +1,15 @@
-class CurrentWord extends React.Component {
+export default class Score extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      'curWord': props.curWord
+      'score': 0
     }
   }
 
   render() {
     return (
         <div>
-          Current Word: {this.state.curWord}
+          Score: {this.state.score}
         </div>
       );
   }

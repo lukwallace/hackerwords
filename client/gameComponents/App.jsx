@@ -1,11 +1,28 @@
-class App extends React.Component {
+import React from 'react';
+import Board from './Board.jsx';
+import PlayedWords from './PlayedWords.jsx';
+import Score from './Score.jsx';
+import CurrentWord from './CurrentWord.jsx';
+import Timer from './Timer.jsx';
+import Login from './../login/login.jsx';
+import Signup from './../signup/Signup.jsx';
+
+export default class App extends React.Component {
   constructor(props) {
     super(props);
     var context = this;
 
     this.rowSize = 4;
 
+    $.get('/api/makeBoard', function(data) {
+      console.log(data);
+      context.setState({
+        'boardStr': data
+      })
+    });
+
     this.state = {
+      'boardStr': 'abcdefghijklmnop',
       'curWord': '',
       'curIndexesUsed': []
     }
@@ -74,12 +91,13 @@ class App extends React.Component {
     };
   }
 
+
   render() {
     return (
         <div>
           Hello World! ^_^
           <Score />
-          <Board boardStr={'abcdefghijklmnop'} clickHandler={this.boardClick}/>
+          <Board boardStr={this.state.boardStr} clickHandler={this.boardClick}/>
           <Timer />
           Current Word: {this.state.curWord}
           <PlayedWords />
@@ -88,4 +106,5 @@ class App extends React.Component {
         </div>
       );
   }
+  
 }

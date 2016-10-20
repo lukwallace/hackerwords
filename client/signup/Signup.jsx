@@ -1,4 +1,4 @@
-class Signup extends React.Component {
+export default class Signup extends React.Component {
   constructor(props) {
     super(props);
   }
