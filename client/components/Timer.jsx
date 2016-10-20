@@ -4,16 +4,17 @@ class Timer extends React.Component {
     super(props);
 
     this.state = {
-      'timeLeft': 120
+      'timeLeft': 10
     }
     var context = this;
-    setInterval(function() {
-      // context.state.timeLeft -= 1;
-      // context.render();
+    var timerInterval = setInterval(function() {
       context.setState({
         'timeLeft': context.state.timeLeft - 1
       })
-      console.log(context.state.timeLeft);
+
+      if(context.state.timeLeft === 0) {
+        clearInterval(timerInterval);
+      }
     }, 1000)
   }
 

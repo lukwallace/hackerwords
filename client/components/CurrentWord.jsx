@@ -3,7 +3,7 @@ class CurrentWord extends React.Component {
     super(props);
 
     this.state = {
-      'curWord': ''
+      'curWord': props.curWord
     }
   }
 
