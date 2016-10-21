@@ -1,8 +1,8 @@
+
 var Game = require('./GameModel.js');
 var util = require('./../util.js');
 var jwt = require('jwt-simple');
 var wordSet = require('./wordSet.js');
-
 
 module.exports = {
   makeBoard: function(request, res, next) {
@@ -12,6 +12,7 @@ module.exports = {
       var randIndex = Math.floor(Math.random() * 16);
       result += letters[randIndex];
     }
+
     util.getUserFromReq(request, next).then( function (user) {
       Game.create({boardString:result, user_id:user._id}).then(function(game) {
         console.log('game', game);

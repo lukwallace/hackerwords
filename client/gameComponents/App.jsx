@@ -14,10 +14,10 @@ export default class App extends React.Component {
 
     this.rowSize = 4;
 
-    $.get('/api/makeBoard', (data) => {
+    $.get('/api/makeBoard', function(data) {
       console.log(data);
       context.setState({
-        'boardStr': data.boardStr
+        'boardStr': data
       })
     });
 
