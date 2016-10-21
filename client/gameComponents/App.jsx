@@ -4,6 +4,8 @@ import PlayedWords from './PlayedWords.jsx';
 import Score from './Score.jsx';
 import CurrentWord from './CurrentWord.jsx';
 import Timer from './Timer.jsx';
+import Login from './../login/login.jsx';
+import Signup from './../signup/Signup.jsx';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -22,17 +24,37 @@ export default class App extends React.Component {
     this.state = {
       'boardStr': 'abcdefghijklmnop',
       'curWord': '',
-      'curIndexesUsed': []
+      'curIndexesUsed': [],
+      'wordsPlayed': [],
+      'timeLeft': 10,
+      'gameOver': false
     }
 
-    this.getLastClickIndex = function() {
+    this.startTimer = () => {
+      var timerInterval = setInterval(function() {
+        context.setState({
+          'timeLeft': context.state.timeLeft - 1
+        })
+
+        if(context.state.timeLeft === 0) {
+          context.setState({
+            'gameOver': true
+          })
+          clearInterval(timerInterval);
+        }
+      }, 1000)
+    }
+
+    this.startTimer();
+
+    this.getLastClickIndex = () =>  {
       if(this.state.curIndexesUsed.length === 0) {
         return null;
       }
       return this.state.curIndexesUsed[this.state.curIndexesUsed.length - 1];
     }
 
-    this.getClickIndexNumber = function(ci) {
+    this.getClickIndexNumber = (ci) =>  {
       return Number(ci.slice(1));
     }
 
@@ -40,7 +62,21 @@ export default class App extends React.Component {
       return (this.state.curIndexesUsed.indexOf(clickIndex) !== -1);
     }
 
+    this.sendWord = () => {
+      var word = this.state.curWord;
+      $.post('/api/checkWord', {word: word}, (data) => {
+        if(data.isWord && context.state.wordsPlayed.indexOf(word) === -1) {
+          context.setState({
+            wordsPlayed: context.state.wordsPlayed.concat(word)
+          })
+        }
+      });
+    } 
+
     this.boardClick = (event) => {
+      if(this.state.gameOver) {
+        return;
+      }
       var clickLetter = event.target.innerHTML;
       var clickIndex = event.target.className;
 
@@ -71,6 +107,8 @@ export default class App extends React.Component {
       if(clickIndex === this.getLastClickIndex()) {
         console.log('word finalized as ', context.state.curWord);
         //evaluate word here
+        this.sendWord();
+
         context.setState({
           'curWord': '',
           'curIndexesUsed': []
@@ -96,9 +134,9 @@ export default class App extends React.Component {
           Hello World! ^_^
           <Score />
           <Board boardStr={this.state.boardStr} clickHandler={this.boardClick}/>
-          <Timer />
-          Current Word: {this.state.curWord}
-          <PlayedWords />
+          <div>Time Left: {this.state.timeLeft}</div>
+          <div>Current Word: {this.state.curWord}</div>
+          <PlayedWords wordsPlayed={this.state.wordsPlayed}/>
         </div>
       );
   }

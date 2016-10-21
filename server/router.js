@@ -8,6 +8,7 @@ module.exports = function(app, express) {
   });
 
   app.get('/api/makeBoard', boardTool.makeBoard);
+  app.post('/api/checkWord', boardTool.checkWord);
   app.post('/api/signup', userController.signup);
   app.post('/api/signin', userController.signin);
 }
