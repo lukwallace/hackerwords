@@ -13,7 +13,6 @@ mongoose.connection.on('disconnected', () => {
   console.log('mongoose connection closed');
 });
 
-
 mongoose.connect('mongodb://localhost/HackerWords');
 
 

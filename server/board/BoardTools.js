@@ -1,8 +1,8 @@
-
 var Game = require('./GameModel.js');
 var util = require('./../util.js');
 var jwt = require('jwt-simple');
 var wordSet = require('./wordSet.js');
+
 
 module.exports = {
   makeBoard: function(request, res, next) {
