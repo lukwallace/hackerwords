@@ -1,7 +1,7 @@
-import { Router, Route, Link, IndexRoute, hashHistory, browserHistory } from 'react-router'
+import { Router, Route, Link, IndexRoute, hashHistory, browserHistory, withRouter } from 'react-router'
 var util = require('../util.js');
 
-export default class Signin extends React.Component {
+class Signin extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -12,6 +12,7 @@ export default class Signin extends React.Component {
     $('#username').val("");
     $('#password').val("");
 
+    var context = this;
     $.post({
       url: '/api/signin',
       dataType: 'json',
@@ -19,6 +20,8 @@ export default class Signin extends React.Component {
       success: function (data) {
         console.log('Success!!!!!', data);
         util.storeToken(data);
+        context.props.router.push('/home');
+
       },
       error: function (error) {
         console.error(error);
@@ -35,7 +38,7 @@ export default class Signin extends React.Component {
         <input type='text' id='username' name='username'></input>
         <label> Password </label>
         <input type='password'id='password' name='password'></input>
-        <input type="button" id='signin' value="Signin" onClick={this.submitFn}></input>
+        <input type="button" id='signin' value="Signin" onClick={this.submitFn.bind(this)}></input>
         <br/>
         Don't have an account?
         <Link to='/signup'> Sign up here</Link>
@@ -43,3 +46,5 @@ export default class Signin extends React.Component {
     );
   }
 }
+
+export default withRouter(Signin)

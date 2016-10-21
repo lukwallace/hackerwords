@@ -12,6 +12,7 @@ export default class Signup extends React.Component {
     $('#username').val("");
     $('#password').val("");
 
+    debugger;
     $.post({
       url: '/api/signup',
       dataType: 'json',
@@ -19,6 +20,7 @@ export default class Signup extends React.Component {
       success: function (data) {
         console.log('Success', data);
         util.storeToken(data);
+        console.log(this.props.router);
       },
       error: function (error) {
         console.error(error);
