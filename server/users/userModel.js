@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt-nodejs');
 var SALT_WORK_FACTOR = 10;
 
-mongoose.connect('mongodb://localhost/HackerWords');
+//mongoose.connect('mongodb://localhost/HackerWords');
 
 
 

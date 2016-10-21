@@ -1,4 +1,8 @@
 
+
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/HackerWords');
+
 var express = require('express');
 var app = express();
 require('./middleware')(app, express);

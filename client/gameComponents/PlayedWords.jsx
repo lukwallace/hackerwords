@@ -6,8 +6,13 @@ export default class PlayedWords extends React.Component {
   render() {
     return (
         <div>
+          Words Played: 
           <list>
-            <ul>LIST ITEM</ul>
+            {this.props.wordsPlayed.map(function(word) {
+              return (
+                <ul>{word}</ul>
+                )
+            })}
           </list>
         </div>
       );
