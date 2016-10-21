@@ -24,9 +24,12 @@ var userSchema = new Schema({
 
 
 userSchema.methods.comparePasswords = function (candidatePassword) {
+  console.log('User', this);
   var savedPassword = this.password;
   return Q.Promise(function (resolve, reject) {
     bcrypt.compare(candidatePassword, savedPassword, function (err, isMatch) {
+      console.log('Error: ', err);
+      console.log('isMatch: ', isMatch);
       if (err) {
         reject(err);
       } else {
