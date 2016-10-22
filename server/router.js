@@ -1,9 +1,9 @@
-var userController = require('./users/userController');
-var boardTool = require('./board/BoardTools.js');
-var path = require('path');
-module.exports = function(app, express) {
+const userController = require('./users/userController');
+const boardTool = require('./board/BoardTools.js');
+const path = require('path');
 
-  app.get('/', function(request, response, next) {
+module.exports = (app) => {
+  app.get('/', (request, response) => {
     response.sendFile(path.resolve('client/index.html'));
   });
 
@@ -11,4 +11,4 @@ module.exports = function(app, express) {
   app.post('/api/checkWord', boardTool.checkWord);
   app.post('/api/signup', userController.signup);
   app.post('/api/signin', userController.signin);
-}
+};

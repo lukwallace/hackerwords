@@ -1,33 +1,41 @@
-var Q = require('q');
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var bcrypt = require('bcrypt-nodejs');
-var SALT_WORK_FACTOR = 10;
+const Q = require('q');
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt-nodejs');
 
-//mongoose.connect('mongodb://localhost/HackerWords');
+const SALT_WORK_FACTOR = 10;
+const Schema = mongoose.Schema;
 
+mongoose.connection.on('open', () => {
+  console.log('mongoose connection opened');
+});
 
-
-var userSchema = new Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  password: {
-    type: String,
-    required: true
-  },
-  salt: String
+mongoose.connection.on('disconnected', () => {
+  console.log('mongoose connection closed');
 });
 
 
+mongoose.connect('mongodb://localhost/HackerWords');
 
-userSchema.methods.comparePasswords = function (candidatePassword) {
+
+const userSchema = new Schema({
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  salt: String,
+});
+
+
+userSchema.methods.comparePasswords = (candidatePassword) => {
   console.log('User', this);
-  var savedPassword = this.password;
-  return Q.Promise(function (resolve, reject) {
-    bcrypt.compare(candidatePassword, savedPassword, function (err, isMatch) {
+  const savedPassword = this.password;
+  return new Q.Promise((resolve, reject) => {
+    bcrypt.compare(candidatePassword, savedPassword, (err, isMatch) => {
       console.log('Error: ', err);
       console.log('isMatch: ', isMatch);
       if (err) {
@@ -39,24 +47,27 @@ userSchema.methods.comparePasswords = function (candidatePassword) {
   });
 };
 
-userSchema.pre('save', function (next) {
-  var user = this;
+userSchema.pre('save', (next) => {
+  const user = this;
 
   // only hash the password if it has been modified (or is new)
   if (!user.isModified('password')) {
-    return next();
+    next();
+    return;
   }
 
   // generate a salt
-  bcrypt.genSalt(SALT_WORK_FACTOR, function (err, salt) {
+  bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
     if (err) {
-      return next(err);
+      next(err);
+      return;
     }
 
     // hash the password along with our new salt
-    bcrypt.hash(user.password, salt, null, function (err, hash) {
-      if (err) {
-        return next(err);
+    bcrypt.hash(user.password, salt, null, (error, hash) => {
+      if (error) {
+        next(error);
+        return;
       }
 
       // override the cleartext password with the hashed one
@@ -68,5 +79,5 @@ userSchema.pre('save', function (next) {
 });
 
 
-var User = mongoose.model('User', userSchema);
+const User = mongoose.model('User', userSchema);
 module.exports = User;

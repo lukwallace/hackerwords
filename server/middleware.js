@@ -1,10 +1,10 @@
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
+const path = require('path');
 
+module.exports = (app, express) => {
+  // for parsing application/json and application/x-www-form-urlencoded
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: true }));
 
-module.exports = function(app, express) {
-  app.use(bodyParser.json()); // for parsing application/json
-  app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-
-  app.use(express.static(__dirname + '/../'));
-
-}
+  app.use(express.static(path.join(__dirname, '/../')));
+};
