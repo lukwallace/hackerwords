@@ -29,8 +29,10 @@ const userSchema = new Schema({
   salt: String,
 });
 
-
-userSchema.methods.comparePasswords = (candidatePassword) => {
+// A case not to use arrow functions: since arrow functions have
+// anonymous 'this' so they can carry the 'this' from outside their
+// scope - we don't be able to access the user if we use it.
+userSchema.methods.comparePasswords = function (candidatePassword) {
   console.log('User', this);
   const savedPassword = this.password;
   return new Q.Promise((resolve, reject) => {
@@ -46,8 +48,12 @@ userSchema.methods.comparePasswords = (candidatePassword) => {
   });
 };
 
-userSchema.pre('save', (next) => {
+// A case not to use arrow functions: since arrow functions have
+// anonymous 'this' so they can carry the 'this' from outside their
+// scope - we don't be able to access the user if we use it.
+userSchema.pre('save', function (next) {
   const user = this;
+  console.log('User Pre:', user);
 
   // only hash the password if it has been modified (or is new)
   if (!user.isModified('password')) {

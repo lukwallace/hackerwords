@@ -13,7 +13,6 @@ export default class Signup extends React.Component {
     $('#username').val("");
     $('#password').val("");
 
-    debugger;
     $.post({
       url: '/api/signup',
       dataType: 'json',

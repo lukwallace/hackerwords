@@ -18,6 +18,7 @@ module.exports = {
         if (!user) {
           return next(new Error('User does not exist'));
         }
+        console.log('User:', user);
         console.log('Password:', password);
         return user.comparePasswords(password)
           .then((foundUser) => {
