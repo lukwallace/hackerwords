@@ -2,7 +2,7 @@ const jwt = require('jwt-simple');
 const User = require('./users/userModel.js');
 
 
-exports.getUsernameFromReq = (req, next) => {
+exports.getUsernameFromReq = (req, res, next) => {
   // recover username
   const token = req.headers['x-access-token'];
   if (!token) {
@@ -13,7 +13,7 @@ exports.getUsernameFromReq = (req, next) => {
   return username;
 };
 
-exports.getUserFromReq = (req, next) => {
-  const username = exports.getUsernameFromReq(req, next);
+exports.getUserFromReq = (req, res, next) => {
+  const username = exports.getUsernameFromReq(req, res, next);
   return User.findOne({ username });
 };

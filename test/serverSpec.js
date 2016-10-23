@@ -11,7 +11,7 @@ describe('Meta Testing', () => {
 });
 
 describe('Server', () => {
-  it('Should respond to a request', (done) => {
+  it('Should respond with html given a non-api request', (done) => {
     request.get('/').expect(200, /<html/, done);
   });
 });
