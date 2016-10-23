@@ -4,8 +4,8 @@ import PlayedWords from './PlayedWords.jsx';
 import Score from './Score.jsx';
 import CurrentWord from './CurrentWord.jsx';
 import Timer from './Timer.jsx';
-import Login from './../login/login.jsx';
-import Signup from './../signup/Signup.jsx';
+import Login from './../userComponents/Signin.jsx';
+import Signup from './../userComponents/Signup.jsx';
 
 export default class App extends React.Component {
   constructor(props) {

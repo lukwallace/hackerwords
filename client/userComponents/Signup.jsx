@@ -1,3 +1,4 @@
+import React from 'react';
 import { Router, Route, Link, IndexRoute, hashHistory, browserHistory } from 'react-router'
 var util = require('../util.js');
 

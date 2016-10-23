@@ -1,13 +1,11 @@
 const express = require('express');
-// const mongoose = require('mongoose');
 
 const app = express();
-// mongoose.connect('mongodb://localhost/HackerWords');
-
 require('./middleware')(app, express);
 require('./router')(app, express);
 
-
+// This is here so you can export the server for
+// supertest to test
 if (module.parent) {
   module.exports = app;
 } else {
