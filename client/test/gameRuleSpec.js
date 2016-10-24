@@ -47,7 +47,14 @@ describe('The game should follow the defined rules', function() {
 
   it('Clicking a letter should add it to the current word', function() {
     const upperLeft = gameApp.find('.b0');
+    upperLeft.simulate('click');
+    expect(gameApp.state.curWord).to.equal('a');
+  });
 
+
+  it('Clicking an adjacent letter should add it to the current word', function() {
+    const upperLeft = gameApp.find('.b0');
+    upperLeft.simulate('click');
   });
 
 });
