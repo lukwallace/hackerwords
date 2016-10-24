@@ -7,7 +7,7 @@ import Timer from './Timer.jsx';
 import Login from './../userComponents/Signin.jsx';
 import Signup from './../userComponents/Signup.jsx';
 import Util from './../util.js';
-import { Router, Route, Link, IndexRoute, hashHistory, browserHistory, withRouter } from 'react-router'
+import { Router, Route, Link, IndexRoute, hashHistory, browserHistory, withRouter } from 'react-router';
 
 class App extends React.Component {
   constructor(props) {
@@ -17,6 +17,7 @@ class App extends React.Component {
     this.rowSize = 4;
     const token = Util.getToken();
     console.log('APPTOKEN', token);
+
     if (!token && props.router) {
       props.router.push('/signin');
       return;
@@ -39,6 +40,17 @@ class App extends React.Component {
 
     if($.ajax) {
       this.loadBoard();
+    }
+
+
+    //in testing mode there is no props.router
+    if (props.router) {
+      if(token) {
+        this.askServerForBoard();
+      } else {
+        props.router.push('/signin');
+        return;
+      }
     }
 
     this.state = {
@@ -153,6 +165,21 @@ class App extends React.Component {
         });
       }
     };
+  }
+
+  askServerForBoard () {
+    $.ajax({
+      method: 'GET',
+      url: '/api/makeBoard',
+      headers: { 'x-access-token' : Util.getToken()},
+      dataType: 'json',
+      success: function(data) {
+        console.log(data);
+        context.setState({
+          boardStr: data.boardString,
+        });
+      }
+    });
   }
 
 //<div onClick={Util.signOut(this)}>Sign Out</div>
