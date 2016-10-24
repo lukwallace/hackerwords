@@ -23,34 +23,8 @@ class App extends React.Component {
       return;
     }
 
-    this.loadBoard = () => {
-      $.ajax({
-        method: 'GET',
-        url: '/api/makeBoard',
-        headers: { 'x-access-token' : Util.getToken()},
-        dataType: 'json',
-        success: function(data) {
-          console.log(data);
-          context.setState({
-            boardStr: data.boardString,
-          });
-        },
-      });
-    };
-
     if($.ajax) {
-      this.loadBoard();
-    }
-
-
-    //in testing mode there is no props.router
-    if (props.router) {
-      if(token) {
-        this.askServerForBoard();
-      } else {
-        props.router.push('/signin');
-        return;
-      }
+      this.askServerForBoard();
     }
 
     this.state = {
