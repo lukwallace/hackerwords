@@ -153,7 +153,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+        <div className="gameBoardApp">
           Hello World! ^_^
         <Score />
         <Board boardStr={this.state.boardStr} clickHandler={this.boardClick} />

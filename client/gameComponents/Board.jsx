@@ -10,7 +10,7 @@ export default class Board extends React.Component {
     return (
         <div>
           <table>
-          <tbody>
+          <tbody className="boardBody">
             <tr>
               <td className="b0" onClick={this.props.clickHandler}>{this.props.boardStr[0]}</td>
               <td className="b1" onClick={this.props.clickHandler}>{this.props.boardStr[1]}</td>
