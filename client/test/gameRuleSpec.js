@@ -31,7 +31,7 @@ describe('The Board should be created properly', function() {
   it('Should have a button with character a', function() {
     const upperLeft = gameApp.find('.b0');
     expect(upperLeft).to.exist;
-    expect(upperLeft.html()).to.equal('a');
+    expect(upperLeft.text()).to.equal('a');
   });
 
 });
