@@ -36,8 +36,6 @@ describe('The Board should be created properly', function() {
 
 });
 
-
-
 describe('The game should follow the defined rules', function() {
   var gameApp;
   beforeEach(function() {
@@ -46,6 +44,12 @@ describe('The game should follow the defined rules', function() {
 
 
   it('Clicking a letter should add it to the current word', function() {
+    // setTimeout(function() {
+    //   const upperLeft = gameApp.find('.b0');
+    //   upperLeft.simulate('click');
+    //   expect(gameApp.state.curWord).to.equal('a');
+    // }, 500);
+
     const upperLeft = gameApp.find('.b0');
     upperLeft.simulate('click');
     expect(gameApp.state.curWord).to.equal('a');
@@ -53,8 +57,18 @@ describe('The game should follow the defined rules', function() {
 
 
   it('Clicking an adjacent letter should add it to the current word', function() {
-    const upperLeft = gameApp.find('.b0');
-    upperLeft.simulate('click');
+    gameApp.find('.b0').simulate('click');
+    gameApp.find('.b1').simulate('click');
+    expect(gameApp.state.curWord).to.equal('ab');
   });
+
+
+
+  it('Clicking a non-adjacent letter should NOT add it to the current word', function() {
+    gameApp.find('.b0').simulate('click');
+    gameApp.find('.b5').simulate('click');
+    expect(gameApp.state.curWord).to.equal('a');
+  });
+
 
 });
