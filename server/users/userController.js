@@ -18,8 +18,6 @@ module.exports = {
         if (!user) {
           return next(new Error('User does not exist'));
         }
-        console.log('User:', user);
-        console.log('Password:', password);
         return user.comparePasswords(password)
           .then((foundUser) => {
             if (foundUser) {
@@ -65,6 +63,7 @@ module.exports = {
     // grab the token in the header is any
     // then decode the token, which we end up being the user object
     // check to see if that user exists in the database
+    console.log('HEADERS =', req.headers);
     const token = req.headers['x-access-token'];
     if (!token) {
       next(new Error('No token'));

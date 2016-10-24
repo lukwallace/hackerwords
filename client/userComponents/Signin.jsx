@@ -5,6 +5,8 @@ var util = require('../util.js');
 class Signin extends React.Component {
   constructor(props) {
     super(props);
+
+    util.signOut();
   }
 
   submitFn () {

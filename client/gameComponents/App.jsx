@@ -6,140 +6,165 @@ import CurrentWord from './CurrentWord.jsx';
 import Timer from './Timer.jsx';
 import Login from './../userComponents/Signin.jsx';
 import Signup from './../userComponents/Signup.jsx';
+import Util from './../util.js';
+import { Router, Route, Link, IndexRoute, hashHistory, browserHistory, withRouter } from 'react-router'
 
-
-export default class App extends React.Component {
+class App extends React.Component {
   constructor(props) {
     super(props);
-    var context = this;
+    const context = this;
 
     this.rowSize = 4;
+    const token = Util.getToken();
+    console.log('APPTOKEN', token);
+    if (!token) {
+      props.router.push('/signin');
+      return;
+    }
 
-    $.get('/api/makeBoard', (data) => {
-      console.log(data);
-      context.setState({
-        'boardStr': data.boardStr
-      })
+    $.ajax({
+      method: 'GET',
+      url: '/api/makeBoard',
+      headers: { 'x-access-token' : Util.getToken()},
+      dataType: 'json',
+      success: function(data) {
+        console.log(data);
+        context.setState({
+          boardStr: data.boardString,
+        });
+      }
     });
 
     this.state = {
-      'boardStr': 'abcdefghijklmnop',
-      'curWord': '',
-      'curIndexesUsed': [],
-      'wordsPlayed': [],
-      'timeLeft': 10,
-      'gameOver': false
-    }
+      boardStr: 'abcdefghijklmnop',
+      curWord: '',
+      curIndexesUsed: [],
+      wordsPlayed: [],
+      timeLeft: 120,
+      gameOver: false,
+    };
+
+    this.logOut = () => {
+      this.stopTimer();
+      window.localStorage.removeItem('com.hackerwords');
+      props.router.push('/signin');
+    };
 
     this.startTimer = () => {
-      var timerInterval = setInterval(function() {
+      this.timerInterval = setInterval(() => {
         context.setState({
-          'timeLeft': context.state.timeLeft - 1
-        })
+          timeLeft: context.state.timeLeft - 1,
+        });
 
-        if(context.state.timeLeft === 0) {
+        if (context.state.timeLeft === 0) {
           context.setState({
-            'gameOver': true
-          })
-          clearInterval(timerInterval);
+            gameOver: true,
+          });
+          clearInterval(this.timerInterval);
         }
-      }, 1000)
-    }
+      }, 1000);
+    };
+
+    this.stopTimer = () => {
+      clearInterval(this.timerInterval);
+    };
 
     this.startTimer();
 
-    this.getLastClickIndex = () =>  {
-      if(this.state.curIndexesUsed.length === 0) {
+    this.getLastClickIndex = () => {
+      if (this.state.curIndexesUsed.length === 0) {
         return null;
       }
       return this.state.curIndexesUsed[this.state.curIndexesUsed.length - 1];
-    }
+    };
 
-    this.getClickIndexNumber = (ci) =>  {
+    this.getClickIndexNumber = (ci) => {
       return Number(ci.slice(1));
-    }
+    };
 
     this.isInUsedIndexes = (clickIndex) => {
       return (this.state.curIndexesUsed.indexOf(clickIndex) !== -1);
-    }
+    };
 
     this.sendWord = () => {
-      var word = this.state.curWord;
-      $.post('/api/checkWord', {word: word}, (data) => {
-        if(data.isWord && context.state.wordsPlayed.indexOf(word) === -1) {
+      const word = this.state.curWord;
+      $.post('/api/checkWord', { word }, (data) => {
+        if (data.isWord && context.state.wordsPlayed.indexOf(word) === -1) {
           context.setState({
-            wordsPlayed: context.state.wordsPlayed.concat(word)
-          })
+            wordsPlayed: context.state.wordsPlayed.concat(word),
+          });
         }
       });
-    } 
+    };
 
     this.boardClick = (event) => {
-      if(this.state.gameOver) {
+      if (this.state.gameOver) {
         return;
       }
-      var clickLetter = event.target.innerHTML;
-      var clickIndex = event.target.className;
+      const clickLetter = event.target.innerHTML;
+      const clickIndex = event.target.className;
 
 
-      //check adjacent
-      var isAdjacent = () => {
-        var lastClick = this.getLastClickIndex();
-        if(lastClick === null) {
+      // check adjacent
+      const isAdjacent = () => {
+        const lastClick = this.getLastClickIndex();
+        if (lastClick === null) {
           return true;
         }
-        var lastClickIndex = this.getClickIndexNumber(lastClick);
-        var thisClickIndex = this.getClickIndexNumber(clickIndex);
+        const lastClickIndex = this.getClickIndexNumber(lastClick);
+        const thisClickIndex = this.getClickIndexNumber(clickIndex);
 
-        var lastClickRow = Math.floor(lastClickIndex / this.rowSize);
-        var lastClickCol = (lastClickIndex % this.rowSize);
-        var thisClickRow = Math.floor(thisClickIndex / this.rowSize);
-        var thisClickCol = (thisClickIndex % this.rowSize);
-        
-        if(Math.abs(lastClickRow - thisClickRow) > 1) {
+        const lastClickRow = Math.floor(lastClickIndex / this.rowSize);
+        const lastClickCol = (lastClickIndex % this.rowSize);
+        const thisClickRow = Math.floor(thisClickIndex / this.rowSize);
+        const thisClickCol = (thisClickIndex % this.rowSize);
+
+        if (Math.abs(lastClickRow - thisClickRow) > 1) {
           return false;
         }
-        if(Math.abs(lastClickCol - thisClickCol) > 1) {
+        if (Math.abs(lastClickCol - thisClickCol) > 1) {
           return false;
         }
         return true;
       };
 
-      if(clickIndex === this.getLastClickIndex()) {
+      if (clickIndex === this.getLastClickIndex()) {
         console.log('word finalized as ', context.state.curWord);
-        //evaluate word here
+        // evaluate word here
         this.sendWord();
 
         context.setState({
-          'curWord': '',
-          'curIndexesUsed': []
+          curWord: '',
+          curIndexesUsed: [],
         });
-      } else {
-        if(isAdjacent() && !this.isInUsedIndexes(clickIndex)) {
-          var newCurWord = context.state.curWord + clickLetter;
-          var newCurIndexes = context.state.curIndexesUsed.concat(clickIndex);
-          //re-evaluate using mutable objects as state params?
-          context.setState({
-            'curWord': newCurWord,
-            'curIndexesUsed': newCurIndexes
-          });
-        }
+      } else if (isAdjacent() && !this.isInUsedIndexes(clickIndex)) {
+        const newCurWord = context.state.curWord + clickLetter;
+        const newCurIndexes = context.state.curIndexesUsed.concat(clickIndex);
+          // re-evaluate using mutable objects as state params?
+        context.setState({
+          curWord: newCurWord,
+          curIndexesUsed: newCurIndexes,
+        });
       }
     };
   }
 
+//<div onClick={Util.signOut(this)}>Sign Out</div>
 
   render() {
     return (
-        <div>
+      <div>
           Hello World! ^_^
-          <Score />
-          <Board boardStr={this.state.boardStr} clickHandler={this.boardClick}/>
-          <div>Time Left: {this.state.timeLeft}</div>
-          <div>Current Word: {this.state.curWord}</div>
-          <PlayedWords wordsPlayed={this.state.wordsPlayed}/>
-        </div>
+        <Score />
+        <Board boardStr={this.state.boardStr} clickHandler={this.boardClick} />
+        <div>Time Left: {this.state.timeLeft}</div>
+        <div>Current Word: {this.state.curWord}</div>
+        <PlayedWords wordsPlayed={this.state.wordsPlayed} />
+        <div onClick={this.logOut}>Sign Out</div>
+      </div>
       );
   }
-  
+
 }
+
+export default withRouter(App);

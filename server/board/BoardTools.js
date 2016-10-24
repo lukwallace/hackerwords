@@ -1,33 +1,35 @@
-var Game = require('./GameModel.js');
-var util = require('./../util.js');
-var jwt = require('jwt-simple');
-var wordSet = require('./wordSet.js');
+'use strict';
+const Game = require('./GameModel.js');
+const util = require('./../util.js');
+const jwt = require('jwt-simple');
+const wordSet = require('./wordSet.js');
 
 
 module.exports = {
-  makeBoard: function(request, res, next) {
-    var letters = 'abcdefghijklmnopqrstuvwxyz';
-    var result = '';
-    for(var i = 0; i < 16; i++) {
-      var randIndex = Math.floor(Math.random() * 16);
+  makeBoard(request, res, next) {
+    const letters = 'abcdefghijklmnopqrstuvwxyz';
+    let result = '';
+    //var result = '';
+    for (let i = 0; i < 16; i += 1) {
+      const randIndex = Math.floor(Math.random() * 16);
       result += letters[randIndex];
     }
 
-    util.getUserFromReq(request, next).then( function (user) {
-      Game.create({boardString:result, user_id:user._id}).then(function(game) {
+    util.getUserFromReq(request, next).then((user) => {
+      Game.create({ boardString: result, user_id: user._id }).then((game) => {
         console.log('game', game);
-        var token = jwt.encode(game._id, 'secret');
-        res.json({token: token, boardString:result});
+        const token = jwt.encode(game._id, 'secret');
+        res.json({ token, boardString: result });
       });
     });
   },
 
-  checkWord: function(req, res, next) {
-    var word = req.body.word;
+  checkWord(req, res, next) {
+    const word = req.body.word;
     if (wordSet.has(word)) {
-      res.json({isWord:true});
+      res.json({ isWord: true });
     } else {
-      res.json({isWord:false});
+      res.json({ isWord: false });
     }
-  }
+  },
 };
