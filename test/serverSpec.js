@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 const supertest = require('supertest');
 const server = require('../server/server.js');
-const User = require('./userModel.js');
+const User = require('../server/users/userModel.js');
 
 const request = supertest.agent(server);
 
@@ -18,10 +18,8 @@ describe('Server', () => {
 
   describe('Server-Database Interaction', () => {
     beforeEach((done) => {
-
-
+      User.remove({}).then(done);
     });
-    afterEach();
 
     it('');
   });
