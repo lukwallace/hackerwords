@@ -4,6 +4,9 @@ module.exports = {
   },
 
   getToken(data) {
+    if(window.localStorage === undefined) {
+      return undefined;
+    }
     return window.localStorage.getItem('com.hackerwords');
   },
 

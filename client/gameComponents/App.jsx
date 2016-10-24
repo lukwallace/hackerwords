@@ -17,23 +17,29 @@ class App extends React.Component {
     this.rowSize = 4;
     const token = Util.getToken();
     console.log('APPTOKEN', token);
-    if (!token) {
+    if (!token && props.router) {
       props.router.push('/signin');
       return;
     }
 
-    $.ajax({
-      method: 'GET',
-      url: '/api/makeBoard',
-      headers: { 'x-access-token' : Util.getToken()},
-      dataType: 'json',
-      success: function(data) {
-        console.log(data);
-        context.setState({
-          boardStr: data.boardString,
-        });
-      }
-    });
+    this.loadBoard = () => {
+      $.ajax({
+        method: 'GET',
+        url: '/api/makeBoard',
+        headers: { 'x-access-token' : Util.getToken()},
+        dataType: 'json',
+        success: function(data) {
+          console.log(data);
+          context.setState({
+            boardStr: data.boardString,
+          });
+        },
+      });
+    };
+
+    if($.ajax) {
+      this.loadBoard();
+    }
 
     this.state = {
       boardStr: 'abcdefghijklmnop',
@@ -153,7 +159,8 @@ class App extends React.Component {
 
   render() {
     return (
-        <div className="gameBoardApp">
+      <div>
+        <div className="gameBoardApp" />
           Hello World! ^_^
         <Score />
         <Board boardStr={this.state.boardStr} clickHandler={this.boardClick} />
