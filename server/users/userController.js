@@ -22,6 +22,7 @@ module.exports = {
           .then((foundUser) => {
             if (foundUser) {
               const token = jwt.encode(user, 'secret');
+              res.status(302);
               return res.json({ token });
             }
             return next(new Error('Wrong password'));
@@ -51,6 +52,7 @@ module.exports = {
       .then((user) => {
         // create token to send back for auth
         const token = jwt.encode(user, 'secret');
+        res.status(302);
         res.json({ token });
       })
       .fail((error) => {
