@@ -2,15 +2,13 @@
 
 require('babel-register')();
 
-//global.$ = require('jquery')(window);
 var jsdom = require('jsdom').jsdom;
-global.$ = jsdom;
 
 var exposedProperties = ['window', 'navigator', 'document'];
 
 global.document = jsdom('');
 global.window = document.defaultView;
-
+global.window.$ = require('fs').readFileSync('./node_modules/jquery/src/jquery.js');
 Object.keys(document.defaultView).forEach((property) => {
   if (typeof global[property] === 'undefined') {
     exposedProperties.push(property);
