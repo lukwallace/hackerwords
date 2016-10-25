@@ -104,7 +104,6 @@ class App extends React.Component {
           wordsPlayed: this.state.wordsPlayed.concat(word),
         });
       }
-<<<<<<< HEAD
     });
   }
 
@@ -118,6 +117,7 @@ class App extends React.Component {
     // check adjacent
     const isAdjacent = () => {
       const lastClick = this.getLastClickIndex();
+      
       if (lastClick === null) {
         return true;
       }
@@ -139,6 +139,7 @@ class App extends React.Component {
     };
 
     if (clickIndex === this.getLastClickIndex()) {
+      $('.selected').removeClass('selected');
       console.log('word finalized as ', this.state.curWord);
       // evaluate word here
       this.sendWord();
@@ -150,6 +151,7 @@ class App extends React.Component {
     } else if (isAdjacent() && !this.isInUsedIndexes(clickIndex)) {
       const newCurWord = this.state.curWord + clickLetter;
       const newCurIndexes = this.state.curIndexesUsed.concat(clickIndex);
+      $(event.target).addClass('selected');
         // re-evaluate using mutable objects as state params?
       this.setState({
         curWord: newCurWord,
