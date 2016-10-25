@@ -28,6 +28,7 @@ class Signup extends React.Component {
       },
       error: (error) => {
         console.error(error);
+        $('#error').show();
       },
     });
   }
@@ -52,6 +53,7 @@ class Signup extends React.Component {
         </div>
         Have an account?
         <Link to="/signin"> Sign in here</Link>
+        <h2 id="error"> Username already exists! </h2>
       </div>
     );
   }

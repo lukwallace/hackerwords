@@ -30,6 +30,7 @@ class Signin extends React.Component {
       },
       error: (error) => {
         console.error(error);
+        $('#error').show();
       },
     });
   }
@@ -52,6 +53,7 @@ class Signin extends React.Component {
         <br />
         Don't have an account?
         <Link to="/signup"> Sign up here</Link>
+        <h2 id="error"> Invalid user or password! </h2>
       </div>
     );
   }
