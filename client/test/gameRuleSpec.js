@@ -37,9 +37,7 @@ describe('The game should follow the defined rules', () => {
   var gameApp;
   beforeEach( () => {
     gameApp = mount(<App />);
-    gameApp.setStateCallback = () => {
-      console.log('curr word', gameApp.state.curWord);
-    };
+    console.log('state', gameApp.state());
   });
 
 
@@ -48,10 +46,9 @@ describe('The game should follow the defined rules', () => {
     const upperLeft = gameApp.find('.b0');
     upperLeft.simulate('click');
 
-    setTimeout( () => {
-      expect(gameApp.state.curWord).to.equal('a');
-      done();
-    }, 500);
+    //console.dir('gameApp', gameApp);
+    expect(gameApp.state('curWord')).to.equal('a');
+    done();
 
 
     // setTimeout( () => {
@@ -68,28 +65,18 @@ describe('The game should follow the defined rules', () => {
 
 
   it('Clicking an adjacent letter should add it to the current word', (done) => {
-
     gameApp.find('.b0').simulate('click');
     gameApp.find('.b1').simulate('click');
     expect(gameApp.state.curWord).to.equal('ab');
     done();
-
-    setTimeout(() => {
-      gameApp.find('.b0').simulate('click');
-      gameApp.find('.b1').simulate('click');
-      expect(gameApp.state.curWord).to.equal('ab');
-      done();
-    }, 500);
   });
 
 
   it('Clicking a non-adjacent letter should NOT add it to the current word', (done) => {
-    setTimeout(() => {
-      gameApp.find('.b0').simulate('click');
-      gameApp.find('.b5').simulate('click');
-      expect(gameApp.state.curWord).to.equal('a');
-      done();
-    }, 500);
+    gameApp.find('.b0').simulate('click');
+    gameApp.find('.b5').simulate('click');
+    expect(gameApp.state.curWord).to.equal('a');
+    done();
   });
 
 
