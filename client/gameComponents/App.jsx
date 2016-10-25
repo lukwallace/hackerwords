@@ -10,6 +10,8 @@ import Util from './../util.js';
 class App extends React.Component {
   constructor(props) {
     super(props);
+
+    //Why do we need this code? Was 'this' not being set properly?
     this.getLastClickIndex = this.getLastClickIndex.bind(this);
     this.logOut = this.logOut.bind(this);
     this.startTimer = this.startTimer.bind(this);
@@ -17,28 +19,35 @@ class App extends React.Component {
     this.isInUsedIndexes = this.isInUsedIndexes.bind(this);
     this.sendWord = this.sendWord.bind(this);
     this.boardClick = this.boardClick.bind(this);
+    this.setState = this.setState.bind(this);
 
     this.rowSize = 4;
     const token = Util.getToken();
     console.log('APPTOKEN', token);
 
-    if (!token) {
-      this.props.router.push('/signin');
-      return;
-    }
 
-    $.ajax({
-      method: 'GET',
-      url: '/api/makeBoard',
-      headers: { 'x-access-token': Util.getToken() },
-      dataType: 'json',
-      success: (data) => {
-        console.log(data);
-        this.setState({
-          boardStr: data.boardString,
-        });
-      },
-    });
+    //FIXME: Had to modify below code for tests
+    //Not sure what the correct behavior should be
+
+    if (this.props.router) {
+      if (!token) {
+        this.props.router.push('/signin');
+        return;
+      }
+
+      $.ajax({
+        method: 'GET',
+        url: '/api/makeBoard',
+        headers: { 'x-access-token': Util.getToken() },
+        dataType: 'json',
+        success: (data) => {
+          console.log(data);
+          this.setState({
+            boardStr: data.boardString,
+          });
+        },
+      });
+    }
 
     this.state = {
       boardStr: 'abcdefghijklmnop',
@@ -177,6 +186,13 @@ class App extends React.Component {
   // }
 
 // <div onClick={Util.signOut(this)}>Sign Out</div>
+  setState(stateObj) {
+    if (this.setStateCallback) {
+      super.setState.call(this, stateObj, this.setStateCallback());
+    } else {
+      super.setState.call(this, stateObj);
+    }
+  }
 
   render() {
     return (

@@ -5,13 +5,11 @@ import { mount, shallow } from 'enzyme';
 import App from '../gameComponents/App';
 
 
-describe('The Board should be created properly', function() {
+describe('The Board should be created properly', () => {
   var gameApp;
-  beforeEach(function() {
+  beforeEach( () => {
     gameApp = mount(<App />);
   });
-
-
   
   it('Should call render', () => {
     sinon.spy(App.prototype, 'render');
@@ -20,55 +18,89 @@ describe('The Board should be created properly', function() {
   });
 
 
-
-  it('Should create the board', function() {
+  //Why isn't this test passing?
+  it('Should create the board', () => {
     expect(gameApp.contains(<div className="gameBoardApp" />)).to.equal(true);
-  });     
-
-
-
-
-  it('Should have a button with character a', function() {
-    const upperLeft = gameApp.find('.b0');
-    expect(upperLeft).to.exist;
-    expect(upperLeft.text()).to.equal('a');
   });
 
+  it('Should have a button with character a', (done) => {
+    setTimeout( () => {
+      const upperLeft = gameApp.find('.b0');
+      expect(upperLeft).to.exist;
+      expect(upperLeft.text()).to.equal('a');
+      done();
+    }, 500);
+  });
 });
 
-describe('The game should follow the defined rules', function() {
+describe('The game should follow the defined rules', () => {
   var gameApp;
-  beforeEach(function() {
+  beforeEach( () => {
     gameApp = mount(<App />);
+    gameApp.setStateCallback = () => {
+      console.log('curr word', gameApp.state.curWord);
+    };
   });
 
 
-  it('Clicking a letter should add it to the current word', function() {
-    // setTimeout(function() {
-    //   const upperLeft = gameApp.find('.b0');
-    //   upperLeft.simulate('click');
-    //   expect(gameApp.state.curWord).to.equal('a');
-    // }, 500);
+  it('Clicking a letter should add it to the current word', (done) => {
 
     const upperLeft = gameApp.find('.b0');
     upperLeft.simulate('click');
-    expect(gameApp.state.curWord).to.equal('a');
+
+    setTimeout( () => {
+      expect(gameApp.state.curWord).to.equal('a');
+      done();
+    }, 500);
+
+
+    // setTimeout( () => {
+    //   const upperLeft = gameApp.find('.b0');
+    //   upperLeft.simulate('click');
+    //   expect(gameApp.state.curWord).to.equal('a');
+    //   done();
+    // }, 500);
+
+    // const upperLeft = gameApp.find('.b0');
+    // upperLeft.simulate('click');
+    // expect(gameApp.state.curWord).to.equal('a');
   });
 
 
-  it('Clicking an adjacent letter should add it to the current word', function() {
+  it('Clicking an adjacent letter should add it to the current word', (done) => {
+
     gameApp.find('.b0').simulate('click');
     gameApp.find('.b1').simulate('click');
     expect(gameApp.state.curWord).to.equal('ab');
+    done();
+
+    setTimeout(() => {
+      gameApp.find('.b0').simulate('click');
+      gameApp.find('.b1').simulate('click');
+      expect(gameApp.state.curWord).to.equal('ab');
+      done();
+    }, 500);
+  });
+
+
+  it('Clicking a non-adjacent letter should NOT add it to the current word', (done) => {
+    setTimeout(() => {
+      gameApp.find('.b0').simulate('click');
+      gameApp.find('.b5').simulate('click');
+      expect(gameApp.state.curWord).to.equal('a');
+      done();
+    }, 500);
   });
 
 
 
-  it('Clicking a non-adjacent letter should NOT add it to the current word', function() {
-    gameApp.find('.b0').simulate('click');
-    gameApp.find('.b5').simulate('click');
-    expect(gameApp.state.curWord).to.equal('a');
-  });
-
+  // it('Click the same letter twice in a row should send a post request to the server', (done) => {
+  //   setTimeout(() => {
+  //     gameApp.find('.b0').simulate('click');
+  //     gameApp.find('.b5').simulate('click');
+  //     expect(gameApp.state.curWord).to.equal('a');
+  //     done();
+  //   }, 500);
+  // });
 
 });
