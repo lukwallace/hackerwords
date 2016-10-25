@@ -53,7 +53,7 @@ class App extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log('Unmount!');
+    this.stopTimer();
   }
 
   getLastClickIndex() {
