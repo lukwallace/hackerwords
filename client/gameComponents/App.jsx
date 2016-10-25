@@ -104,6 +104,7 @@ class App extends React.Component {
           wordsPlayed: this.state.wordsPlayed.concat(word),
         });
       }
+<<<<<<< HEAD
     });
   }
 
@@ -177,14 +178,14 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="gameBoardApp">
-        Hello World! ^_^
-        <Score />
+        <div className="gameBoardApp">
+        <h1> HackerWords </h1>
+        <div className='currentWord'>{this.state.curWord}</div>
+        <div className='timeLeft'>{this.state.timeLeft}</div>
         <Board boardStr={this.state.boardStr} clickHandler={this.boardClick} />
-        <div>Time Left: {this.state.timeLeft}</div>
-        <div>Current Word: {this.state.curWord}</div>
         <PlayedWords wordsPlayed={this.state.wordsPlayed} />
         <button onClick={this.logOut}> Sign Out </button>
+        <Score />
       </div>
     );
   }

@@ -10,7 +10,7 @@ export default class Score extends React.Component {
 
   render() {
     return (
-        <div>
+        <div className='scoreboard'>
           Score: {this.state.score}
         </div>
       );
