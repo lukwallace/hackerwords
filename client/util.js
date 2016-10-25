@@ -3,7 +3,7 @@ module.exports = {
     window.localStorage.setItem('com.hackerwords', data.token);
   },
 
-  getToken(data) {
+  getToken() {
     if (window.localStorage === undefined) {
       return undefined;
     }
