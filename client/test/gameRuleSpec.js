@@ -45,6 +45,7 @@ describe('The game should follow the defined rules', () => {
 
     const upperLeft = gameApp.find('.b0');
     upperLeft.simulate('click');
+
     const state = gameApp.nodes[0].getWrappedInstance().state;
     //console.dir('gameApp', gameApp);
     expect(state['curWord']).to.equal('a');
@@ -73,7 +74,6 @@ describe('The game should follow the defined rules', () => {
     done();
   });
 
-
   it('Clicking a non-adjacent letter should NOT add it to the current word', (done) => {
     gameApp.find('.b0').simulate('click');
     gameApp.find('.b6').simulate('click');
@@ -81,6 +81,5 @@ describe('The game should follow the defined rules', () => {
     expect(state['curWord']).to.equal('a');
     done();
   });
-
 
 });

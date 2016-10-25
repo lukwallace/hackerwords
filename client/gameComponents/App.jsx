@@ -66,13 +66,12 @@ class App extends React.Component {
       gameOver: false,
     };
 
-    //console.log('our state', this.state);
 
     this.startTimer();
   }
 
   componentWillUnmount() {
-    console.log('Unmount!');
+    this.stopTimer();
   }
 
   getLastClickIndex() {
