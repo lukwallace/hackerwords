@@ -18,7 +18,7 @@ describe('The Board should be created properly', () => {
   });
 
 
-  //Why isn't this test passing?
+  //Why isn't this test passing? -- It is now! -Lucas
   it('Should create the board', () => {
     expect(gameApp.contains(<div className="gameBoardApp" />)).to.equal(true);
   });
@@ -36,8 +36,8 @@ describe('The Board should be created properly', () => {
 describe('The game should follow the defined rules', () => {
   var gameApp;
   beforeEach( () => {
-    gameApp = mount(<App />);
-    console.log('state', gameApp.state());
+    gameApp = mount(<App/>);
+    //console.log('gameApp', gameApp.nodes[0].getWrappedInstance().state);
   });
 
 
@@ -46,8 +46,9 @@ describe('The game should follow the defined rules', () => {
     const upperLeft = gameApp.find('.b0');
     upperLeft.simulate('click');
 
+    const state = gameApp.nodes[0].getWrappedInstance().state;
     //console.dir('gameApp', gameApp);
-    expect(gameApp.state('curWord')).to.equal('a');
+    expect(state['curWord']).to.equal('a');
     done();
 
 
@@ -67,27 +68,18 @@ describe('The game should follow the defined rules', () => {
   it('Clicking an adjacent letter should add it to the current word', (done) => {
     gameApp.find('.b0').simulate('click');
     gameApp.find('.b1').simulate('click');
-    expect(gameApp.state.curWord).to.equal('ab');
+    const state = gameApp.nodes[0].getWrappedInstance().state;
+
+    expect(state['curWord']).to.equal('ab');
     done();
   });
-
 
   it('Clicking a non-adjacent letter should NOT add it to the current word', (done) => {
     gameApp.find('.b0').simulate('click');
-    gameApp.find('.b5').simulate('click');
-    expect(gameApp.state.curWord).to.equal('a');
+    gameApp.find('.b6').simulate('click');
+    const state = gameApp.nodes[0].getWrappedInstance().state;
+    expect(state['curWord']).to.equal('a');
     done();
   });
-
-
-
-  // it('Click the same letter twice in a row should send a post request to the server', (done) => {
-  //   setTimeout(() => {
-  //     gameApp.find('.b0').simulate('click');
-  //     gameApp.find('.b5').simulate('click');
-  //     expect(gameApp.state.curWord).to.equal('a');
-  //     done();
-  //   }, 500);
-  // });
 
 });
