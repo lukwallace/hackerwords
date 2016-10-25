@@ -1,14 +1,14 @@
 body {
-  font-family: 'Chewy', cursive;
-  /*background-color: #ACCE55;*/
+  font-family: 'Slackey', cursive;
+  background-color: #5A17ED;
 }
 
 h1 {
   text-align: center;
-  margin-top: -15px;
+  margin-top: -5px;
   margin-bottom: 5px;
   font-size: 80px;
-  color: #02AC1E;
+  color: #FED024;
 }
 
 .container {
@@ -19,14 +19,15 @@ h1 {
 
 table {
   width: 100%;
-  border: 5px solid black;
-  border-radius: 20px;
   padding: 10px;
+  overflow:hidden;
+  float:left;
 }
 
 th {
-  height: 80px;
-  width: 80px;
+  height: 40px;
+  width: 40px;
+  padding: 30px;
 }
 
 th, td {
@@ -34,13 +35,12 @@ th, td {
   border-radius: 20px;
   padding: 35px;
   margin: 20px;
-  font-size: 55px;
+  font-size: 45px;
   text-align: center;
 }
 
 td {
-  padding-right: 20px;
-  padding-left: 20px;
+  margin: 30px;
 }
 
 .selected {
@@ -50,14 +50,15 @@ td {
 
 .scoreboard {
   text-align: center;
+  display: none;
 }
 
 div.currentWord {
   text-align: center;
-  border-radius: 20px;
   font-size: 55px;
   height: 2.5ex;
-  border: 4px solid black;
+  border: 3px solid black;
+  border-radius: 10px;
 }
 
 span {
@@ -65,26 +66,38 @@ span {
 }
 
 span.wordsPlayed {
-  float: right;
+  float:center;
+  overflow:hidden;
+  white-space:nowrap;
+  font-size: 25px;
+  color: black;
 }
 
 div.timeLeft {
-  font-size: 25px;
+  font-size: 45px;
   margin: 10px;
   text-align: center;
   color: red;
 }
 
-span.logOut {
+button {
   float: left;
   padding: 4px;
   border: 4px solid #02AC1E;
+  font-family: 'Slackey', cursive;
   border-radius: 20px;
   position:fixed;
+  background-color: white;
   right:10px;
   top:5px;
 }
 
 ul {
-  color:red;
+  color:#02AC1E;
+  font-size: 30px;
+}
+
+p {
+  display: inline;
+  color: #02AC1E;
 }

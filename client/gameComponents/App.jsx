@@ -49,7 +49,7 @@ class App extends React.Component {
         headers: { 'x-access-token': Util.getToken() },
         dataType: 'json',
         success: (data) => {
-          console.log(data);
+          console.log(data.boardString);
           this.setState({
             boardStr: data.boardString,
           });
@@ -119,7 +119,7 @@ class App extends React.Component {
     $.post('/api/checkWord', { word }, (data) => {
       if (data.isWord && this.state.wordsPlayed.indexOf(word) === -1) {
         this.setState({
-          wordsPlayed: this.state.wordsPlayed.concat(word),
+          wordsPlayed: this.state.wordsPlayed.concat(word + ', '),
         });
       }
     });
@@ -130,7 +130,7 @@ class App extends React.Component {
       return;
     }
     const clickLetter = event.target.innerHTML;
-    const clickIndex = event.target.className;
+    const clickIndex = event.target.className.split(' ')[0];
 
     // check adjacent
     const isAdjacent = () => {
@@ -211,8 +211,8 @@ class App extends React.Component {
       <div>
         <div className="gameBoardApp" />
         <h1> HackerWords </h1>
-        <div className='currentWord'>{this.state.curWord}</div>
         <div className='timeLeft'>{this.state.timeLeft}</div>
+        <div className='currentWord'>{this.state.curWord}</div>
         <Board boardStr={this.state.boardStr} clickHandler={this.boardClick} />
         <PlayedWords wordsPlayed={this.state.wordsPlayed} />
         <button onClick={this.logOut}> Sign Out </button>

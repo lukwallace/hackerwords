@@ -10,9 +10,9 @@ export default class Score extends React.Component {
 
   render() {
     return (
-        <div className='scoreboard'>
+        <span className='scoreboard'>
           Score: {this.state.score}
-        </div>
+        </span>
       );
   }
 }
