@@ -17,7 +17,8 @@ class Index extends React.Component {
         <Route path="/logout" component={Signin} />
       </Router>
     );
-  }
+  } 
 }
+
 
 ReactDOM.render(<Index />, document.getElementById('app'));
