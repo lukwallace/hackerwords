@@ -1,0 +1,90 @@
+body {
+  font-family: 'Chewy', cursive;
+  /*background-color: #ACCE55;*/
+}
+
+h1 {
+  text-align: center;
+  margin-top: -15px;
+  margin-bottom: 5px;
+  font-size: 80px;
+  color: #02AC1E;
+}
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 700px;
+}
+
+table {
+  width: 100%;
+  border: 5px solid black;
+  border-radius: 20px;
+  padding: 10px;
+}
+
+th {
+  height: 80px;
+  width: 80px;
+}
+
+th, td {
+  border: 5px solid #02AC1E;
+  border-radius: 20px;
+  padding: 35px;
+  margin: 20px;
+  font-size: 55px;
+  text-align: center;
+}
+
+td {
+  padding-right: 20px;
+  padding-left: 20px;
+}
+
+.selected {
+  color: white;
+  background-color: black;
+}
+
+.scoreboard {
+  text-align: center;
+}
+
+div.currentWord {
+  text-align: center;
+  border-radius: 20px;
+  font-size: 55px;
+  height: 2.5ex;
+  border: 4px solid black;
+}
+
+span {
+  float: center;
+}
+
+span.wordsPlayed {
+  float: right;
+}
+
+div.timeLeft {
+  font-size: 25px;
+  margin: 10px;
+  text-align: center;
+  color: red;
+}
+
+span.logOut {
+  float: left;
+  padding: 4px;
+  border: 4px solid #02AC1E;
+  border-radius: 20px;
+  position:fixed;
+  right:10px;
+  top:5px;
+}
+
+ul {
+  color:red;
+}
