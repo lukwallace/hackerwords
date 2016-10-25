@@ -13,8 +13,8 @@ class App extends React.Component {
 
 
     this.setStateCallback = (stateObj) => {
-      //console.log('setting state to', stateObj);
-    }
+      // console.log('setting state to', stateObj);
+    };
 
     //Why do we need this code? Was 'this' not being set properly?
     this.getLastClickIndex = this.getLastClickIndex.bind(this);
@@ -53,6 +53,10 @@ class App extends React.Component {
           this.setState({
             boardStr: data.boardString,
           });
+        },
+        error: (data) => {
+          console.log('Error!');
+          console.log(data);
         },
       });
     }

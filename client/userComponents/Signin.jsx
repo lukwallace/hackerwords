@@ -16,7 +16,9 @@ class Signin extends React.Component {
     const password = $('#password').val();
     $('#username').val('');
     $('#password').val('');
-
+    console.log('Wahahaha');
+    console.log(username);
+    console.log(password);
     $.post({
       url: '/api/signin',
       dataType: 'json',
@@ -55,4 +57,4 @@ class Signin extends React.Component {
   }
 }
 
-export default withRouter(Signin);
+export default withRouter(Signin, { withRef: true });

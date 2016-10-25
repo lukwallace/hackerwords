@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router, Route, Link, IndexRoute, hashHistory, browserHistory } from 'react-router';
+import { Router, Route, browserHistory } from 'react-router';
 import App from './gameComponents/App.jsx';
 import Signin from './userComponents/Signin.jsx';
 import Signup from './userComponents/Signup.jsx';
