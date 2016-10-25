@@ -66,7 +66,7 @@ class App extends React.Component {
       gameOver: false,
     };
 
-    console.log('our state', this.state);
+    //console.log('our state', this.state);
 
     this.startTimer();
   }
@@ -209,7 +209,8 @@ class App extends React.Component {
 
   render() {
     return (
-        <div className="gameBoardApp">
+      <div>
+        <div className="gameBoardApp" />
         <h1> HackerWords </h1>
         <div className='currentWord'>{this.state.curWord}</div>
         <div className='timeLeft'>{this.state.timeLeft}</div>
@@ -223,4 +224,4 @@ class App extends React.Component {
 
 }
 
-export default withRouter(App);
+export default withRouter(App, {withRef: true});
