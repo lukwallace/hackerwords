@@ -1,6 +1,5 @@
 body {
   font-family: 'Slackey', cursive;
-  background-color: #5A17ED;
 }
 
 h1 {
@@ -50,7 +49,6 @@ td {
 
 .scoreboard {
   text-align: center;
-  display: none;
 }
 
 div.currentWord {

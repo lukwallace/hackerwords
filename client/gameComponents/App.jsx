@@ -64,6 +64,7 @@ class App extends React.Component {
       wordsPlayed: [],
       timeLeft: 120,
       gameOver: false,
+      score: 0,
     };
 
 
@@ -118,8 +119,10 @@ class App extends React.Component {
     const word = this.state.curWord;
     $.post('/api/checkWord', { word }, (data) => {
       if (data.isWord && this.state.wordsPlayed.indexOf(word) === -1) {
+        console.log(word + ' has a score of ' + data.score);
         this.setState({
-          wordsPlayed: this.state.wordsPlayed.concat(word + ', '),
+          wordsPlayed: this.state.wordsPlayed.concat(word + ' [' + data.score + '], '),
+          score: this.state.score + data.score,
         });
       }
     });
@@ -216,7 +219,7 @@ class App extends React.Component {
         <Board boardStr={this.state.boardStr} clickHandler={this.boardClick} />
         <PlayedWords wordsPlayed={this.state.wordsPlayed} />
         <button onClick={this.logOut}> Sign Out </button>
-        <Score />
+        <div><Score score={this.state.score}/></div>
       </div>
     );
   }
