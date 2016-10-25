@@ -34,13 +34,18 @@ class Signin extends React.Component {
 
   render() {
     return (
-      <div>
-      HackerWords Signin
-        <br />
+      <div className='signin'>
+        <h1> HackerWords </h1>
+        <br/>
+        <div> Signin </div>
+        <br/>
         <label htmlFor="username"> Username </label>
         <input type="text" id="username" name="username" />
+        <br/>
         <label htmlFor="password"> Password </label>
         <input type="password"id="password" name="password" />
+        <br/>
+        <br/>
         <input type="button" id="signin" value="Signin" onClick={this.submitFn} />
         <br />
         Don't have an account?
