@@ -11,6 +11,11 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
+
+    this.setStateCallback = (stateObj) => {
+      //console.log('setting state to', stateObj);
+    }
+
     //Why do we need this code? Was 'this' not being set properly?
     this.getLastClickIndex = this.getLastClickIndex.bind(this);
     this.logOut = this.logOut.bind(this);
@@ -20,10 +25,13 @@ class App extends React.Component {
     this.sendWord = this.sendWord.bind(this);
     this.boardClick = this.boardClick.bind(this);
     this.setState = this.setState.bind(this);
-
+    this.setStateCallback = this.setStateCallback.bind(this);
     this.rowSize = 4;
+
     const token = Util.getToken();
-    console.log('APPTOKEN', token);
+    if (token) {
+      console.log('APPTOKEN', token);
+    }
 
 
     //FIXME: Had to modify below code for tests
@@ -57,6 +65,8 @@ class App extends React.Component {
       timeLeft: 120,
       gameOver: false,
     };
+
+    console.log('our state', this.state);
 
     this.startTimer();
   }
@@ -186,9 +196,12 @@ class App extends React.Component {
   // }
 
 // <div onClick={Util.signOut(this)}>Sign Out</div>
+  
+  //could use this to add a callback for set state
+  //However, its unclear how to set it with Enzyme
   setState(stateObj) {
     if (this.setStateCallback) {
-      super.setState.call(this, stateObj, this.setStateCallback());
+      super.setState.call(this, stateObj, this.setStateCallback(stateObj));
     } else {
       super.setState.call(this, stateObj);
     }
