@@ -153,7 +153,7 @@ class App extends React.Component {
     // check adjacent
     const isAdjacent = () => {
       const lastClick = this.getLastClickIndex();
-      
+
       if (lastClick === null) {
         return true;
       }
@@ -212,7 +212,7 @@ class App extends React.Component {
   // }
 
 // <div onClick={Util.signOut(this)}>Sign Out</div>
-  
+
   //could use this to add a callback for set state
   //However, its unclear how to set it with Enzyme
   setState(stateObj) {
@@ -229,11 +229,12 @@ class App extends React.Component {
         <div className="gameBoardApp" />
         <h1> HackerWords </h1>
         <div className='timeLeft'>{this.state.timeLeft}</div>
+        <div><Score score={this.state.score} /></div>
         <div className='currentWord'>{this.state.curWord}</div>
         <Board boardStr={this.state.boardStr} clickHandler={this.boardClick} />
         <PlayedWords wordsPlayed={this.state.wordsPlayed} wordScores={this.state.wordScores} />
         <button onClick={this.logOut}> Sign Out </button>
-        <div><Score score={this.state.score} /></div>
+
       </div>
     );
   }
