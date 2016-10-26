@@ -8,20 +8,20 @@ var Schema = mongoose.Schema;
 var gameSchema = new Schema({
   user_id: {
     type: 'ObjectId',
-    required: true
+    required: true,
   },
   boardString: {
     type: String,
-    required: true
+    required: true,
   },
   points: {
     type: Number,
-    default: 0
+    default: 0,
   },
   wordsPlayed: {
     type: [String],
-    default: []
-  }
+    default: [],
+  },
 });
 
 

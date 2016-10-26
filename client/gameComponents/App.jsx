@@ -62,7 +62,8 @@ class App extends React.Component {
       curWord: '',
       curIndexesUsed: [],
       wordsPlayed: [],
-      timeLeft: 120,
+      wordScores: [],
+      timeLeft: 15,
       gameOver: false,
       score: 0,
     };
@@ -93,16 +94,27 @@ class App extends React.Component {
   }
 
   startTimer() {
+    var context = this;
     this.timerInterval = setInterval(() => {
       this.setState({
         timeLeft: this.state.timeLeft - 1,
       });
 
-      if (this.state.timeLeft === 0) {
+      if (this.state.timeLeft <= 0) {
         this.setState({
           gameOver: true,
         });
-        clearInterval(this.timerInterval);
+        clearInterval(context.timerInterval);
+        $.ajax({
+          method: 'POST',
+          url: '/api/finalizeGame',
+          headers: { 'x-access-token': Util.getToken() },
+          dataType: 'json',
+          data: { score: context.state.score, wordsPlayed: context.state.wordsPlayed, boardStr: context.state.boardStr },
+          success: (data) => {
+            console.log(data);
+          },
+        });
       }
     }, 1000);
   }
@@ -120,9 +132,9 @@ class App extends React.Component {
     $.post('/api/checkWord', { word }, (data) => {
       console.log('data', data);
       if (data.isWord && this.state.wordsPlayed.indexOf(word) === -1) {
-        console.log(word + ' has a score of ' + data.score);
         this.setState({
-          wordsPlayed: this.state.wordsPlayed.concat(word + ' [' + data.score + '], '),
+          wordsPlayed: this.state.wordsPlayed.concat(word),
+          wordScores: this.state.wordScores.concat(data.score),
           score: this.state.score + data.score,
         });
       }
@@ -162,7 +174,6 @@ class App extends React.Component {
 
     if (clickIndex === this.getLastClickIndex()) {
       $('.selected').removeClass('selected');
-      console.log('word finalized as ', this.state.curWord);
       // evaluate word here
       this.sendWord();
 
@@ -218,9 +229,9 @@ class App extends React.Component {
         <div className='timeLeft'>{this.state.timeLeft}</div>
         <div className='currentWord'>{this.state.curWord}</div>
         <Board boardStr={this.state.boardStr} clickHandler={this.boardClick} />
-        <PlayedWords wordsPlayed={this.state.wordsPlayed} />
+        <PlayedWords wordsPlayed={this.state.wordsPlayed} wordScores={this.state.wordScores} />
         <button onClick={this.logOut}> Sign Out </button>
-        <div><Score score={this.state.score}/></div>
+        <div><Score score={this.state.score} /></div>
       </div>
     );
   }

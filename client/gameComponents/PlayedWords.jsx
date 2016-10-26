@@ -8,15 +8,15 @@ export default class PlayedWords extends React.Component {
   render() {
     return (
         <span className='wordsPlayed'>
-          Words Played: <p> </p>  
-          <p>
-            {this.props.wordsPlayed.map(function(word) {
+          Words Played: <br/> 
+          <div>
+            {this.props.wordsPlayed.map(function(word, index) {
+              
               return (
-                <p key={word}>{word}</p>
+                <p key={word}>{word + ' [' + this.props.wordScores[index] + '], '}</p>
                 );
-            })}
-          </p>
-          <p> </p>  
+            }, this)}
+          </div>
         </span>
       );
   }
