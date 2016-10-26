@@ -15,6 +15,7 @@ class Index extends React.Component {
         <Route path="/signin" component={Signin} />
         <Route path="/signup" component={Signup} />
         <Route path="/solo" component={App} />
+        <Route path="/game/:id" component={App} />
       </Router>
     );
   }

@@ -44,24 +44,41 @@ class App extends React.Component {
   }
 
   componentWillMount() {
-
     const token = Util.getToken();
     if (token) {
       console.log('APPTOKEN', token);
     }
 
-    if (this.props.router) {
-      if (!token) {
-        this.props.router.push('/signin');
-        return
-      }
-      $.ajax({
-        method: 'GET',
+
+    if (!token && this.props.router) {
+      this.props.router.push('/signin');
+      return;
+    }
+
+    if (!this.props.params.id) {
+      $.get({
         url: '/api/makeBoard',
         headers: { 'x-access-token': Util.getToken() },
         dataType: 'json',
         success: (data) => {
           console.log(data.boardString);
+          this.setState({
+            boardStr: data.boardString,
+          });
+        },
+        error: (data) => {
+          console.log('Error!');
+          console.log(data);
+        },
+      });
+    } else {
+      $.post({
+        url: '/api/getBoard',
+        headers: { 'x-access-token': Util.getToken() },
+        dataType: 'json',
+        data: { id: this.props.params.id },
+        success: (data) => {
+          console.log(data);
           this.setState({
             boardStr: data.boardString,
           });
@@ -241,4 +258,4 @@ class App extends React.Component {
 
 }
 
-export default withRouter(App, {withRef: true});
+export default withRouter(App, { withRef: true });
