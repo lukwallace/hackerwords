@@ -27,6 +27,9 @@ module.exports = (app) => {
     response.sendFile(path.resolve('client/index.html'));
   });
 
+
+  app.post('/api/getBoard', util.checkAuth, boardTool.getBoard);
+
   app.get('/api/getAllUsers', util.checkAuth, userController.getAllUsers);
 
   app.post('/api/getPendingGames', util.checkAuth, userController.getPendingGames);
