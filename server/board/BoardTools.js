@@ -6,6 +6,29 @@ const wordSet = require('./wordSet.js');
 
 
 module.exports = {
+
+  makeChallengeGame(req, res, next) {
+    const letters = 'aabcdeeefghiijklmnoopqrstuuvwxyz';
+    let boardStr = '';
+    for (let i = 0; i < 16; i += 1) {
+      const randIndex = Math.floor(Math.random() * letters.length);
+      boardStr += letters[randIndex];
+    }
+
+
+
+    util.getUserFromReq(req, next).then((user) => {
+      Game.create({ boardString: boardStr, user_id: user._id }).then((game) => {
+        util.getUsedIDFromUsername(req.body.username, (user_id) => {
+          Game.create({ boardString: boardStr, user_id: user_id }).then((userGame) => {
+            const token = jwt.encode(userGame._id, 'secret');
+            res.json({ token, boardString: boardStr });
+          });
+        });
+      });
+    });
+  },
+
   finalizeGame(req, res, next) {
 
     const score = Number(req.body.score);

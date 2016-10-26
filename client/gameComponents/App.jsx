@@ -44,6 +44,7 @@ class App extends React.Component {
   }
 
   componentWillMount() {
+
     const token = Util.getToken();
     if (token) {
       console.log('APPTOKEN', token);

@@ -1,6 +1,11 @@
 const jwt = require('jwt-simple');
 const User = require('./users/userModel.js');
 
+exports.getUserIDFromUsername = (username, callback) => {
+  User.findOne({ username }, (err, result) => {
+    callback(result._id);
+  });
+};
 
 exports.getUsernameFromReq = (req, next) => {
   // recover username
