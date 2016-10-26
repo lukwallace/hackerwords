@@ -7,36 +7,25 @@ const wordSet = require('./wordSet.js');
 
 module.exports = {
   finalizeGame(req, res, next) {
-    console.log(req.body);
+
     const score = Number(req.body.score);
-    const wordsUsed = req.body.wordsUsed;
+    const wordsUsed = req.body.wordsPlayed;
     const boardStr = req.body.boardStr;
     const query = { boardString: boardStr };
-    Game.findOne(query, function(err, result) {
-      result.wordsPlayed = wordsUsed;
-      result.points = score;
-      result.save();
-      setTimeout(function() {
-        Game.findOne(query, function(err, result1) {
-          res.json({ result1 });
-        });
-      }, 500);
-    });
-    /*
-    Game.update(query, {$set: { points: score }, $set: { wordsPlayed: wordsUsed} }, function(err, effected) {
-      Game.findOne(query, function(err, result) {
-        console.log(result);
+    const toUpdate = { $set: { points: score, wordsPlayed: wordsUsed, pending: false } };
+    Game.update(query, toUpdate, (err) => {
+      if (err) {
+        next(new Error(err));
+      }
+      Game.findOne(query, (error, result) => {
         res.json({ result });
       });
-      //res.json({ updated: effected });
     });
-    */
   },
 
   makeBoard(request, res, next) {
     const letters = 'aabcdeeefghiijklmnoopqrstuuvwxyz';
     let result = '';
-    //var result = '';
     for (let i = 0; i < 16; i += 1) {
       const randIndex = Math.floor(Math.random() * letters.length);
       result += letters[randIndex];
@@ -44,7 +33,6 @@ module.exports = {
 
     util.getUserFromReq(request, next).then((user) => {
       Game.create({ boardString: result, user_id: user._id }).then((game) => {
-        console.log('game', game);
         const token = jwt.encode(game._id, 'secret');
         res.json({ token, boardString: result });
       });

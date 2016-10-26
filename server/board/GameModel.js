@@ -22,6 +22,10 @@ var gameSchema = new Schema({
     type: [String],
     default: [],
   },
+  pending: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 
