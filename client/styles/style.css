@@ -61,6 +61,11 @@ td {
   margin: 30px;
 }
 
+td:hover {
+  background-color: #02AC1E;
+  color: white;
+}
+
 .selected {
   color: white;
   background-color: black;
