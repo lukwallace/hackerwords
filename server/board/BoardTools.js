@@ -6,6 +6,33 @@ const wordSet = require('./wordSet.js');
 
 
 module.exports = {
+  finalizeGame(req, res, next) {
+    console.log(req.body);
+    const score = Number(req.body.score);
+    const wordsUsed = req.body.wordsUsed;
+    const boardStr = req.body.boardStr;
+    const query = { boardString: boardStr };
+    Game.findOne(query, function(err, result) {
+      result.wordsPlayed = wordsUsed;
+      result.points = score;
+      result.save();
+      setTimeout(function() {
+        Game.findOne(query, function(err, result1) {
+          res.json({ result1 });
+        });
+      }, 500);
+    });
+    /*
+    Game.update(query, {$set: { points: score }, $set: { wordsPlayed: wordsUsed} }, function(err, effected) {
+      Game.findOne(query, function(err, result) {
+        console.log(result);
+        res.json({ result });
+      });
+      //res.json({ updated: effected });
+    });
+    */
+  },
+
   makeBoard(request, res, next) {
     const letters = 'aabcdeeefghiijklmnoopqrstuuvwxyz';
     let result = '';
