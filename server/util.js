@@ -38,9 +38,4 @@ exports.checkAuth = (req, res, next) => {
     next(new Error('Invalid Token!'));
     return null;
   }
-
-exports.logOut = (req, res, next) => {
-
-};
-
 };
