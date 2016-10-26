@@ -27,7 +27,13 @@ module.exports = (app) => {
     response.sendFile(path.resolve('client/index.html'));
   });
 
+  app.get('/api/getAllUsers', util.checkAuth, userController.getAllUsers);
+
+  app.post('/api/getPendingGames', util.checkAuth, userController.getPendingGames);
+
   app.post('/api/finalizeGame', util.checkAuth, boardTool.finalizeGame);
+
+  app.post('/api/makeChallengeGame', util.checkAuth, boardTool.makeChallengeGame);
 
   app.get('/api/makeBoard', util.checkAuth, boardTool.makeBoard);
   app.post('/api/checkWord', boardTool.checkWord);
