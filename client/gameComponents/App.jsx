@@ -16,7 +16,7 @@ class App extends React.Component {
       // console.log('setting state to', stateObj);
     };
 
-    //Why do we need this code? Was 'this' not being set properly?
+    // Why do we need this code? Was 'this' not being set properly?
     this.getLastClickIndex = this.getLastClickIndex.bind(this);
     this.logOut = this.logOut.bind(this);
     this.startTimer = this.startTimer.bind(this);
@@ -28,21 +28,30 @@ class App extends React.Component {
     this.setStateCallback = this.setStateCallback.bind(this);
     this.rowSize = 4;
 
+    this.state = {
+      boardStr: 'abcdefghijklmnop',
+      curWord: '',
+      curIndexesUsed: [],
+      wordsPlayed: [],
+      wordScores: [],
+      timeLeft: 15,
+      gameOver: false,
+      score: 0,
+    };
+
+
+    this.startTimer();
+  }
+
+  componentWillMount() {
     const token = Util.getToken();
     if (token) {
       console.log('APPTOKEN', token);
     }
 
-
-    //FIXME: Had to modify below code for tests
-    //Not sure what the correct behavior should be
-
-    if (this.props.router) {
-      if (!token) {
-        this.props.router.push('/signin');
-        return;
-      }
-
+    if (!token) {
+      this.props.router.push('/signin');
+    } else {
       $.ajax({
         method: 'GET',
         url: '/api/makeBoard',
@@ -60,20 +69,6 @@ class App extends React.Component {
         },
       });
     }
-
-    this.state = {
-      boardStr: 'abcdefghijklmnop',
-      curWord: '',
-      curIndexesUsed: [],
-      wordsPlayed: [],
-      wordScores: [],
-      timeLeft: 15,
-      gameOver: false,
-      score: 0,
-    };
-
-
-    this.startTimer();
   }
 
   componentWillUnmount() {

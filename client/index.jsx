@@ -10,14 +10,12 @@ class Index extends React.Component {
   render() {
     return (
       <Router history={browserHistory}>
-        <Route path="/home" component={App} />
-        <Route path="/" component={Signin} />
+        <Route path="/" component={App} />
         <Route path="/signin" component={Signin} />
         <Route path="/signup" component={Signup} />
-        <Route path="/logout" component={Signin} />
       </Router>
     );
-  } 
+  }
 }
 
 
