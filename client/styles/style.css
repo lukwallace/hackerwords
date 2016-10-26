@@ -15,10 +15,24 @@ h1 {
   color: #02AC1E;
 }
 
+.signuph1 {
+  color: black;
+}
+
 .container {
   margin-left: auto;
   margin-right: auto;
   width: 700px;
+}
+
+.signuptitle {
+  font-size: 40px;
+  color: #02AC1E;
+}
+
+.signintitle {
+  font-size: 40px;
+  color: black;
 }
 
 table {
@@ -45,7 +59,6 @@ th, td {
 
 td {
   margin: 30px;
-  /*background-color: #5A17ED !important; */
 }
 
 .selected {
@@ -59,6 +72,8 @@ td {
 
 div.currentWord {
   text-align: center;
+  padding-top: 10px;
+  padding-top: -5px;
   font-size: 55px;
   height: 2.5ex;
   border: 3px solid black;
@@ -103,6 +118,10 @@ ul {
 
 p {
   display: inline;
+  color: #02AC1E;
+}
+
+a:visited {
   color: #02AC1E;
 }
 
@@ -154,12 +173,35 @@ input[type=password] {
 }
 
 input[type=button] {
-  padding: 4px; 
-  border: 4px solid #02AC1E; 
-  font-family: 'Bungee', cursive; 
+  padding: 4px;
+  border: 4px solid #02AC1E;
+  font-family: 'Bungee', cursive;
   border-radius: 20px;
   text-align: center;
   align-self: center;
-  margin: auto; 
+  margin: auto;
+  font-size: 20px;
   background-color: white;
+  outline: none;
+}
+
+input[type=button].signupbutton {
+  color: #02AC1E;
+}
+
+input.signupform {
+  border-color: black;
+}
+
+label {
+  font-size: 26px;
+  color: black;
+}
+
+label.signuplabel {
+  color: #02AC1E;
+}
+
+button {
+  font-size: 20px;
 }

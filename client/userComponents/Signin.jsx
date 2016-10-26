@@ -40,20 +40,26 @@ class Signin extends React.Component {
       <div className='signin'>
         <h1> HackerWords </h1>
         <br/>
-        <div> Signin </div>
-        <br/>
-        <label htmlFor="username"> Username </label>
-        <input type="text" id="username" name="username" />
-        <br/>
-        <label htmlFor="password"> Password </label>
-        <input type="password"id="password" name="password" />
-        <br/>
-        <br/>
-        <input type="button" id="signin" value="Signin" onClick={this.submitFn} />
-        <br />
-        Don't have an account?
-        <Link to="/signup"> Sign up here</Link>
-        <h2 id="error"> Invalid user or password! </h2>
+        <div className='signintitle'> Signin </div>
+          <br/>
+          <br/>
+          <br/>
+          <label htmlFor="username"> Username </label>
+          <input type="text" id="username" name="username" className='signinform'/>
+          <br/>
+          <label htmlFor="password"> Password </label>
+          <input type="password"id="password" name="password" className='signinform'/>
+          <br/>
+          <br/>
+          <br/>
+          <input type="button" id="signin" value="Signin" onClick={this.submitFn} className='signinform'/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          Don't have an account?
+          <Link to="/signup"> Sign up here</Link>
+          <h2 id="error"> Invalid user or password! </h2>
       </div>
     );
   }

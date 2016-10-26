@@ -36,24 +36,28 @@ class Signup extends React.Component {
   render() {
     return (
       <div className="signup">
-        <h1> HackerWords </h1>
-        <br />
-        <div> Signup </div>
-        <div>
-          <br />
-          <label htmlFor="username">Username </label>
-          <input type="text" id="username" name="username" />
-          <br />
-          <label htmlFor="password"> Password </label>
-          <input type="password"id="password" name="password" />
-          <br />
-          <br />
-          <input type="button" id="signup" value="Signup" onClick={this.submitFn} />
-          <br />
-        </div>
-        Have an account?
-        <Link to="/signin"> Sign in here</Link>
-        <h2 id="error"> Username already exists! </h2>
+        <h1 className='signuph1'> HackerWords </h1>
+        <br/>
+        <div className='signuptitle'> Signup </div>
+          <br/>
+          <br/>
+          <br/>
+          <label htmlFor="username" className='signuplabel'>Username </label>
+          <input type="text" id="username" name="username" className='signupform'/>
+          <br/>
+          <label htmlFor="password" className='signuplabel'> Password </label>
+          <input type="password"id="password" name="password" className='signupform'/>
+          <br/>
+          <br/>
+          <br/>
+          <input type="button" id="signup" value="Signup" onClick={this.submitFn} className='signupform signupbutton'/>
+          <br/>
+          <br/>
+          <br/>
+          <br/>
+          Have an account?
+          <Link to="/signin"> Sign in here</Link>
+          <h2 id="error"> Username already exists! </h2>
       </div>
     );
   }
