@@ -1,10 +1,10 @@
 
-// import React from 'react';
-// import sinon from 'sinon';
-// import { expect } from 'chai';
-// import { mount, shallow } from 'enzyme';
-// import App from '../gameComponents/App';
-
+import React from 'react';
+import sinon from 'sinon';
+import { expect } from 'chai';
+import { mount, shallow } from 'enzyme';
+import App from '../gameComponents/App';
+import $ from 'jquery';
 
 describe('The Board should be created properly', () => {
   var gameApp;
@@ -73,24 +73,16 @@ describe('The game should follow the defined rules', () => {
 
 
   it('Clicking on the same letter twice should send a post request', () => {
-    
-    server.respondWith('POST', '/api/checkWord',
-                       [200, { 'Content-Type': 'application/json' },
-                        '{isWord: true}']);
 
 
     gameApp.find('.b0').simulate('click');
     gameApp.find('.b1').simulate('click');
     gameApp.find('.b1').simulate('click');
 
-    server.respond();
-
     expect($.ajax.calledOnce).to.be.true;
     const ajaxOptions = (typeof $.ajax.args[0][0] === 'object') ? $.ajax.args[0][0] : $.ajax.args[0][1];
     expect(ajaxOptions.type).to.equal('post');
     expect(ajaxOptions.data.word).to.equal('ab');
-    console.log(instance.state.wordsPlayed);
-    //expect(instance.state.wordSplayed)
   });
 
 

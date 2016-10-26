@@ -50,9 +50,11 @@ class App extends React.Component {
       console.log('APPTOKEN', token);
     }
 
-    if (!token) {
-      this.props.router.push('/signin');
-    } else {
+    if (this.props.router) {
+      if (!token) {
+        this.props.router.push('/signin');
+        return
+      }
       $.ajax({
         method: 'GET',
         url: '/api/makeBoard',
