@@ -50,9 +50,11 @@ class App extends React.Component {
       console.log('APPTOKEN', token);
     }
 
-    if (!token) {
-      this.props.router.push('/signin');
-    } else {
+    if (this.props.router) {
+      if (!token) {
+        this.props.router.push('/signin');
+        return
+      }
       $.ajax({
         method: 'GET',
         url: '/api/makeBoard',
@@ -130,6 +132,7 @@ class App extends React.Component {
   sendWord() {
     const word = this.state.curWord;
     $.post('/api/checkWord', { word }, (data) => {
+      console.log('data', data);
       if (data.isWord && this.state.wordsPlayed.indexOf(word) === -1) {
         this.setState({
           wordsPlayed: this.state.wordsPlayed.concat(word),
