@@ -72,8 +72,7 @@ describe('The game should follow the defined rules', () => {
   });
 
 
-  it('Clicking on the same letter twice should send a post request', () => {
-
+  it('Clicking on the same letter twice should send a post request but not twice for the same word', () => {
 
     gameApp.find('.b0').simulate('click');
     gameApp.find('.b1').simulate('click');
@@ -83,7 +82,20 @@ describe('The game should follow the defined rules', () => {
     const ajaxOptions = (typeof $.ajax.args[0][0] === 'object') ? $.ajax.args[0][0] : $.ajax.args[0][1];
     expect(ajaxOptions.type).to.equal('post');
     expect(ajaxOptions.data.word).to.equal('ab');
+
+    //manually add it to the state
+    instance.setState({wordsPlayed:['ab']});
+
+
+    gameApp.find('.b0').simulate('click');
+    gameApp.find('.b1').simulate('click');
+    gameApp.find('.b1').simulate('click');
+
+    expect($.ajax.calledOnce).to.be.true;
+
+
   });
+
 
 
 
