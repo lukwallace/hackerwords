@@ -26,7 +26,11 @@ class App extends React.Component {
     this.boardClick = this.boardClick.bind(this);
     this.setState = this.setState.bind(this);
     this.setStateCallback = this.setStateCallback.bind(this);
-    this.rowSize = 4;
+    if (props.rowSize) {
+      this.rowSize = props.rowSize;
+    } else {
+      this.rowSize = 4;
+    }
 
     this.state = {
       boardStr: 'abcdefghijklmnop',
@@ -148,16 +152,18 @@ class App extends React.Component {
 
   sendWord() {
     const word = this.state.curWord;
-    $.post('/api/checkWord', { word }, (data) => {
-      console.log('data', data);
-      if (data.isWord && this.state.wordsPlayed.indexOf(word) === -1) {
-        this.setState({
-          wordsPlayed: this.state.wordsPlayed.concat(word),
-          wordScores: this.state.wordScores.concat(data.score),
-          score: this.state.score + data.score,
-        });
-      }
-    });
+    //dont send a request if we have that word
+    if (this.state.wordsPlayed.indexOf(word) === -1) {
+      $.post('/api/checkWord', { word }, (data) => {
+        if (data.isWord) {
+          this.setState({
+            wordsPlayed: this.state.wordsPlayed.concat(word),
+            wordScores: this.state.wordScores.concat(data.score),
+            score: this.state.score + data.score,
+          });
+        }
+      });
+    }
   }
 
   boardClick(event) {
