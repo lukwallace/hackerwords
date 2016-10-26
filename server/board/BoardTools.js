@@ -23,13 +23,11 @@ module.exports = {
     }
 
 
-
     util.getUserFromReq(req, next).then((user) => {
       Game.create({ boardString: boardStr, user_id: user._id }).then((game) => {
-        util.getUsedIDFromUsername(req.body.username, (user_id) => {
+        util.getUserIDFromUsername(req.body.username, (user_id) => {
           Game.create({ boardString: boardStr, user_id: user_id }).then((userGame) => {
-            const token = jwt.encode(userGame._id, 'secret');
-            res.json({ token, boardString: boardStr });
+            res.json({ id: game._id });
           });
         });
       });

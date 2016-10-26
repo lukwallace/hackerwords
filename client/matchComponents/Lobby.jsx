@@ -32,15 +32,14 @@ class Lobby extends React.Component {
       // }
       const username = jwt.decode(token, 'secret').username;
 
-      $.ajax({
-        method: 'GET',
+      $.get({
         url: '/api/getAllUsers',
         headers: { 'x-access-token': Util.getToken() },
         dataType: 'json',
         success: (data) => {
           console.log('Player data:', data);
           this.setState({
-            players: data,
+            players: data.allUsers,
           });
         },
         error: (data) => {
@@ -48,8 +47,7 @@ class Lobby extends React.Component {
           console.log(data);
         },
       });
-      $.ajax({
-        method: 'POST',
+      $.post({
         url: '/api/getPendingGames',
         headers: { 'x-access-token': Util.getToken() },
         dataType: 'json',
@@ -57,7 +55,7 @@ class Lobby extends React.Component {
         success: (data) => {
           console.log('Pending game data:', data);
           this.setState({
-            challenges: data,
+            challenges: data.result,
           });
         },
         error: (data) => {
