@@ -7,6 +7,13 @@ const wordSet = require('./wordSet.js');
 
 module.exports = {
 
+  getBoard(req, res, next) {
+    const gameID = req.body.id;
+    Game.findOne({ _id: gameID }).then((game) => {
+      res.json({ boardString: game.boardString });
+    });
+  },
+
   makeChallengeGame(req, res, next) {
     const letters = 'aabcdeeefghiijklmnoopqrstuuvwxyz';
     let boardStr = '';

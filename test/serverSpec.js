@@ -64,6 +64,25 @@ describe('Server-User Interactions', () => {
     });
   });
 
+  describe('Server Side APIs', () => {
+    afterEach((done) => {
+      User.remove({}).exec();
+      done();
+    });
+
+    request.post('/api/signup')
+        .send({ username: 'test', password: 'testword' });
+
+    it('Should respond with a list of all registered users', (done) => {
+      request.get('/api/getAllUsers')
+        .expect(200)
+        .expect((res) => {
+          console.log('GETALLUSERS RES', res);
+        })
+        .end(done);
+    });
+  });
+
   describe('Sign In', () => {
     beforeEach((done) => {
       new User({ username: 'test', password: 'testword' }).save((err) => {
