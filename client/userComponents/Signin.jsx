@@ -1,53 +1,58 @@
 import React from 'react';
-import { Router, Route, Link, IndexRoute, hashHistory, browserHistory, withRouter } from 'react-router'
-var util = require('../util.js');
+import { Link, withRouter } from 'react-router';
+import $ from 'jquery';
+
+const util = require('../util.js');
 
 class Signin extends React.Component {
   constructor(props) {
     super(props);
-
+    this.submitFn = this.submitFn.bind(this);
     util.signOut();
   }
 
-  submitFn () {
-    var username = $('#username').val();
-    var password= $('#password').val();
-    $('#username').val("");
-    $('#password').val("");
+  submitFn() {
+    const username = $('#username').val();
+    const password = $('#password').val();
+    $('#username').val('');
+    $('#password').val('');
 
-    var context = this;
     $.post({
       url: '/api/signin',
       dataType: 'json',
-      data: {username: username, password: password},
-      success: function (data) {
+      data: { username, password },
+      success: (data) => {
         console.log('Success!!!!!', data);
         util.storeToken(data);
-        context.props.router.push('/home');
-
+        this.props.router.push('/home');
       },
-      error: function (error) {
+      error: (error) => {
         console.error(error);
-      }
+      },
     });
   }
 
   render() {
     return (
-      <div>
-      HackerWords Signin
+      <div className='signin'>
+        <h1> HackerWords </h1>
         <br/>
-        <label>Username </label>
-        <input type='text' id='username' name='username'></input>
-        <label> Password </label>
-        <input type='password'id='password' name='password'></input>
-        <input type="button" id='signin' value="Signin" onClick={this.submitFn.bind(this)}></input>
+        <div> Signin </div>
         <br/>
+        <label htmlFor="username"> Username </label>
+        <input type="text" id="username" name="username" />
+        <br/>
+        <label htmlFor="password"> Password </label>
+        <input type="password"id="password" name="password" />
+        <br/>
+        <br/>
+        <input type="button" id="signin" value="Signin" onClick={this.submitFn} />
+        <br />
         Don't have an account?
-        <Link to='/signup'> Sign up here</Link>
+        <Link to="/signup"> Sign up here</Link>
       </div>
     );
   }
 }
 
-export default withRouter(Signin)
+export default withRouter(Signin);

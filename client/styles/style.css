@@ -1,0 +1,160 @@
+body {
+  font-family: 'Bungee', cursive;
+}
+
+h1 {
+  text-align: center;
+  margin-top: -5px;
+  margin-bottom: 5px;
+  font-size: 80px;
+  color: #02AC1E;
+}
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 700px;
+}
+
+table {
+  width: 100%;
+  padding: 10px;
+  overflow:hidden;
+  float:left;
+}
+
+th {
+  height: 40px;
+  width: 40px;
+  padding: 30px;
+}
+
+th, td {
+  border: 5px solid #02AC1E;
+  border-radius: 20px;
+  padding: 35px;
+  margin: 20px;
+  font-size: 45px;
+  text-align: center;
+}
+
+td {
+  margin: 30px;
+  /*background-color: #5A17ED !important; */
+}
+
+.selected {
+  color: white;
+  background-color: black;
+}
+
+.scoreboard {
+  text-align: center;
+}
+
+div.currentWord {
+  text-align: center;
+  font-size: 55px;
+  height: 2.5ex;
+  border: 3px solid black;
+  border-radius: 10px;
+}
+
+span {
+  float: center;
+}
+
+span.wordsPlayed {
+  float:center;
+  overflow:hidden;
+  white-space:nowrap;
+  font-size: 25px;
+  color: black;
+}
+
+div.timeLeft {
+  font-size: 45px;
+  margin: 10px;
+  text-align: center;
+  color: red;
+}
+
+button {
+  float: left;
+  padding: 4px;
+  border: 4px solid #02AC1E;
+  font-family: 'Bungee', cursive;
+  border-radius: 20px;
+  position:fixed;
+  background-color: white;
+  right:10px;
+  top:5px;
+}
+
+ul {
+  color:#02AC1E;
+  font-size: 30px;
+}
+
+p {
+  display: inline;
+  color: #02AC1E;
+}
+
+input {
+  display: block;
+}
+
+div.signup, div.signin {
+  text-align: center;
+  color: black;
+  margin-left: auto;
+  margin-right: auto;
+  width: 700px;
+}
+
+
+input[type=text] {
+  font-family: 'Bungee', cursive;
+  color: black !important;
+  border-color: #02AC1E;
+  text-align: center;
+  align-self: center;
+  background-color: white;
+  margin: auto;
+  outline: none;
+  font-size: 18px;
+  width: 300px;
+  height:60px;
+  border-radius: 10px;
+  border-style: solid;
+  border-width: 4px;
+}
+
+input[type=password] {
+  font-family: 'Bungee', cursive;
+  color: black !important;
+  border-color: #02AC1E;
+  text-align: center;
+  align-self: center;
+  margin: auto;
+  background-color: white;
+  outline: none;
+  font-size: 18px;
+  width: 300px;
+  height:60px;
+  border-radius: 10px;
+  border-style: solid;
+  border-width: 4px;
+}
+
+input[type=button] {
+  padding: 4px; 
+  border: 4px solid #02AC1E; 
+  font-family: 'Bungee', cursive; 
+  border-radius: 20px;
+  text-align: center;
+  align-self: center;
+  margin: auto; 
+  background-color: white;
+}

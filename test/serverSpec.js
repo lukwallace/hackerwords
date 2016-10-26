@@ -25,7 +25,7 @@ describe('Server-User Interactions', () => {
     it('Should respond with a token on valid sign up', (done) => {
       request.post('/api/signup')
         .send({ username: 'test', password: 'testword' })
-        .expect(302)
+        .expect(200)
         .expect((res) => {
           // Silly AirBnB lint
           expect(res.body.token).to.be.ok;
@@ -82,7 +82,7 @@ describe('Server-User Interactions', () => {
     it('Should respond with a token on a valid sign in', (done) => {
       request.post('/api/signin')
         .send({ username: 'test', password: 'testword' })
-        .expect(302)
+        .expect(200)
         .expect((res) => {
           // Silly AirBnB lint
           expect(res.body.token).to.be.ok;

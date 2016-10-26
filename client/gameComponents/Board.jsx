@@ -1,43 +1,37 @@
 import React from 'react';
 
 export default class Board extends React.Component {
-  constructor(props, boardStr) {
+  constructor(props) {
     super(props);
-    
+    this.size = Math.sqrt(props.boardStr.length);
+    this.indices = [];
+    for (let i = 0; i < props.boardStr.length; i += 1) {
+      if (i % this.size === 0) {
+        this.indices.push(i);
+      }
+    }
+    console.log(this.indices, props.boardStr);
   }
 
   render() {
     return (
-        <div>
-          <table>
+      <div>
+        <table>
           <tbody className="boardBody">
-            <tr>
-              <td className="b0" onClick={this.props.clickHandler}>{this.props.boardStr[0]}</td>
-              <td className="b1" onClick={this.props.clickHandler}>{this.props.boardStr[1]}</td>
-              <td className="b2" onClick={this.props.clickHandler}>{this.props.boardStr[2]}</td>
-              <td className="b3" onClick={this.props.clickHandler}>{this.props.boardStr[3]}</td>
-            </tr> 
-            <tr>
-              <td className="b4" onClick={this.props.clickHandler}>{this.props.boardStr[4]}</td>
-              <td className="b5" onClick={this.props.clickHandler}>{this.props.boardStr[5]}</td>
-              <td className="b6" onClick={this.props.clickHandler}>{this.props.boardStr[6]}</td>
-              <td className="b7" onClick={this.props.clickHandler}>{this.props.boardStr[7]}</td>
-            </tr>
-            <tr>
-              <td className="b8" onClick={this.props.clickHandler}>{this.props.boardStr[8]}</td>
-              <td className="b9" onClick={this.props.clickHandler}>{this.props.boardStr[9]}</td>
-              <td className="b10" onClick={this.props.clickHandler}>{this.props.boardStr[10]}</td>
-              <td className="b11" onClick={this.props.clickHandler}>{this.props.boardStr[11]}</td>
-            </tr>
-            <tr>
-              <td className="b12" onClick={this.props.clickHandler}>{this.props.boardStr[12]}</td>
-              <td className="b13" onClick={this.props.clickHandler}>{this.props.boardStr[13]}</td>
-              <td className="b14" onClick={this.props.clickHandler}>{this.props.boardStr[14]}</td>
-              <td className="b15" onClick={this.props.clickHandler}>{this.props.boardStr[15]}</td>
-            </tr>
+            { this.indices.map((start) => {
+              return (<tr key={start}>
+                {[...Array(this.size).keys()].map((index) => {
+                  const ind = start + index;
+                  return (
+                    <td key={ind} className={'b' + ind} 
+                    onClick={this.props.clickHandler}>{this.props.boardStr[ind]}</td>
+                  );
+                })}
+              </tr>);
+            })}
           </tbody>
-          </table>
-        </div>
-      );
+        </table>
+      </div>
+    );
   }
 }

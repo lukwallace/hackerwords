@@ -20,7 +20,7 @@ export default class Signup extends React.Component {
       success: function (data) {
         console.log('Success', data);
         util.storeToken(data);
-        console.log(this.props.router);
+        //console.log(this.props.router);
       },
       error: function (error) {
         console.error(error);
@@ -30,18 +30,28 @@ export default class Signup extends React.Component {
 
   render() {
     return (
+      <div className='signup'>
+      <h1> HackerWords </h1>
+      <br/>
+      <div> Signup </div>
       <div>
-      HackerWords Signup
-        <br/>
+      <br/>
         <label>Username </label>
         <input type='text' id='username' name='username'></input>
+        <br/>
         <label> Password </label>
         <input type='password'id='password' name='password'></input>
+        <br/>
+        <br/>
         <input type="button" id='signup' value="Signup" onClick={this.submitFn}></input>
         <br/>
+      </div>
         Have an account?
         <Link to='/signin'> Sign in here</Link>
       </div>
     );
   }
 }
+
+
+

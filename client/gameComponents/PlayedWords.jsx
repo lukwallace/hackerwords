@@ -7,16 +7,17 @@ export default class PlayedWords extends React.Component {
 
   render() {
     return (
-        <div>
-          Words Played: 
-          <list>
-            {this.props.wordsPlayed.map(function(word) {
+        <span className='wordsPlayed'>
+          Words Played: <br/> 
+          <div>
+            {this.props.wordsPlayed.map(function(word, index) {
+              
               return (
-                <ul>{word}</ul>
+                <p key={word}>{word + ' [' + this.props.wordScores[index] + '], '}</p>
                 );
-            })}
-          </list>
-        </div>
+            }, this)}
+          </div>
+        </span>
       );
   }
 }

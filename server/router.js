@@ -27,7 +27,7 @@ module.exports = (app) => {
     response.sendFile(path.resolve('client/index.html'));
   });
 
-
+  app.post('/api/finalizeGame', util.checkAuth, boardTool.finalizeGame);
 
   app.get('/api/makeBoard', util.checkAuth, boardTool.makeBoard);
   app.post('/api/checkWord', boardTool.checkWord);
