@@ -130,6 +130,7 @@ class App extends React.Component {
   sendWord() {
     const word = this.state.curWord;
     $.post('/api/checkWord', { word }, (data) => {
+      console.log('data', data);
       if (data.isWord && this.state.wordsPlayed.indexOf(word) === -1) {
         this.setState({
           wordsPlayed: this.state.wordsPlayed.concat(word),
