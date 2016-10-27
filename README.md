@@ -35,7 +35,7 @@ From within the root directory:
 npm start
 ```
 
-Head to local host: (127.0.0.1:3000)[127.0.0.1:3000]
+Head to local host: (127.0.0.1:3000)[http://127.0.0.1:3000]
 
 ## Requirements
 
