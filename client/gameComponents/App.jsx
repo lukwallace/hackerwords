@@ -220,26 +220,8 @@ class App extends React.Component {
     }
   }
 
-
-  // askServerForBoard () {
-  //   $.ajax({
-  //     method: 'GET',
-  //     url: '/api/makeBoard',
-  //     headers: { 'x-access-token' : Util.getToken()},
-  //     dataType: 'json',
-  //     success: function(data) {
-  //       console.log(data);
-  //       context.setState({
-  //         boardStr: data.boardString,
-  //       });
-  //     }
-  //   });
-  // }
-
-// <div onClick={Util.signOut(this)}>Sign Out</div>
-
-  //could use this to add a callback for set state
-  //However, its unclear how to set it with Enzyme
+  // could use this to add a callback for set state
+  // However, its unclear how to set it with Enzyme
   setState(stateObj) {
     if (this.setStateCallback) {
       super.setState.call(this, stateObj, this.setStateCallback(stateObj));
@@ -253,9 +235,9 @@ class App extends React.Component {
       <div>
         <div className="gameBoardApp" />
         <h1> HackerWords </h1>
-        <div className='timeLeft'>{this.state.timeLeft}</div>
+        <div className="timeLeft">{this.state.timeLeft}</div>
         <div><Score score={this.state.score} /></div>
-        <div className='currentWord'>{this.state.curWord}</div>
+        <div className="currentWord">{this.state.curWord}</div>
         <Board boardStr={this.state.boardStr} clickHandler={this.boardClick} />
         <PlayedWords wordsPlayed={this.state.wordsPlayed} wordScores={this.state.wordScores} />
         <button onClick={this.logOut}> Sign Out </button>
