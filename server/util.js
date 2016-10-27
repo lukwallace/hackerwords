@@ -24,6 +24,8 @@ exports.getUserFromReq = (req, next) => {
   return User.findOne({ username });
 };
 
+
+//A middleware function to check authentication
 exports.checkAuth = (req, res, next) => {
   const token = req.headers['x-access-token'];
   if (!token) {
