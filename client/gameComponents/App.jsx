@@ -10,7 +10,6 @@ import Util from './../util.js';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    debugger;
 
 
     this.setStateCallback = (stateObj) => {
