@@ -38,7 +38,7 @@ class App extends React.Component {
       curIndexesUsed: [],
       wordsPlayed: [],
       wordScores: [],
-      timeLeft: 15,
+      timeLeft: 120,
       gameOver: false,
       score: 0,
     };
@@ -201,6 +201,8 @@ class App extends React.Component {
 
     if (clickIndex === this.getLastClickIndex()) {
       $('.selected').removeClass('selected');
+      $('.lastclicked').removeClass('lastclicked');
+
       // evaluate word here
       this.sendWord();
 
@@ -211,6 +213,17 @@ class App extends React.Component {
     } else if (isAdjacent() && !this.isInUsedIndexes(clickIndex)) {
       const newCurWord = this.state.curWord + clickLetter;
       const newCurIndexes = this.state.curIndexesUsed.concat(clickIndex);
+      $('.' + lastClickIndex).removeClass('lastclicked');
+
+      const lastClickIndex = newCurIndexes[newCurIndexes.length - 1];
+
+      $('.' + lastClickIndex).addClass('lastclicked');
+      for (var i = 0; i < newCurIndexes.length; i++) {
+        if (i < newCurIndexes.length - 1) {
+          $('.' + newCurIndexes[i]).removeClass('lastclicked');
+        }
+      }
+
       $(event.target).addClass('selected');
         // re-evaluate using mutable objects as state params?
       this.setState({
@@ -235,9 +248,9 @@ class App extends React.Component {
       <div>
         <div className="gameBoardApp" />
         <h1> HackerWords </h1>
-        <div className="timeLeft">{this.state.timeLeft}</div>
-        <div><Score score={this.state.score} /></div>
-        <div className="currentWord">{this.state.curWord}</div>
+        <div className='timeLeft'>{this.state.timeLeft}</div>
+        <div className='currentWord'>{this.state.curWord}</div>
+        <span><Score score={this.state.score} /></span>
         <Board boardStr={this.state.boardStr} clickHandler={this.boardClick} />
         <PlayedWords wordsPlayed={this.state.wordsPlayed} wordScores={this.state.wordScores} />
         <button onClick={this.logOut}> Sign Out </button>

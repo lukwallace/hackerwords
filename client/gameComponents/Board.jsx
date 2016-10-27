@@ -15,7 +15,7 @@ export default class Board extends React.Component {
 
   render() {
     return (
-      <div>
+      <span>
         <table>
           <tbody className="boardBody">
             { this.indices.map((start) => {
@@ -23,7 +23,7 @@ export default class Board extends React.Component {
                 {[...Array(this.size).keys()].map((index) => {
                   const ind = start + index;
                   return (
-                    <td key={ind} className={'b' + ind} 
+                    <td key={ind} className={'b' + ind}
                     onClick={this.props.clickHandler}>{this.props.boardStr[ind]}</td>
                   );
                 })}
@@ -31,7 +31,7 @@ export default class Board extends React.Component {
             })}
           </tbody>
         </table>
-      </div>
+      </span>
     );
   }
 }
