@@ -1,6 +1,6 @@
 # Hacker Words
 
-> :-)
+> Like WordCrack but not as cripplingly addictive.
 
 ## Team
 
@@ -20,15 +20,27 @@
 
 ## Usage
 
-> Some usage instructions
+> For local implementation;
+
+Start local database:
+
+```sh
+mongod
+```
+
+From within the root directory:
+
+```sh
+./node_modules/.bin/webpack -d 
+npm start
+```
+
+Head to local host: (127.0.0.1:3000)[127.0.0.1:3000]
 
 ## Requirements
 
-- Node 0.10.x
-- Redis 2.6.x
-- Postgresql 9.1.x
-- etc
-- etc
+- Node
+- MongoDB
 
 ## Development
 
@@ -37,13 +49,12 @@
 From within the root directory:
 
 ```sh
-sudo npm install -g bower
 npm install
 ```
 
 ### Roadmap
 
-View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
+View the project roadmap [here](https://github.com/EthicalPickles/2016-09-greenfield/issues)
 
 
 ## Contributing
