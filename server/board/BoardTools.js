@@ -8,6 +8,7 @@ const wordSet = require('./wordSet.js');
 
 module.exports = {
 
+
   getBoard(req, res, next) {
     const gameID = req.body.id;
     Game.findOne({ _id: gameID }).then((game) => {
@@ -45,7 +46,7 @@ module.exports = {
   },
 
   initializeChallengeGame(res, user, opponentName) {
-    var boardStr = module.exports.generateRandomBoard();
+    const boardStr = module.exports.generateRandomBoard();
     Game.create({ boardString: boardStr, user_id: user._id, opponentName: opponentName }).then((myGame) => {
       util.getUserIDFromUsername(opponentName, (user_id) => {
         Game.create({ boardString: boardStr, user_id: user_id, opponentName: user.username }).then((opponentGame) => {
