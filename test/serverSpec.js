@@ -65,51 +65,32 @@ describe('Server-User Interactions', () => {
   });
 
   describe('Server Side APIs', () => {
-    afterEach((done) => {
-      User.remove({}).exec();
-      done();
-    });
+    var token;
+    var username = 'test';
+    var password = 'testword';
 
-
-    it('Should respond with a list of all registered users', (done) => {
-
+    before((done) => {
       request.post('/api/signup')
-        .send({ username: 'test', password: 'testword' });
-
-      request
-        .get('/api/getAllUsers')
-        .expect(200)
-        .expect((res) => {
-          console.log('GETALLUSERS RES', res);
-        })
-        .end(done);
-    });
-  });
-
-  describe('Sign In', () => {
-    beforeEach((done) => {
-      new User({ username: 'test', password: 'testword' }).save((err) => {
-        if (err) {
-          console.error(err);
-        }
-        done();
-      });
+        .send({ username: username, password: password }).end( (err, res) => {
+          token = res.body.token;
+          done();
+        });
     });
 
-    afterEach((done) => {
-      User.remove({}).exec();
-      done();
+    it('Should respond with a list of all registered users after signing up', (done) => {
+      request.get('/api/getAllUsers')
+        .set('x-access-token', token)
+        .expect(200, done);
     });
 
-    it('Should respond with a token on a valid sign in', (done) => {
+
+  it('Should attach a token for a login post', (done) => {
       request.post('/api/signin')
-        .send({ username: 'test', password: 'testword' })
-        .expect(200)
-        .expect((res) => {
-          // Silly AirBnB lint
-          expect(res.body.token).to.be.ok;
-        })
-        .end(done);
+        .send({ username: username, password: password }).end( (err, res) => {
+          token = res.body.token;
+          expect(token).to.be.ok;
+          done();
+        });
     });
   });
 });
