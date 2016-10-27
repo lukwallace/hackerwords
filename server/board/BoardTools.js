@@ -15,28 +15,49 @@ module.exports = {
   },
 
   makeChallengeGame(req, res, next) {
+    util.getUserFromReq(req, next).then((user) => {
+      //make sure its a valid opponent
+      var opponentName = req.body.username;
+      if (opponentName ===  user.username) {
+        res.status(500).send({ error: 'Cannot challenge same user' });
+        return;
+      }
+      util.checkIsRealUser( opponentName, (error, isUser) => {
+        if (!isUser) {
+          res.status(500).send({ error: 'Invalid user' });
+          return;
+        }
+        //otherwise proceed
+        module.exports.initializeChallengeGame(res, user, opponentName);
+      });
+    });
+  },
+
+  generateRandomBoard() {
     const letters = 'aabcdeeefghiijklmnoopqrstuuvwxyz';
     let boardStr = '';
     for (let i = 0; i < 16; i += 1) {
       const randIndex = Math.floor(Math.random() * letters.length);
       boardStr += letters[randIndex];
     }
+    return boardStr;
+  },
 
-
-    util.getUserFromReq(req, next).then((user) => {
-      Game.create({ boardString: boardStr, user_id: user._id, opponentName: req.body.username }).then((myGame) => {
-        util.getUserIDFromUsername(req.body.username, (user_id) => {
-          Game.create({ boardString: boardStr, user_id: user_id, opponentName: user.username }).then((opponentGame) => {
-            myGame.opponent = opponentGame._id;
-            myGame.save();
-            opponentGame.opponent = myGame._id;
-            opponentGame.save();
-            res.json({ id: myGame._id, opponentName: req.body.username });
-          });
+  initializeChallengeGame(res, user, opponentName) {
+    var boardStr = module.exports.generateRandomBoard();
+    Game.create({ boardString: boardStr, user_id: user._id, opponentName: opponentName }).then((myGame) => {
+      util.getUserIDFromUsername(opponentName, (user_id) => {
+        Game.create({ boardString: boardStr, user_id: user_id, opponentName: user.username }).then((opponentGame) => {
+          myGame.opponent = opponentGame._id;
+          myGame.save();
+          opponentGame.opponent = myGame._id;
+          opponentGame.save();
+          res.json({ id: myGame._id, opponentName: opponentName});
         });
       });
     });
   },
+
 
   finalizeGame(req, res, next) {
 
@@ -56,13 +77,7 @@ module.exports = {
   },
 
   makeBoard(request, res, next) {
-    const letters = 'aabcdeeefghiijklmnoopqrstuuvwxyz';
-    let result = '';
-    for (let i = 0; i < 16; i += 1) {
-      const randIndex = Math.floor(Math.random() * letters.length);
-      result += letters[randIndex];
-    }
-
+    var result = module.exports.generateRandomBoard();
     util.getUserFromReq(request, next).then((user) => {
       Game.create({ boardString: result, user_id: user._id }).then((game) => {
         const token = jwt.encode(game._id, 'secret');

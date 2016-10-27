@@ -11,13 +11,17 @@ class Players extends React.Component {
 
   makeChallenge() {
     const username = ($('#player').val());
+    //check to make sure username has been selected
+    if (!username) {
+      return;
+    }
     $.post({
       url: '/api/makeChallengeGame',
       headers: { 'x-access-token': Util.getToken() },
       dataType: 'json',
       data: { username },
       success: (data) => {
-        console.log(data);
+        console.log('challenge made', data);
         this.props.router.push('/game/' + data.id);
       },
       error: (data) => {
