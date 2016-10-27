@@ -6,15 +6,19 @@ import { mount, shallow } from 'enzyme';
 import App from '../gameComponents/App';
 import $ from 'jquery';
 
+import Score from '../gameComponents/Score';
+
+
 describe('The Board should be created properly', () => {
   var gameApp;
+
   beforeEach( () => {
-    gameApp = mount(<App />);
+    gameApp = mount(<App isTest='true' />);
   });
   
   it('Should call render', () => {
     sinon.spy(App.prototype, 'render');
-    gameApp = mount(<App />);
+    gameApp = mount(<App isTest='true' />);
     expect(App.prototype.render.calledOnce).to.equal(true);
   });
 
@@ -44,7 +48,7 @@ describe('The game should follow the defined rules', () => {
 
   beforeEach( () => {
     server = sinon.fakeServer.create();
-    gameApp = mount(<App/>);
+    gameApp = mount(<App isTest='true' />);
     instance = gameApp.nodes[0].getWrappedInstance();
     instance.setState({'boardStr':'abcdppkmnortrekt'});
   });

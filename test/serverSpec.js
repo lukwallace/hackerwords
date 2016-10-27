@@ -70,11 +70,14 @@ describe('Server-User Interactions', () => {
       done();
     });
 
-    request.post('/api/signup')
-        .send({ username: 'test', password: 'testword' });
 
     it('Should respond with a list of all registered users', (done) => {
-      request.get('/api/getAllUsers')
+
+      request.post('/api/signup')
+        .send({ username: 'test', password: 'testword' });
+
+      request
+        .get('/api/getAllUsers')
         .expect(200)
         .expect((res) => {
           console.log('GETALLUSERS RES', res);
