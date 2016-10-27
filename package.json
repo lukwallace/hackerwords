@@ -3,7 +3,8 @@
     "start": "./node_modules/.bin/nodemon server/server.js",
     "lint": "./node_modules/.bin/eslint --fix",
     "dev-react": "./node_modules/.bin/webpack -d --watch",
-    "test": "mocha client/test/.setup.js client/test/gameRuleSpec.js"
+    "test": "mocha client/test/.setup.js client/test/gameRuleSpec.js",
+    "test-server": "mocha test/serverSpec.js"
   },
   "dependencies": {
     "babel-loader": "^6.2.5",

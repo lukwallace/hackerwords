@@ -54,44 +54,46 @@ class App extends React.Component {
     }
 
 
-    if (!token && this.props.router) {
-      this.props.router.push('/signin');
-      return;
-    }
+    if (!this.props.isTest) {
+      if (!token) {
+        this.props.router.push('/signin');
+        return;
+      }
 
-    if (!this.props.params.id) {
-      $.get({
-        url: '/api/makeBoard',
-        headers: { 'x-access-token': Util.getToken() },
-        dataType: 'json',
-        success: (data) => {
-          console.log(data.boardString);
-          this.setState({
-            boardStr: data.boardString,
-          });
-        },
-        error: (data) => {
-          console.log('Error!');
-          console.log(data);
-        },
-      });
-    } else {
-      $.post({
-        url: '/api/getBoard',
-        headers: { 'x-access-token': Util.getToken() },
-        dataType: 'json',
-        data: { id: this.props.params.id },
-        success: (data) => {
-          console.log(data);
-          this.setState({
-            boardStr: data.boardString,
-          });
-        },
-        error: (data) => {
-          console.log('Error!');
-          console.log(data);
-        },
-      });
+      if (!this.props.params.id) {
+        $.get({
+          url: '/api/makeBoard',
+          headers: { 'x-access-token': Util.getToken() },
+          dataType: 'json',
+          success: (data) => {
+            console.log(data.boardString);
+            this.setState({
+              boardStr: data.boardString,
+            });
+          },
+          error: (data) => {
+            console.log('Error!');
+            console.log(data);
+          },
+        });
+      } else {
+        $.post({
+          url: '/api/getBoard',
+          headers: { 'x-access-token': Util.getToken() },
+          dataType: 'json',
+          data: { id: this.props.params.id },
+          success: (data) => {
+            console.log(data);
+            this.setState({
+              boardStr: data.boardString,
+            });
+          },
+          error: (data) => {
+            console.log('Error!');
+            console.log(data);
+          },
+        });
+      }
     }
   }
 
