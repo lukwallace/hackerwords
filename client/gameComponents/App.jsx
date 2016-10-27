@@ -250,7 +250,7 @@ class App extends React.Component {
         <h1> HackerWords </h1>
         <div className='timeLeft'>{this.state.timeLeft}</div>
         <div className='currentWord'>{this.state.curWord}</div>
-        <span><Score score={this.state.score} /></span>
+        <div><Score score={this.state.score} /></div>
         <Board boardStr={this.state.boardStr} clickHandler={this.boardClick} />
         <PlayedWords wordsPlayed={this.state.wordsPlayed} wordScores={this.state.wordScores} />
         <button onClick={this.logOut}> Sign Out </button>
