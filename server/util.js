@@ -41,3 +41,17 @@ exports.checkAuth = (req, res, next) => {
     return null;
   }
 };
+
+exports.checkIsRealUser = (username, callback) => {
+  User.find({}, (err, result) => {
+   const allUsers = result.map((userEntry) => {
+      return userEntry.username;
+    });
+   
+    if (allUsers.indexOf(username) < 0) {
+      callback(err, false);
+    } else {
+      callback(err, true);
+    }
+  });
+}

@@ -24,7 +24,7 @@ class Signup extends React.Component {
       success: (data) => {
         console.log('Success', data);
         util.storeToken(data);
-        this.props.router.push('/signin');
+        this.props.router.push('/');
       },
       error: (error) => {
         console.error(error);
