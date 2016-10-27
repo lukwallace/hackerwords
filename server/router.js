@@ -12,18 +12,33 @@ module.exports = (app) => {
     response.sendFile(path.resolve('client/index.html'));
   });
 
-  // Restricted Server Calls
+  // RESTRICTED
+
+  // all users
   app.get('/api/getAllUsers', util.checkAuth, userController.getAllUsers);
+  // board string
   app.get('/api/makeBoard', util.checkAuth, boardTool.makeBoard);
 
+  // game ID -> board string
   app.post('/api/getBoard', util.checkAuth, boardTool.getBoard);
+
+  // game results -> game results
   app.post('/api/finalizeGame', util.checkAuth, boardTool.finalizeGame);
+
+  // opponent's name -> game ID, opponent's name
   app.post('/api/makeChallengeGame', util.checkAuth, boardTool.makeChallengeGame);
 
+  // username -> user's pending games
   app.post('/api/getPendingGames', util.checkAuth, userController.getPendingGames);
 
-  // Unrestriced Server Calls
+  // UNRESTRICTED
+
+  // word -> valid? score if valid
   app.post('/api/checkWord', boardTool.checkWord);
+
+  // username, password -> session token
   app.post('/api/signup', userController.signup);
+
+  // username, password -> session token
   app.post('/api/signin', userController.signin);
 };
