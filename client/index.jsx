@@ -5,7 +5,7 @@ import App from './gameComponents/App.jsx';
 import Signin from './userComponents/Signin.jsx';
 import Signup from './userComponents/Signup.jsx';
 import Lobby from './matchComponents/Lobby.jsx';
-
+import Util from './util.js';
 
 class Index extends React.Component {
   render() {
