@@ -1,4 +1,5 @@
 'use strict';
+
 const Game = require('./GameModel.js');
 const util = require('./../util.js');
 const jwt = require('jwt-simple');
@@ -16,18 +17,18 @@ module.exports = {
 
   makeChallengeGame(req, res, next) {
     util.getUserFromReq(req, next).then((user) => {
-      //make sure its a valid opponent
-      var opponentName = req.body.username;
+      // make sure its a valid opponent
+      const opponentName = req.body.username;
       if (opponentName ===  user.username) {
         res.status(500).send({ error: 'Cannot challenge same user' });
         return;
       }
-      util.checkIsRealUser( opponentName, (error, isUser) => {
+      util.checkIsRealUser(opponentName, (error, isUser) => {
         if (!isUser) {
           res.status(500).send({ error: 'Invalid user' });
           return;
         }
-        //otherwise proceed
+        // otherwise proceed
         module.exports.initializeChallengeGame(res, user, opponentName);
       });
     });
@@ -52,7 +53,7 @@ module.exports = {
           myGame.save();
           opponentGame.opponent = myGame._id;
           opponentGame.save();
-          res.json({ id: myGame._id, opponentName: opponentName});
+          res.json({ id: myGame._id, opponentName: opponentName });
         });
       });
     });
@@ -60,7 +61,6 @@ module.exports = {
 
 
   finalizeGame(req, res, next) {
-
     const score = Number(req.body.score);
     const wordsUsed = req.body.wordsPlayed;
     const boardStr = req.body.boardStr;
@@ -76,9 +76,9 @@ module.exports = {
     });
   },
 
-  makeBoard(request, res, next) {
-    var result = module.exports.generateRandomBoard();
-    util.getUserFromReq(request, next).then((user) => {
+  makeBoard(req, res, next) {
+    const result = module.exports.generateRandomBoard();
+    util.getUserFromReq(req, next).then((user) => {
       Game.create({ boardString: result, user_id: user._id }).then((game) => {
         const token = jwt.encode(game._id, 'secret');
         res.json({ token, boardString: result });
@@ -135,8 +135,8 @@ module.exports = {
       16: 11,
     };
 
-    var score = lengthScores[word.length];
-    for (var i = 0; i < word.length; i++) {
+    let score = lengthScores[word.length];
+    for (let i = 0; i < word.length; i += 1) {
       score += letterScores[word[i]];
     }
     return score;

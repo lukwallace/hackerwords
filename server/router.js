@@ -8,37 +8,21 @@ module.exports = (app) => {
     response.sendFile(path.resolve('client/index.html'));
   });
 
- 
-  app.get('/home', (request, response) => {
-    response.sendFile(path.resolve('client/index.html'));
-    /*
-    util.checkAuth(request, response, (verified) => {
-      console.log('VERIFIED = ', verified);
-      if(verified === true) {
-        response.sendFile(path.resolve('client/index.html'));
-      } else {
-        userController.signin();
-      }
-    });
-    */
-  });
-
   app.get('/signin', (request, response) => {
     response.sendFile(path.resolve('client/index.html'));
   });
 
+  // Restricted Server Calls
+  app.get('/api/getAllUsers', util.checkAuth, userController.getAllUsers);
+  app.get('/api/makeBoard', util.checkAuth, boardTool.makeBoard);
 
   app.post('/api/getBoard', util.checkAuth, boardTool.getBoard);
-
-  app.get('/api/getAllUsers', util.checkAuth, userController.getAllUsers);
+  app.post('/api/finalizeGame', util.checkAuth, boardTool.finalizeGame);
+  app.post('/api/makeChallengeGame', util.checkAuth, boardTool.makeChallengeGame);
 
   app.post('/api/getPendingGames', util.checkAuth, userController.getPendingGames);
 
-  app.post('/api/finalizeGame', util.checkAuth, boardTool.finalizeGame);
-
-  app.post('/api/makeChallengeGame', util.checkAuth, boardTool.makeChallengeGame);
-
-  app.get('/api/makeBoard', util.checkAuth, boardTool.makeBoard);
+  // Unrestriced Server Calls
   app.post('/api/checkWord', boardTool.checkWord);
   app.post('/api/signup', userController.signup);
   app.post('/api/signin', userController.signin);

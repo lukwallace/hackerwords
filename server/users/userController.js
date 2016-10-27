@@ -10,9 +10,7 @@ const createUser = Q.nbind(User.create, User);
 module.exports = {
   getAllUsers(req, res, next) {
     User.find({}, (err, result) => {
-      const allUsers = result.map((userEntry) => {
-        return userEntry.username;
-      });
+      const allUsers = result.map(userEntry => (userEntry.username));
       res.json({ allUsers });
     });
   },

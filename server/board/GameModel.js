@@ -1,11 +1,11 @@
-var Q = require('q');
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
 
-//mongoose.connect('mongodb://localhost/HackerWords');
+const Schema = mongoose.Schema;
+
+// mongoose.connect('mongodb://localhost/HackerWords');
 
 
-var gameSchema = new Schema({
+const gameSchema = new Schema({
   user_id: {
     type: 'ObjectId',
     required: true,
@@ -37,7 +37,5 @@ var gameSchema = new Schema({
 });
 
 
-
-
-var Game = mongoose.model('Game', gameSchema);
+const Game = mongoose.model('Game', gameSchema);
 module.exports = Game;

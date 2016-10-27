@@ -25,7 +25,7 @@ exports.getUserFromReq = (req, next) => {
 };
 
 
-//A middleware function to check authentication
+// A middleware function to check authentication
 exports.checkAuth = (req, res, next) => {
   const token = req.headers['x-access-token'];
   if (!token) {
@@ -44,14 +44,12 @@ exports.checkAuth = (req, res, next) => {
 
 exports.checkIsRealUser = (username, callback) => {
   User.find({}, (err, result) => {
-   const allUsers = result.map((userEntry) => {
-      return userEntry.username;
-    });
-   
+    const allUsers = result.map(userEntry => (userEntry.username));
+
     if (allUsers.indexOf(username) < 0) {
       callback(err, false);
     } else {
       callback(err, true);
     }
   });
-}
+};
