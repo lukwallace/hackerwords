@@ -20,7 +20,7 @@ Once the project moves into development, the press release can be used as a touc
   > HackerWords
 
 ## Sub-Heading ##
-  > A challenging game to boost your vocabulary and play live against your friends!
+  > A challenging game to boost your vocabulary and play against your friends!
 
 ## Summary ##
   > Play head to head against your friends to find the most words and get the highest score! 
