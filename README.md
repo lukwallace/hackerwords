@@ -6,7 +6,7 @@
 
   - __Product Owner__: Lucas Becker
   - __Scrum Master__: Stephen Cefali
-  - __Development Team Members__: teamMember, teamMember
+  - __Development Team Members__: Wallace Luk, Franco Abaroa
 
 ## Table of Contents
 
@@ -39,7 +39,6 @@ From within the root directory:
 ```sh
 sudo npm install -g bower
 npm install
-bower install
 ```
 
 ### Roadmap
