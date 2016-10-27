@@ -1,11 +1,11 @@
-# Project Name
+# Hacker Words
 
 > :-)
 
 ## Team
 
-  - __Product Owner__: teamMember
-  - __Scrum Master__: teamMember
+  - __Product Owner__: Lucas Becker
+  - __Scrum Master__: Stephen Cefali
   - __Development Team Members__: teamMember, teamMember
 
 ## Table of Contents
