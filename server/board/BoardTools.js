@@ -24,10 +24,14 @@ module.exports = {
 
 
     util.getUserFromReq(req, next).then((user) => {
-      Game.create({ boardString: boardStr, user_id: user._id }).then((game) => {
+      Game.create({ boardString: boardStr, user_id: user._id, opponentName: req.body.username }).then((myGame) => {
         util.getUserIDFromUsername(req.body.username, (user_id) => {
-          Game.create({ boardString: boardStr, user_id: user_id }).then((userGame) => {
-            res.json({ id: game._id });
+          Game.create({ boardString: boardStr, user_id: user_id, opponentName: user.username }).then((opponentGame) => {
+            myGame.opponent = opponentGame._id;
+            myGame.save();
+            opponentGame.opponent = myGame._id;
+            opponentGame.save();
+            res.json({ id: myGame._id, opponentName: req.body.username });
           });
         });
       });

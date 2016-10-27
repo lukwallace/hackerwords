@@ -26,6 +26,14 @@ var gameSchema = new Schema({
     type: Boolean,
     default: true,
   },
+  opponent: {
+    type: String,
+    default: null,
+  },
+  opponentName: {
+    type: String,
+    default: null,
+  },
 });
 
 

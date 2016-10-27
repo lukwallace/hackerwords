@@ -1,9 +1,21 @@
 import React from 'react';
 
 class Challenges extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
-      <h1> Pending challenges go here </h1>
+      <div>
+        <list>
+          {this.props.entries.map((entry) => {
+            return (
+                <li key={entry._id}>{'Challenge From: ' + entry.opponentName}</li>
+              );
+          })}
+        </list>
+      </div>
     );
   }
 }

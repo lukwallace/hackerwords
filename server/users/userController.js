@@ -2,7 +2,7 @@ const Q = require('q');
 const jwt = require('jwt-simple');
 const User = require('./userModel.js');
 const Game = require('./../board/GameModel.js');
-
+const util = require('./../util.js');
 // Promisify a few mongoose methods with the `q` promise library
 const findUser = Q.nbind(User.findOne, User);
 const createUser = Q.nbind(User.create, User);
@@ -19,10 +19,22 @@ module.exports = {
 
   getPendingGames(req, res, next) {
     const username = req.body.username;
+    console.log('PENDING USERNAME', username);
+    util.getUserIDFromUsername(username, (userID) => {
+      console.log('PENDING USER ID', userID);
+      const query = { user_id: userID, pending: true };
+      Game.find(query, (err, result) => {
+        console.log('PENDING RESULT', result);
+        res.json({ result });
+      });
+    });
+    /*
+    const username = req.body.username;
     const query = { username: username, pending: true };
     Game.find(query, (result) => {
       res.json({ result });
     });
+    */
   },
 
   signin(req, res, next) {
