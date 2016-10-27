@@ -49,7 +49,7 @@ th {
 }
 
 th, td {
-  border: 5px solid #02AC1E;
+  border: 7px solid black;
   border-radius: 20px;
   padding: 35px;
   margin: 20px;
@@ -58,17 +58,23 @@ th, td {
 }
 
 td {
-  margin: 30px;
+  margin: 70px;
+  background-color: white;
+  border-color: #02AC1E;
+  color: black;
 }
 
 td:hover {
-  background-color: #02AC1E;
   color: white;
+  background-color: black;
+  border-color: #02AC1E;
 }
 
 .selected {
+  background-color: #02AC1E;
   color: white;
-  background-color: black;
+  border-color: black;
+
 }
 
 
@@ -80,13 +86,13 @@ div.currentWord {
   height: 2.5ex;
   border: 3px solid black;
   border-radius: 10px;
-  /*position: relative;*/
+  background-color: white;
+  color: black;
+  border-color: black;
 }
 
 div.scoreboard {
   text-align: center;
-  /*position: absolute;*/
-  /*height:100px;*/
   font-size: 17px;
   display: block;
 }
@@ -202,7 +208,6 @@ input[type=button].signupbutton {
 
 input.signupform {
   border-color: black;
-  /* comment */
 }
 
 label {
