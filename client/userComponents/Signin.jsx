@@ -8,8 +8,24 @@ class Signin extends React.Component {
   constructor(props) {
     super(props);
     this.submitFn = this.submitFn.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
+    this.onUsernameChange = this.onUsernameChange.bind(this);
+    this.onPasswordChange = this.onPasswordChange.bind(this);
+    this.state = {
+      username: '',
+      password: ''
+    }
     util.signOut();
   }
+
+  onUsernameChange(event) {
+    this.setState({ username: event.target.value });
+  }
+
+  onPasswordChange(event) {
+    this.setState({ password: event.target.value });
+  }
+
 
   componentDidMount() {
     // Makes pressing enter on any input box click submit
@@ -23,10 +39,11 @@ class Signin extends React.Component {
   }
 
   submitFn() {
-    const username = $('#username').val();
-    const password = $('#password').val();
-    $('#username').val('');
-    $('#password').val('');
+    const username = this.state.username;
+    const password = this.state.password;
+    
+    this.setState({username:'', password:''});
+
     $.post({
       url: '/api/signin',
       dataType: 'json',
@@ -53,10 +70,10 @@ class Signin extends React.Component {
         <br />
         <br />
         <label htmlFor="username"> Username </label>
-        <input type="text" id="username" name="username" className="signinform" />
+        <input type="text" value={this.state.username} id="username" name="username" className="signinform" onChange={(event) => this.onUsernameChange(event)}/>
         <br />
         <label htmlFor="password"> Password </label>
-        <input type="password"id="password" name="password" className="signinform" />
+        <input type="password" value={this.state.password} id="password" name="password" className="signinform" onChange={(event) => this.onPasswordChange(event)}/>
         <br />
         <br />
         <br />
