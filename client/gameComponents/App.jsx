@@ -19,6 +19,7 @@ class App extends React.Component {
     // Why do we need this code? Was 'this' not being set properly?
     this.getLastClickIndex = this.getLastClickIndex.bind(this);
     this.logOut = this.logOut.bind(this);
+    this.backToLobby = this.backToLobby.bind(this);
     this.startTimer = this.startTimer.bind(this);
     this.stopTimer = this.stopTimer.bind(this);
     this.isInUsedIndexes = this.isInUsedIndexes.bind(this);
@@ -38,7 +39,7 @@ class App extends React.Component {
       curIndexesUsed: [],
       wordsPlayed: [],
       wordScores: [],
-      timeLeft: 120,
+      timeLeft: 15,
       gameOver: false,
       score: 0,
     };
@@ -118,6 +119,10 @@ class App extends React.Component {
     this.props.router.push('/signin');
   }
 
+  backToLobby() {
+    this.props.router.push('/');
+  }
+
   startTimer() {
     var context = this;
     this.timerInterval = setInterval(() => {
@@ -129,6 +134,7 @@ class App extends React.Component {
         this.setState({
           gameOver: true,
         });
+
         clearInterval(context.timerInterval);
         $.ajax({
           method: 'POST',
@@ -138,8 +144,11 @@ class App extends React.Component {
           data: { score: context.state.score, wordsPlayed: context.state.wordsPlayed, boardStr: context.state.boardStr },
           success: (data) => {
             console.log(data);
+            $('.gameEnded').css('display', 'block');
           },
         });
+
+
       }
     }, 1000);
   }
@@ -250,10 +259,11 @@ class App extends React.Component {
         <h1> HackerWords </h1>
         <div className='timeLeft'>{this.state.timeLeft}</div>
         <div className='currentWord'>{this.state.curWord}</div>
+        <div> <button className='gameEnded' onClick={this.backToLobby}> Back to Lobby </button> </div>
         <div><Score score={this.state.score} /></div>
         <Board boardStr={this.state.boardStr} clickHandler={this.boardClick} />
         <PlayedWords wordsPlayed={this.state.wordsPlayed} wordScores={this.state.wordScores} />
-        <button onClick={this.logOut}> Sign Out </button>
+        <button className='signoutButton' onClick={this.logOut}> Sign Out </button>
 
       </div>
     );

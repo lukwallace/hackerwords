@@ -43,7 +43,6 @@ table {
   padding: 10px;
   overflow:hidden;
   float:left;
-  /*background-color: #313638;*/
   border: none;
   border-radius: 40px;
 }
@@ -78,12 +77,8 @@ td:hover {
 
 .selected {
   background-color: #02AC1E;
-  /*border:none;*/
   border: 7px solid black;
   border-radius:70px;
-  /*margin: -10px;*/
-  /*background-color: black;*/
-
   color: black;
 }
 
@@ -112,7 +107,6 @@ div.scoreboard {
   font-size: 37px;
   display: block;
   color: black;
-  /*border: 1px solid #02AC1E;*/
 }
 
 span {
@@ -122,9 +116,10 @@ span {
 span.wordsPlayed {
   float:center;
   overflow:hidden;
-  white-space:nowrap;
+  /*white-space:nowrap;*/
   font-size: 25px;
   color: black;
+  width: 680px;
 }
 
 div.timeLeft {
@@ -134,9 +129,9 @@ div.timeLeft {
   color: red;
 }
 
-button {
+.signoutButton {
   float: left;
-  padding: 4px;
+  padding: 10px;
   border: 4px solid #02AC1E;
   font-family: 'Bungee', cursive;
   border-radius: 20px;
@@ -144,6 +139,22 @@ button {
   background-color: white;
   right:10px;
   top:5px;
+}
+
+.gameEnded {
+  padding: 10px;
+  border: 7px solid black;
+  font-family: 'Bungee', cursive;
+  display:none;
+  color: white;
+  font-size: 36px;
+  border-radius: 20px;
+  background-color: #02AC1E;
+  margin-left: auto;
+  margin-right: auto;
+  clear:right;
+  text-align: center;
+  margin-bottom: 15px;
 }
 
 ul {
