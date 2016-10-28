@@ -28,7 +28,8 @@ class Signin extends React.Component {
 
 
   componentDidMount() {
-    // Makes pressing enter on any input box click submit
+
+    /** Makes pressing enter on any input box click submit */
     $('input').each(function () {
       $(this).keypress((e) => {
         if (e.which === 13) {
@@ -39,11 +40,13 @@ class Signin extends React.Component {
   }
 
   submitFn() {
+    /** Grab username and password values from fields */
     const username = this.state.username;
     const password = this.state.password;
     
     this.setState({username:'', password:''});
 
+    /** Submit username and password for verification */
     $.post({
       url: '/api/signin',
       dataType: 'json',
@@ -60,6 +63,7 @@ class Signin extends React.Component {
     });
   }
 
+  /** Render signin page */
   render() {
     return (
       <div className="signin">

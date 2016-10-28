@@ -6,6 +6,7 @@ class Challenges extends React.Component {
     super(props);
   }
 
+  /** Render list of game challenges */
   render() {
     return (
       <div>

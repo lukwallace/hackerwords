@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 // mongoose.connect('mongodb://localhost/HackerWords');
 
-
+/** Game Schema */
 const gameSchema = new Schema({
   user_id: {
     type: 'ObjectId',

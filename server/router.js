@@ -4,6 +4,7 @@ const path = require('path');
 const util = require('./util.js');
 
 module.exports = (app) => {
+
   app.get('/', (request, response) => {
     response.sendFile(path.resolve('client/index.html'));
   });
@@ -12,7 +13,7 @@ module.exports = (app) => {
     response.sendFile(path.resolve('client/index.html'));
   });
 
-  // RESTRICTED
+  /** RESTRICTED */
 
   /** Get all users */
   app.get('/api/getAllUsers', util.checkAuth, userController.getAllUsers);
@@ -35,8 +36,11 @@ module.exports = (app) => {
   /** Get all pending challenges */
   app.post('/api/getPendingGames', util.checkAuth, userController.getPendingGames);
 
+  /** Get finalized Game History of a User */
+  app.post('/api/getGameHistory', util.checkAuth, boardTool.getGameHistory);
 
-  // UNRESTRICTED
+
+  /** UNRESTRICTED */
 
   /** Check to see if word is valid and score it if it is */
   app.post('/api/checkWord', boardTool.checkWord);

@@ -62,6 +62,8 @@ class App extends React.Component {
       }
 
       if (!this.props.params.id) {
+
+        /** Make a board for current user */
         $.get({
           url: '/api/makeBoard',
           headers: { 'x-access-token': Util.getToken() },
@@ -78,6 +80,8 @@ class App extends React.Component {
           },
         });
       } else {
+
+        /** Get an already-made board for current user */
         $.post({
           url: '/api/getBoard',
           headers: { 'x-access-token': Util.getToken() },
@@ -102,6 +106,7 @@ class App extends React.Component {
     this.stopTimer();
   }
 
+  /** Get the index of the last letter clicked */
   getLastClickIndex() {
     if (this.state.curIndexesUsed.length === 0) {
       return null;
@@ -109,20 +114,24 @@ class App extends React.Component {
     return this.state.curIndexesUsed[this.state.curIndexesUsed.length - 1];
   }
 
+  /** Get click index number */
   getClickIndexNumber(ci) {
     return Number(ci.slice(1));
   }
 
+  /** Log the current user out */
   logOut() {
     this.stopTimer();
     window.localStorage.removeItem('com.hackerwords');
     this.props.router.push('/signin');
   }
 
+  /** Route the user back to lobby on button click */
   backToLobby() {
     this.props.router.push('/');
   }
 
+  /** Start the game timer */
   startTimer() {
     var context = this;
     this.timerInterval = setInterval(() => {
@@ -130,11 +139,13 @@ class App extends React.Component {
         timeLeft: this.state.timeLeft - 1,
       });
 
+      /** If timer runs out */
       if (this.state.timeLeft <= 0) {
         this.setState({
           gameOver: true,
         });
 
+        /** Send back game results to server */
         clearInterval(context.timerInterval);
         $.ajax({
           method: 'POST',
@@ -153,14 +164,18 @@ class App extends React.Component {
     }, 1000);
   }
 
+  /** Stop the timer */
   stopTimer() {
     clearInterval(this.timerInterval);
   }
 
+  /** Check to see if letter has been clicked previously in current word */
   isInUsedIndexes(clickIndex) {
+    console.log(clickIndex, 'click index');
     return (this.state.curIndexesUsed.indexOf(clickIndex) !== -1);
   }
 
+  /** Send current finalized word */
   sendWord() {
     const word = this.state.curWord;
     //dont send a request if we have that word
@@ -177,6 +192,7 @@ class App extends React.Component {
     }
   }
 
+  /** Board function that enforces rules and changes the class of currently selected letters */
   boardClick(event) {
     if (this.state.gameOver) {
       return;
@@ -184,7 +200,7 @@ class App extends React.Component {
     const clickLetter = event.target.innerHTML;
     const clickIndex = event.target.className.split(' ')[0];
 
-    // check adjacent
+    /** Check if currently clicked letter is adjacent to last clicked letter for current word */
     const isAdjacent = () => {
       const lastClick = this.getLastClickIndex();
 

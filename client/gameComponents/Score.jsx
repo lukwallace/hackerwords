@@ -5,6 +5,7 @@ export default class Score extends React.Component {
     super(props);
   }
 
+  /** Render current score */
   render() {
     return (
         <div className='scoreboard'>

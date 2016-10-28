@@ -13,6 +13,7 @@ export default class Board extends React.Component {
     console.log(this.indices, props.boardStr);
   }
 
+  /** Render current board */
   render() {
     return (
       <span>
