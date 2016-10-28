@@ -8,7 +8,18 @@ class Signup extends React.Component {
   constructor(props) {
     super(props);
     this.submitFn = this.submitFn.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
+    this.onUsernameChange = this.onUsernameChange.bind(this);
+    this.onPasswordChange = this.onPasswordChange.bind(this);
     util.signOut();
+  }
+
+  onUsernameChange(event) {
+    this.setState({ username: event.target.value });
+  }
+
+  onPasswordChange(event) {
+    this.setState({ password: event.target.value });
   }
 
   componentDidMount() {
@@ -23,11 +34,12 @@ class Signup extends React.Component {
   }
 
   submitFn() {
+<<<<<<< HEAD
     /** Grab username and password values from fields */
-    const username = $('#username').val();
-    const password = $('#password').val();
-    $('#username').val('');
-    $('#password').val('');
+    const username = this.state.username;
+    const password = this.state.password;
+    
+    this.setState({username:'', password:''});
 
     /** Submit username and password for verification and creation */
     $.post({
@@ -57,10 +69,10 @@ class Signup extends React.Component {
         <br />
         <br />
         <label htmlFor="username" className="signuplabel">Username </label>
-        <input type="text" id="username" name="username" className="signupform" />
+        <input type="text" id="username" name="username" className="signupform" onChange={(event) => this.onUsernameChange(event)}/>
         <br />
         <label htmlFor="password" className="signuplabel"> Password </label>
-        <input type="password"id="password" name="password" className="signupform" />
+        <input type="password"id="password" name="password" className="signupform" onChange={(event) => this.onPasswordChange(event)}/>
         <br />
         <br />
         <br />
