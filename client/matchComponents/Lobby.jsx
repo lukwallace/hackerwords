@@ -5,6 +5,7 @@ import jwt from 'jwt-simple';
 import Challenges from './Challenges.jsx';
 import Players from './Players.jsx';
 import Util from './../util.js';
+import GameHistory from './GameHistory.jsx';
 
 
 class Lobby extends React.Component {
@@ -14,7 +15,8 @@ class Lobby extends React.Component {
     this.state = {
       players: [],
       challenges: [],
-      highScore: 0
+      highScore: 0,
+      gameHistory: [],
     };
   }
 
@@ -58,7 +60,7 @@ class Lobby extends React.Component {
       /** Get highest score of currently signed in user */
       $.get({
         url: '/api/getHighScore',
-        headers: { 'x-access-token': Util.getToken() },
+        headers: { 'x-access-token': token },
         dataType: 'json',
         data: { username },
         success: (data) => {
@@ -76,13 +78,29 @@ class Lobby extends React.Component {
       /** Get all pending game challenges */
       $.post({
         url: '/api/getPendingGames',
-        headers: { 'x-access-token': Util.getToken() },
+        headers: { 'x-access-token': token },
         dataType: 'json',
         data: { username },
         success: (data) => {
           console.log('Pending game data:', data);
           this.setState({
             challenges: data.result,
+          });
+        },
+        error: (data) => {
+          console.log('Error!');
+          console.log(data);
+        },
+      });
+      $.post({
+        url: '/api/getGameHistory',
+        headers: { 'x-access-token': token },
+        dataType: 'json',
+        data: { username },
+        success: (data) => {
+          console.log('Completed Games Data', data);
+          this.setState({
+            gameHistory: data.games,
           });
         },
         error: (data) => {
@@ -108,6 +126,7 @@ class Lobby extends React.Component {
         <Players entries={this.state.players} />
         <div> <h1> Your High Score {this.state.highScore} </h1> </div>
         <button className="signoutButton" onClick={this.logOut}> Sign Out </button>
+        <GameHistory entries={this.state.gameHistory} />
       </div>
     );
   }

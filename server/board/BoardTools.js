@@ -4,9 +4,41 @@ const Game = require('./GameModel.js');
 const util = require('./../util.js');
 const jwt = require('jwt-simple');
 const wordSet = require('./wordSet.js');
-
+const Promise = require('bluebird');
 
 module.exports = {
+
+  getGameHistory(req, res, next) {
+    const username = req.body.username;
+    util.getUserIDFromUsername(username, (userID) => {
+      Game.find({user_id: userID, pending: false}).then((games) => {
+        var getOppGame = (gameObj) => {
+          return new Promise((resolve, reject) => {
+            if(gameObj.opponent === null) {
+              resolve([gameObj]);
+            } else {
+              Game.findOne({_id: gameObj.opponent}).then((oppGame) => {
+                resolve([gameObj, oppGame]);
+              });
+            }
+          });
+        };
+
+        let promises = games.map((completedGame) => {
+          return getOppGame(completedGame).then((gamePair) => {
+            return gamePair;
+          })
+        });
+
+        
+        Promise.all(promises).then((results) => {
+          console.log('RESULTS', results);
+          res.json({ games: results });
+        });
+        
+      });
+    });
+  },
 
 
   /** Get the board from database */
