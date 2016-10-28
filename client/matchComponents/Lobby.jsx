@@ -10,6 +10,7 @@ import Util from './../util.js';
 class Lobby extends React.Component {
   constructor(props) {
     super(props);
+    this.logOut = this.logOut.bind(this);
     this.state = {
       players: [],
       challenges: [],
@@ -86,14 +87,19 @@ class Lobby extends React.Component {
     }
   }
 
+  logOut() {
+    window.localStorage.removeItem('com.hackerwords');
+    this.props.router.push('/signin');
+  }
 
   render() {
     return (
       <div>
+        <Link className="lobbyButton" to="/solo"> Single Player </Link>
         <Challenges entries={this.state.challenges} />
         <Players entries={this.state.players} />
-        <Link to="/solo"> Play Single Player Here </Link>
         <div> <h1> Your High Score {this.state.highScore} </h1> </div>
+        <button className="signoutButton" onClick={this.logOut}> Sign Out </button>
       </div>
     );
   }
