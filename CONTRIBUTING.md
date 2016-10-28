@@ -29,7 +29,6 @@ Use github’s interface to make a fork of the repo, then add that repo as an up
 
 ```
 git remote add upstream https://github.com/EthicalPickles/2016-09-greenfield.git
-
 ```
 
 ### Cut a namespaced feature branch from master
@@ -44,11 +43,8 @@ Your branch should follow this naming convention:
 These commands will help you do this:
 
 ``` bash
-
 # Creates your branch and brings you there
-
 git checkout -b `your-branch-name`
-
 ```
 
 ### Make commits to your feature branch, detailing each commit to explain what problem or bug that commit fixes
@@ -84,9 +80,7 @@ changes to the master branch into yours by running this command
 from your branch:
 
 ```bash
-
 git pull --rebase upstream master
-
 ```
 
 This will start the rebase process. You must commit all of your changes
@@ -108,9 +102,7 @@ rebase.
 Once you are done fixing conflicts for a specific commit, run:
 
 ```bash
-
 git rebase --continue
-
 ```
 
 This will continue the rebasing process. Once you are done fixing all
