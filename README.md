@@ -31,7 +31,7 @@ mongod
 From within the root directory:
 
 ```sh
-./node_modules/.bin/webpack -d 
+./node_modules/.bin/webpack -d
 npm start
 ```
 
