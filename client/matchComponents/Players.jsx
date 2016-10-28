@@ -11,7 +11,7 @@ class Players extends React.Component {
 
   makeChallenge() {
     const username = ($('#player').val());
-    //check to make sure username has been selected
+    // check to make sure username has been selected
     if (!username) {
       return;
     }
@@ -34,6 +34,7 @@ class Players extends React.Component {
   render() {
     return (
       <div>
+        <p> Challenge PLayers: </p>
         <input id='player' list="players" />
         <datalist id="players">
           {
@@ -44,7 +45,7 @@ class Players extends React.Component {
             })
           }
         </datalist>
-        <input type="button" id="challenge" value="Challenge" onClick={this.makeChallenge} />
+        <input type="button" className="lobbyButton" value="Challenge" onClick={this.makeChallenge} />
       </div>
     );
   }

@@ -14,34 +14,36 @@ module.exports = (app) => {
 
   // RESTRICTED
 
-  // all users
+  /** Get all users */
   app.get('/api/getAllUsers', util.checkAuth, userController.getAllUsers);
-  // board string
+
+  /** Make board string */
   app.get('/api/makeBoard', util.checkAuth, boardTool.makeBoard);
 
-  // get a users high score
+  /** Get a user's high score */
   app.get('/api/getHighScore', userController.getUserHighScore);
 
-  // game ID -> board string
+  /** Get board for users */
   app.post('/api/getBoard', util.checkAuth, boardTool.getBoard);
 
-  // game results -> game results
+  /** Finalize game and send game results */
   app.post('/api/finalizeGame', util.checkAuth, boardTool.finalizeGame);
 
-  // opponent's name -> game ID, opponent's name
+  /** Challenge another user to the same board */
   app.post('/api/makeChallengeGame', util.checkAuth, boardTool.makeChallengeGame);
 
-  // username -> user's pending games
+  /** Get all pending challenges */
   app.post('/api/getPendingGames', util.checkAuth, userController.getPendingGames);
+
 
   // UNRESTRICTED
 
-  // word -> valid? score if valid
+  /** Check to see if word is valid and score it if it is */
   app.post('/api/checkWord', boardTool.checkWord);
 
-  // username, password -> session token
+  /** Store newly created username and password and assign session token */
   app.post('/api/signup', userController.signup);
 
-  // username, password -> session token
+  /** Check to see if username and password match and if so assign session token*/
   app.post('/api/signin', userController.signin);
 };
