@@ -1,5 +1,6 @@
 import React from 'react';
 import sinon from 'sinon';
+import $ from 'jquery';
 import { expect } from 'chai';
 import { mount, shallow } from 'enzyme';
 import Signin from '../userComponents/Signin';
@@ -23,10 +24,20 @@ window.localStorage = {
 
 describe ('Client signin', () => {
   var wrapper;
+  var ajaxSpy;
+
+  beforeEach(() => {
+    ajaxSpy = sinon.stub($, 'ajax');
+  });
+
+  afterEach(() => {
+    $.ajax.restore();
+  });
+
 
   it ('Should call render', (done) => {
     sinon.spy(Signin.prototype, 'render');
-    const wrapper = mount(<Signin />);
+    wrapper = mount(<Signin />);
     expect(Signin.prototype.render.calledOnce).to.equal(true);
     done();
   });
@@ -35,17 +46,23 @@ describe ('Client signin', () => {
     const username = 'test';
     const password = 'testpass';
 
-    wrapper.find('#username').val(username);
-    wrapper.find('#password').val(password);
+
+    const userInput = wrapper.find('[id="username"]');
+    const passInput = wrapper.find('[id="password"]');
+    userInput.simulate('change', { target: { value: username} });
+    passInput.simulate('change', { target: { value: password } });
 
 
-    const ajaxSpy = sinon.stub($, 'ajax');
-    wrapper.submitFn();
+    wrapper.find('[id="signin"]').simulate('click');
 
     expect($.ajax.calledOnce).to.be.true;
     const ajaxOptions = (typeof $.ajax.args[0][0] === 'object') ? $.ajax.args[0][0] : $.ajax.args[0][1];
+    
+    console.log('ajaxOptions', ajaxOptions);
     expect(ajaxOptions.type).to.equal('post');
     expect(ajaxOptions.data.word).to.equal({ username, password });
+
+    
   });
 
   it('Should route to the home page on succesful signin', () => {
@@ -54,7 +71,7 @@ describe ('Client signin', () => {
     };
 
     sinon.spy(Signin.prototype, 'componentWillUnmount');
-    const wrapper = mount(<Signin />);
+    wrapper = mount(<Signin />);
     const userInput = wrapper.find('[id="username"]');
     const passInput = wrapper.find('[id="password"]');
     userInput.simulate('change', { target: { value: 'a' } });
