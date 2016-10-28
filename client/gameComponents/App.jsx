@@ -212,7 +212,7 @@ class App extends React.Component {
       $('.selected').removeClass('selected');
       $('.lastclicked').removeClass('lastclicked');
 
-      // evaluate word here
+      // evaluate word her
       this.sendWord();
 
       this.setState({

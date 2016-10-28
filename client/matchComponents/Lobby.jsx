@@ -31,6 +31,7 @@ class Lobby extends React.Component {
       // } catch (e) {
       //   console.error('Invalid Token!');
       // }
+
       const username = jwt.decode(token, 'secret').username;
 
       $.get({
@@ -40,7 +41,9 @@ class Lobby extends React.Component {
         success: (data) => {
           console.log('Player data:', data);
           this.setState({
-            players: data.allUsers,
+            players: data.allUsers.filter((user) => {
+              return user !== username;
+            }),
           });
         },
         error: (data) => {
