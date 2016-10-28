@@ -44,6 +44,10 @@ describe('The game should follow the defined rules', () => {
     ajaxSpy = sinon.stub($, 'ajax');
   });
 
+  after(() => {
+    $.ajax.restore();
+  });
+
   beforeEach( () => {
     server = sinon.fakeServer.create();
     gameApp = mount(<App isTest='true' />);
