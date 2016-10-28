@@ -103,15 +103,25 @@ module.exports = {
     const wordsUsed = req.body.wordsPlayed;
     const boardStr = req.body.boardStr;
     const query = { boardString: boardStr };
-    const toUpdate = { $set: { points: score, wordsPlayed: wordsUsed, pending: false } };
-    Game.update(query, toUpdate, (err) => {
-      if (err) {
-        next(new Error(err));
-      }
-      Game.findOne(query, (error, result) => {
-        res.json({ result });
-      });
+
+    Game.findOne(query).then( (game) => {
+      game.points = score;
+      game.wordsPlayed = wordsUsed;
+      game.pending = false;
+      game.save();
+      res.json(game);
     });
+
+    // const toUpdate = { $set: { points: score, wordsPlayed: wordsUsed, pending: false } };
+    // Game.update(query, toUpdate, (err) => {
+    //   if (err) {
+    //     next(new Error(err));
+    //   }
+    //   Game.findOne(query, (error, result) => {
+    //     res.json({ result });
+    //   });
+    // });
+
   },
 
   /** Make the board */
