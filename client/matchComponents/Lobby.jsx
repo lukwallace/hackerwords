@@ -120,11 +120,12 @@ class Lobby extends React.Component {
   /** Render lobby page */
   render() {
     return (
-      <div>
-        <Link className="lobbyButton" to="/solo"> Single Player </Link>
+      <div className="lobby">
+        <h1>Lobby</h1>
+        <Link to="/solo"> Single Player </Link>
         <Challenges entries={this.state.challenges} />
         <Players entries={this.state.players} />
-        <div> <h1> Your High Score {this.state.highScore} </h1> </div>
+        <div> <h2> Your High Score: {this.state.highScore} </h2> </div>
         <button className="signoutButton" onClick={this.logOut}> Sign Out </button>
         <GameHistory entries={this.state.gameHistory} />
       </div>

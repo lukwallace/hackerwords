@@ -1,19 +1,28 @@
-#error {
+.error {
   display: none;
   color: red;
 }
+
 
 body {
   font-family: 'Bungee', cursive;
   background-color: #E0DFD5;
 }
 
-h1 {
+h1, h2 {
   text-align: center;
-  margin-top: -5px;
-  margin-bottom: 5px;
+  margin-top: 10`px;
+  margin-bottom: 35px;
   font-size: 77px;
   color: #02AC1E;
+}
+
+h2 {
+  font-size: 42px;
+}
+
+.lobby {
+  text-align: center;
 }
 
 .signuph1 {
@@ -27,28 +36,34 @@ h1 {
 }
 
 .signuptitle {
-  font-size: 40px;
   color: #02AC1E;
 }
 
 .signintitle {
-  font-size: 40px;
   color: black;
 }
 
-.lobbyButton {
-/*  display: block;
+.signintitle, .signuptitle {
+  font-size: 40px;
+  margin-bottom: 35px;
+}
+
+.lobby a {
+  display: inline-block;
   padding: 4px;
   border: 4px solid #02AC1E;
-  font-family: 'Bungee', cursive;
   border-radius: 20px;
-  text-align: center;
-  align-self: center;
+  color: black;
   margin: auto;
   font-size: 20px;
   background-color: white;
-  outline: none;*/
+  text-decoration: none;
 }
+
+.challenges li:hover {
+  cursor: pointer;
+}
+
 
 table {
   margin-left: auto;
@@ -130,6 +145,7 @@ span {
 span.wordsPlayed {
   float:center;
   overflow:hidden;
+  text-align: left;
   /*white-space:nowrap;*/
   font-size: 25px;
   color: black;
@@ -185,8 +201,11 @@ a:visited {
   color: #02AC1E;
 }
 
-input {
-  display: block;
+.players input {
+  margin: auto;
+  align-self: center;
+  font-size: 18px;
+  display: inline-block;
 }
 
 div.signup, div.signin {
@@ -197,6 +216,9 @@ div.signup, div.signin {
   width: 700px;
 }
 
+input {
+  display: block;
+}
 
 input[type=text] {
   font-family: 'Bungee', cursive;

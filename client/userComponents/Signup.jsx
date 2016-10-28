@@ -52,7 +52,7 @@ class Signup extends React.Component {
       },
       error: (error) => {
         console.error(error);
-        $('#error').show();
+        $('.error').show();
       },
     });
   }
@@ -62,11 +62,7 @@ class Signup extends React.Component {
     return (
       <div className="signup">
         <h1 className="signuph1"> HackerWords </h1>
-        <br />
         <div className="signuptitle"> Signup </div>
-        <br />
-        <br />
-        <br />
         <label htmlFor="username" className="signuplabel">Username </label>
         <input type="text" id="username" name="username" className="signupform" onChange={(event) => this.onUsernameChange(event)}/>
         <br />
@@ -82,7 +78,7 @@ class Signup extends React.Component {
         <br />
         Have an account?
         <Link to="/signin"> Sign in here</Link>
-        <h2 id="error"> Username already exists! </h2>
+        <h2 className="error"> Username already exists! </h2>
       </div>
     );
   }

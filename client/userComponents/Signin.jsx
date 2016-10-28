@@ -58,7 +58,7 @@ class Signin extends React.Component {
       },
       error: (error) => {
         console.error(error);
-        $('#error').show();
+        $('.error').show();
       },
     });
   }
@@ -68,11 +68,7 @@ class Signin extends React.Component {
     return (
       <div className="signin">
         <h1> HackerWords </h1>
-        <br />
         <div className="signintitle"> Signin </div>
-        <br />
-        <br />
-        <br />
         <label htmlFor="username"> Username </label>
         <input type="text" value={this.state.username} id="username" name="username" className="signinform" onChange={(event) => this.onUsernameChange(event)}/>
         <br />
@@ -88,7 +84,7 @@ class Signin extends React.Component {
         <br />
         Don't have an account?
         <Link to="/signup"> Sign up here</Link>
-        <h2 id="error"> Invalid user or password! </h2>
+        <h2 className="error"> Invalid user or password! </h2>
       </div>
     );
   }

@@ -9,16 +9,15 @@ class Challenges extends React.Component {
   /** Render list of game challenges */
   render() {
     return (
-      <div>
+      <div className="challenges">
+        <h2> Your Challenges </h2>
         <list>
           {this.props.entries.map((entry) => {
             return (
-                <li key={entry._id}>{'Challenge From: ' + entry.opponentName} <br/>
-                  <button onClick={() => {
-                    this.props.router.push('/game/' + entry._id);
-                  }} >Accept Challenge</button>
-                </li>
-              );
+              <li onClick={() => { this.props.router.push('/game/' + entry._id); }}key={entry._id}>
+                {entry.opponentName}
+              </li>
+            );
           }, this)}
         </list>
       </div>
@@ -26,4 +25,4 @@ class Challenges extends React.Component {
   }
 }
 
-export default withRouter(Challenges, {withRef: true});
+export default withRouter(Challenges, { withRef: true });

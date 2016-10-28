@@ -38,9 +38,9 @@ class Players extends React.Component {
   /** Render list of players available for challenging */
   render() {
     return (
-      <div>
-        <p> Challenge PLayers: </p>
-        <input id='player' list="players" />
+      <div className="players">
+        <h2> Challenge PLayers </h2>
+        <input list="players" /> &nbsp;
         <datalist id="players">
           {
             this.props.entries.map((user) => {
@@ -50,7 +50,7 @@ class Players extends React.Component {
             })
           }
         </datalist>
-        <input type="button" className="lobbyButton" value="Challenge" onClick={this.makeChallenge} />
+        <input type="button" value="Challenge" onClick={this.makeChallenge} />
       </div>
     );
   }
