@@ -39,7 +39,7 @@ class App extends React.Component {
       curIndexesUsed: [],
       wordsPlayed: [],
       wordScores: [],
-      timeLeft: 3,
+      timeLeft: 15,
       gameOver: false,
       score: 0,
     };
