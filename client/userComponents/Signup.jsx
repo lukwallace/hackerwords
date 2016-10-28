@@ -34,7 +34,6 @@ class Signup extends React.Component {
   }
 
   submitFn() {
-<<<<<<< HEAD
     /** Grab username and password values from fields */
     const username = this.state.username;
     const password = this.state.password;
