@@ -80,6 +80,7 @@ class App extends React.Component {
           },
         });
       } else {
+
         /** Get an already-made board for current user */
         $.post({
           url: '/api/getBoard',

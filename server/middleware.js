@@ -2,7 +2,8 @@ const bodyParser = require('body-parser');
 const path = require('path');
 
 module.exports = (app, express) => {
-  // for parsing application/json and application/x-www-form-urlencoded
+
+  /** For parsing application/json and application/x-www-form-urlencoded */
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true }));
 

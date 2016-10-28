@@ -9,6 +9,7 @@ const wordSet = require('./wordSet.js');
 module.exports = {
 
 
+  /** Get the board from database */
   getBoard(req, res, next) {
     const gameID = req.body.id;
     Game.findOne({ _id: gameID }).then((game) => {
@@ -16,25 +17,28 @@ module.exports = {
     });
   },
 
+  /** Make a challenge game for a fellow player */
   makeChallengeGame(req, res, next) {
     util.getUserFromReq(req, next).then((user) => {
-      // make sure its a valid opponent
+
+      /** Make sure its a valid opponent */
       const opponentName = req.body.username;
       if (opponentName ===  user.username) {
         res.status(500).send({ error: 'Cannot challenge same user' });
         return;
       }
+
       util.checkIsRealUser(opponentName, (error, isUser) => {
         if (!isUser) {
           res.status(500).send({ error: 'Invalid user' });
           return;
         }
-        // otherwise proceed
         module.exports.initializeChallengeGame(res, user, opponentName);
       });
     });
   },
 
+  /** Generate a random board */
   generateRandomBoard() {
     const letters = 'aabcdeeefghiijklmnoopqrstuuvwxyz';
     let boardStr = '';
@@ -45,6 +49,7 @@ module.exports = {
     return boardStr;
   },
 
+  /** Start a challenge game */
   initializeChallengeGame(res, user, opponentName) {
     const boardStr = module.exports.generateRandomBoard();
     Game.create({ boardString: boardStr, user_id: user._id, opponentName: opponentName }).then((myGame) => {
@@ -60,7 +65,7 @@ module.exports = {
     });
   },
 
-
+  /** Finalize the current game and save game results */
   finalizeGame(req, res, next) {
     const score = Number(req.body.score);
     const wordsUsed = req.body.wordsPlayed;
@@ -77,6 +82,7 @@ module.exports = {
     });
   },
 
+  /** Make the board */
   makeBoard(req, res, next) {
     const result = module.exports.generateRandomBoard();
     util.getUserFromReq(req, next).then((user) => {
@@ -87,6 +93,7 @@ module.exports = {
     });
   },
 
+  /** Assign points based on letters used in word */
   scoreWord(word) {
     const letterScores = {
       a: 1,
@@ -143,6 +150,7 @@ module.exports = {
     return score;
   },
 
+  /** Check to see if it is a real word */
   checkWord(req, res, next) {
     const word = req.body.word;
     if (wordSet.has(word)) {

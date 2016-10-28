@@ -5,13 +5,14 @@ export default class PlayedWords extends React.Component {
     super(props);
   }
 
+  /** Render words played */
   render() {
     return (
         <span className='wordsPlayed'>
-          Words Played: <br/> 
+          Words Played: <br/>
           <div>
             {this.props.wordsPlayed.map(function(word, index) {
-              
+
               return (
                 <p key={word}>{word + ' [' + this.props.wordScores[index] + '], '}</p>
                 );

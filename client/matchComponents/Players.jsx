@@ -17,6 +17,7 @@ class Players extends React.Component {
     if (!username) {
       return;
     }
+
     /** Complete game challenge creation */
     $.post({
       url: '/api/makeChallengeGame',
