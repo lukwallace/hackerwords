@@ -33,8 +33,10 @@ class Lobby extends React.Component {
       //   console.error('Invalid Token!');
       // }
 
+      /** Get current signed in username */
       const username = jwt.decode(token, 'secret').username;
 
+      /** Get all users */
       $.get({
         url: '/api/getAllUsers',
         headers: { 'x-access-token': Util.getToken() },
@@ -52,6 +54,8 @@ class Lobby extends React.Component {
           console.log(data);
         },
       });
+
+      /** Get highest score of currently signed in user */
       $.get({
         url: '/api/getHighScore',
         headers: { 'x-access-token': Util.getToken() },
@@ -68,6 +72,8 @@ class Lobby extends React.Component {
           console.log(data);
         },
       });
+
+      /** Get all pending game challenges */
       $.post({
         url: '/api/getPendingGames',
         headers: { 'x-access-token': Util.getToken() },
@@ -87,11 +93,13 @@ class Lobby extends React.Component {
     }
   }
 
+  /** Logout current user and destroy session token */
   logOut() {
     window.localStorage.removeItem('com.hackerwords');
     this.props.router.push('/signin');
   }
 
+  /** Render lobby page */
   render() {
     return (
       <div>

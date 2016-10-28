@@ -1,14 +1,17 @@
 const jwt = require('jwt-simple');
 const User = require('./users/userModel.js');
 
+/** Given a username, find the userId from database */
 exports.getUserIDFromUsername = (username, callback) => {
   User.findOne({ username }, (err, result) => {
     callback(result._id);
   });
 };
 
+/** Get the username from the request */
 exports.getUsernameFromReq = (req, next) => {
-  // recover username
+
+  /** Recover username */
   console.log('HEADERS = ', req.headers);
   const token = req.headers['x-access-token'];
   if (!token) {
@@ -19,13 +22,13 @@ exports.getUsernameFromReq = (req, next) => {
   return username;
 };
 
+/** Get the user from the request */
 exports.getUserFromReq = (req, next) => {
   const username = exports.getUsernameFromReq(req, next);
   return User.findOne({ username });
 };
 
-
-// A middleware function to check authentication
+/** A middleware function to check authentication */
 exports.checkAuth = (req, res, next) => {
   const token = req.headers['x-access-token'];
   if (!token) {
@@ -42,6 +45,7 @@ exports.checkAuth = (req, res, next) => {
   }
 };
 
+/** Check if user is real */
 exports.checkIsRealUser = (username, callback) => {
   User.find({}, (err, result) => {
     const allUsers = result.map(userEntry => (userEntry.username));

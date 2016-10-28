@@ -9,12 +9,15 @@ class Players extends React.Component {
     this.makeChallenge = this.makeChallenge.bind(this);
   }
 
+  /** Challenge another player */
   makeChallenge() {
     const username = ($('#player').val());
-    // check to make sure username has been selected
+
+    /** Check to make sure username has been selected */
     if (!username) {
       return;
     }
+    /** Complete game challenge creation */
     $.post({
       url: '/api/makeChallengeGame',
       headers: { 'x-access-token': Util.getToken() },
@@ -31,6 +34,7 @@ class Players extends React.Component {
     });
   }
 
+  /** Render list of players available for challenging */
   render() {
     return (
       <div>

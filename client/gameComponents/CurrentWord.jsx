@@ -9,6 +9,7 @@ export default class CurrentWord extends React.Component {
     }
   }
 
+  /** Render current word */
   render() {
     return (
         <div>

@@ -12,7 +12,7 @@ class Signup extends React.Component {
   }
 
   componentDidMount() {
-    // Makes pressing enter on any input box click submit
+    /** Makes pressing enter on any input box click submit */
     $('input').each(function () {
       $(this).keypress((e) => {
         if (e.which === 13) {
@@ -23,11 +23,13 @@ class Signup extends React.Component {
   }
 
   submitFn() {
+    /** Grab username and password values from fields */
     const username = $('#username').val();
     const password = $('#password').val();
     $('#username').val('');
     $('#password').val('');
 
+    /** Submit username and password for verification and creation */
     $.post({
       url: '/api/signup',
       dataType: 'json',
@@ -44,6 +46,7 @@ class Signup extends React.Component {
     });
   }
 
+  /** Render signup page */
   render() {
     return (
       <div className="signup">
