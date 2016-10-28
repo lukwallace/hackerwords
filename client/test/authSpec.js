@@ -21,11 +21,31 @@ window.localStorage = {
 };
 
 
-describe ('Meta Test', () => {
-  it ('Should call render', () => {
+describe ('Client signin', () => {
+  var wrapper;
+
+  it ('Should call render', (done) => {
     sinon.spy(Signin.prototype, 'render');
     const wrapper = mount(<Signin />);
     expect(Signin.prototype.render.calledOnce).to.equal(true);
+    done();
+  });
+
+  it ('Sign in should send post request', (done) => {
+    const username = 'test';
+    const password = 'testpass';
+
+    wrapper.find('#username').val(username);
+    wrapper.find('#password').val(password);
+
+
+    const ajaxSpy = sinon.stub($, 'ajax');
+    wrapper.submitFn();
+
+    expect($.ajax.calledOnce).to.be.true;
+    const ajaxOptions = (typeof $.ajax.args[0][0] === 'object') ? $.ajax.args[0][0] : $.ajax.args[0][1];
+    expect(ajaxOptions.type).to.equal('post');
+    expect(ajaxOptions.data.word).to.equal({ username, password });
   });
 
   it('Should route to the home page on succesful signin', () => {
