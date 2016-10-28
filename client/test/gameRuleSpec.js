@@ -1,11 +1,9 @@
-
 import React from 'react';
 import sinon from 'sinon';
+import $ from 'jquery';
 import { expect } from 'chai';
 import { mount, shallow } from 'enzyme';
 import App from '../gameComponents/App';
-import $ from 'jquery';
-
 import Score from '../gameComponents/Score';
 
 
