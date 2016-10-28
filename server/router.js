@@ -20,7 +20,7 @@ module.exports = (app) => {
   /** Make board string */
   app.get('/api/makeBoard', util.checkAuth, boardTool.makeBoard);
 
-  /** Get a user's high scMake */
+  /** Get a user's high score */
   app.get('/api/getHighScore', userController.getUserHighScore);
 
   /** Get board for users */
