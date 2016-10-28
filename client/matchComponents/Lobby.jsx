@@ -13,6 +13,7 @@ class Lobby extends React.Component {
     this.state = {
       players: [],
       challenges: [],
+      highScore: 0
     };
   }
 
@@ -47,6 +48,22 @@ class Lobby extends React.Component {
           console.log(data);
         },
       });
+      $.get({
+        url: '/api/getHighScore',
+        headers: { 'x-access-token': Util.getToken() },
+        dataType: 'json',
+        data: { username },
+        success: (data) => {
+          console.log('Player high score:', data);
+          this.setState({
+            highScore: data.highestScore,
+          });
+        },
+        error: (data) => {
+          console.log('Error!');
+          console.log(data);
+        },
+      });
       $.post({
         url: '/api/getPendingGames',
         headers: { 'x-access-token': Util.getToken() },
@@ -73,6 +90,7 @@ class Lobby extends React.Component {
         <Challenges entries={this.state.challenges} />
         <Players entries={this.state.players} />
         <Link to="/solo"> Play Single Player Here </Link>
+        <div> <h1> Your High Score {this.state.highScore} </h1> </div>
       </div>
     );
   }

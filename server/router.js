@@ -19,6 +19,9 @@ module.exports = (app) => {
   // board string
   app.get('/api/makeBoard', util.checkAuth, boardTool.makeBoard);
 
+  // get a users high score
+  app.get('/api/getHighScore', userController.getUserHighScore);
+
   // game ID -> board string
   app.post('/api/getBoard', util.checkAuth, boardTool.getBoard);
 

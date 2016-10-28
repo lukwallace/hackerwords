@@ -15,6 +15,22 @@ module.exports = {
     });
   },
 
+  getUserHighScore(req, res, next) {
+    const username = req.url.split('=')[1];
+     util.getUserIDFromUsername(username, (userID) => {
+      Game.find({user_id: userID}, (err, result) => {
+        let highestScore = 0;
+        result.forEach(function(game) {
+          if (game.points > highestScore) {
+            highestScore = game.points;
+            console.log(highestScore);
+          }
+        });
+        res.json({ highestScore });
+      });
+     });
+  },
+
   getPendingGames(req, res, next) {
     const username = req.body.username;
     console.log('PENDING USERNAME', username);
