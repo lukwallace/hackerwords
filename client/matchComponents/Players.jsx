@@ -22,6 +22,7 @@ class Players extends React.Component {
  * @method makeChallenge
  */
   makeChallenge() {
+    console.log('eh');
     const username = ($('#player').val());
 
     /** Check to make sure username has been selected */
@@ -51,7 +52,7 @@ class Players extends React.Component {
     return (
       <div className="players">
         <h2> Challenge PLayers </h2>
-        <input list="players" /> &nbsp;
+        <input id="player" list="players" /> &nbsp;
         <datalist id="players">
           {
             this.props.entries.map((user) => {
