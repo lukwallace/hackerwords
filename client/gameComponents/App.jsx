@@ -42,7 +42,8 @@ class App extends React.Component {
     }
 
     this.state = {
-      boardStr: 'abcdefghijklmnop',
+      gameID: null,
+      boardStr: 'shouldnotseethis',
       curWord: '',
       curIndexesUsed: [],
       wordsPlayed: [],
@@ -75,8 +76,10 @@ class App extends React.Component {
           headers: { 'x-access-token': Util.getToken() },
           dataType: 'json',
           success: (data) => {
+            console.log('Here!', data);
             console.log(data.boardString);
             this.setState({
+              gameID: data.id,
               boardStr: data.boardString,
             });
           },
@@ -95,6 +98,7 @@ class App extends React.Component {
           success: (data) => {
             console.log(data);
             this.setState({
+              gameID: this.props.params.id,
               boardStr: data.boardString,
             });
           },
@@ -176,10 +180,14 @@ class App extends React.Component {
           dataType: 'json',
           data: { score: this.state.score,
                   wordsPlayed: this.state.wordsPlayed,
-                  gameID: this.props.params.id },
+                  gameID: this.state.gameID },
           success: (data) => {
-            console.log(data);
+            console.log('Game ended!', data);
             $('.gameEnded').css('display', 'block');
+          },
+          error: (data) => {
+            console.log(data);
+            console.log('Error: Game didn\'t appropriately');
           },
         });
       }
@@ -233,7 +241,7 @@ class App extends React.Component {
  * @returns {boolean} true or false if rules are followed
  */
   boardClick(event) {
-    console.log('event', event);
+    // console.log('event', event);
     if (this.state.gameOver) {
       return;
     }
@@ -271,7 +279,6 @@ class App extends React.Component {
       $('.selected').removeClass('selected');
       $('.lastclicked').removeClass('lastclicked');
 
-3
       this.sendWord();
 
       this.setState({
@@ -293,7 +300,7 @@ class App extends React.Component {
       }
 
       $(event.target).addClass('selected');
-        // re-evaluate using mutable objects as state params?
+      // re-evaluate using mutable objects as state params?
       this.setState({
         curWord: newCurWord,
         curIndexesUsed: newCurIndexes,
@@ -316,14 +323,13 @@ class App extends React.Component {
       <div>
         <div className="gameBoardApp" />
         <h1> HackerWords </h1>
-        <div className='timeLeft'>{this.state.timeLeft}</div>
-        <div className='currentWord'>{this.state.curWord}</div>
-        <div> <button className='gameEnded' onClick={this.backToLobby}> Back to Lobby </button> </div>
+        <div className="timeLeft">{this.state.timeLeft}</div>
+        <div className="currentWord">{this.state.curWord}</div>
+        <div> <button className="gameEnded" onClick={this.backToLobby}> Back to Lobby </button> </div>
         <div><Score score={this.state.score} /></div>
         <Board boardStr={this.state.boardStr} clickHandler={this.boardClick} />
         <PlayedWords wordsPlayed={this.state.wordsPlayed} wordScores={this.state.wordScores} />
-        <button className='signoutButton' onClick={this.logOut}> Sign Out </button>
-
+        <button className="signoutButton" onClick={this.logOut}> Sign Out </button>
       </div>
     );
   }

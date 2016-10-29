@@ -15,31 +15,29 @@ module.exports = {
   getGameHistory(req, res, next) {
     const username = req.body.username;
     util.getUserIDFromUsername(username, (userID) => {
-      Game.find({user_id: userID, pending: false}).then((games) => {
-        var getOppGame = (gameObj) => {
+      Game.find({ user_id: userID, pending: false }).then((games) => {
+        const getOppGame = (gameObj) => {
           return new Promise((resolve, reject) => {
-            if(gameObj.opponent === null) {
+            if (gameObj.opponent === null) {
               resolve([gameObj]);
             } else {
-              Game.findOne({_id: gameObj.opponent}).then((oppGame) => {
+              Game.findOne({ _id: gameObj.opponent }).then((oppGame) => {
                 resolve([gameObj, oppGame]);
               });
             }
           });
         };
 
-        let promises = games.map((completedGame) => {
+        const promises = games.map((completedGame) => {
           return getOppGame(completedGame).then((gamePair) => {
             return gamePair;
-          })
+          });
         });
 
-        
         Promise.all(promises).then((results) => {
           console.log('RESULTS', results);
           res.json({ games: results });
         });
-        
       });
     });
   },
@@ -167,8 +165,9 @@ module.exports = {
     const result = module.exports.generateRandomBoard();
     util.getUserFromReq(req, next).then((user) => {
       Game.create({ boardString: result, user_id: user._id }).then((game) => {
-        const token = jwt.encode(game._id, 'secret');
-        res.json({ token, boardString: result });
+        // const token = jwt.encode(game._id, 'secret');
+        // res.json({ token, boardString: result });
+        res.json({ id: game._id, boardString: result });
       });
     });
   },
