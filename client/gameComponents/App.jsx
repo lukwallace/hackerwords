@@ -52,7 +52,6 @@ class App extends React.Component {
       score: 0,
     };
 
-
     this.startTimer();
   }
 
@@ -70,7 +69,6 @@ class App extends React.Component {
       }
 
       if (!this.props.params.id) {
-
         /** Make a board for current user */
         $.get({
           url: '/api/makeBoard',
@@ -88,7 +86,6 @@ class App extends React.Component {
           },
         });
       } else {
-
         /** Get an already-made board for current user */
         $.post({
           url: '/api/getBoard',
@@ -159,7 +156,6 @@ class App extends React.Component {
   * @method startTimer
   */
   startTimer() {
-    var context = this;
     this.timerInterval = setInterval(() => {
       this.setState({
         timeLeft: this.state.timeLeft - 1,
@@ -172,20 +168,20 @@ class App extends React.Component {
         });
 
         /** Send back game results to server */
-        clearInterval(context.timerInterval);
+        clearInterval(this.timerInterval);
         $.ajax({
           method: 'POST',
           url: '/api/finalizeGame',
           headers: { 'x-access-token': Util.getToken() },
           dataType: 'json',
-          data: { score: context.state.score, wordsPlayed: context.state.wordsPlayed, boardStr: context.state.boardStr },
+          data: { score: this.state.score,
+                  wordsPlayed: this.state.wordsPlayed,
+                  gameID: this.props.params.id },
           success: (data) => {
             console.log(data);
             $('.gameEnded').css('display', 'block');
           },
         });
-
-
       }
     }, 1000);
   }
@@ -216,7 +212,7 @@ class App extends React.Component {
  */
   sendWord() {
     const word = this.state.curWord;
-    //dont send a request if we have that word
+    // dont send a request if we have that word
     if (this.state.wordsPlayed.indexOf(word) === -1) {
       $.post('/api/checkWord', { word }, (data) => {
         if (data.isWord) {

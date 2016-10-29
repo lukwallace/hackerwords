@@ -134,10 +134,10 @@ module.exports = {
   finalizeGame(req, res, next) {
     const score = Number(req.body.score);
     const wordsUsed = req.body.wordsPlayed;
-    const boardStr = req.body.boardStr;
-    const query = { boardString: boardStr };
+    const gameID = req.body.gameID;
+    const query = { _id: gameID };
 
-    Game.findOne(query).then( (game) => {
+    Game.findOne(query).then((game) => {
       game.points = score;
       game.wordsPlayed = wordsUsed;
       game.pending = false;
@@ -154,7 +154,6 @@ module.exports = {
     //     res.json({ result });
     //   });
     // });
-
   },
 
   /**

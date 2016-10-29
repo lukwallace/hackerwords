@@ -6,6 +6,7 @@ const Schema = mongoose.Schema;
 
 /** Game Schema */
 const gameSchema = new Schema({
+  // ID of the player
   user_id: {
     type: 'ObjectId',
     required: true,
@@ -22,10 +23,12 @@ const gameSchema = new Schema({
     type: [String],
     default: [],
   },
+  // Whether or not the game has finished
   pending: {
     type: Boolean,
     default: true,
   },
+  // ID of the opponent's mirrored game
   opponent: {
     type: String,
     default: null,
