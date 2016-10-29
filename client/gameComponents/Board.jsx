@@ -24,16 +24,17 @@ export default class Board extends React.Component {
   /** Render current board */
   render() {
     return (
-      <span>
+      <span className="gameboard">
         <table>
-          <tbody className="boardBody">
+          <tbody>
             { this.indices.map((start) => {
               return (<tr key={start}>
                 {[...Array(this.size).keys()].map((index) => {
                   const ind = start + index;
                   return (
-                    <td key={ind} className={'b' + ind}
-                    onClick={this.props.clickHandler}>{this.props.boardStr[ind]}</td>
+                    <td key={ind} className={'b' + ind} onClick={this.props.clickHandler}>
+                      {this.props.boardStr[ind]}
+                    </td>
                   );
                 })}
               </tr>);

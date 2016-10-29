@@ -16,9 +16,9 @@ export default class Score extends React.Component {
   /** Render current score */
   render() {
     return (
-        <div className='scoreboard'>
-          Score: {this.props.score}
-        </div>
-      );
+      <div className="scoreboard">
+        Score: {this.props.score}
+      </div>
+    );
   }
 }

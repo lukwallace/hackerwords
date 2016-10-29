@@ -55,11 +55,7 @@ class Players extends React.Component {
         <input id="player" list="players" /> &nbsp;
         <datalist id="players">
           {
-            this.props.entries.map((user) => {
-              return (
-                <option key={user}> {user} </option>
-              );
-            })
+            this.props.entries.map(user => (<option key={user}> {user} </option>))
           }
         </datalist>
         <input type="button" value="Challenge" onClick={this.makeChallenge} />
