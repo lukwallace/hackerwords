@@ -22,13 +22,6 @@ class Signup extends React.Component {
     util.signOut();
   }
 
-  onUsernameChange(event) {
-    this.setState({ username: event.target.value });
-  }
-
-  onPasswordChange(event) {
-    this.setState({ password: event.target.value });
-  }
 
   componentDidMount() {
     /** Makes pressing enter on any input box click submit */
@@ -41,12 +34,20 @@ class Signup extends React.Component {
     });
   }
 
+  onUsernameChange(event) {
+    this.setState({ username: event.target.value });
+  }
+
+  onPasswordChange(event) {
+    this.setState({ password: event.target.value });
+  }
+
   submitFn() {
     /** Grab username and password values from fields */
     const username = this.state.username;
     const password = this.state.password;
-    
-    this.setState({username:'', password:''});
+ 
+    this.setState({ username:'', password:'' });
 
     /** Submit username and password for verification and creation */
     $.post({
