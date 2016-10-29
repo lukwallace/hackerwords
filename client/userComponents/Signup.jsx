@@ -70,21 +70,13 @@ class Signup extends React.Component {
   render() {
     return (
       <div className="signup">
-        <h1 className="signuph1"> HackerWords </h1>
+        <h1> HackerWords </h1>
         <div className="signuptitle"> Signup </div>
-        <label htmlFor="username" className="signuplabel">Username </label>
-        <input type="text" id="username" name="username" className="signupform" onChange={(event) => this.onUsernameChange(event)}/>
-        <br />
-        <label htmlFor="password" className="signuplabel"> Password </label>
-        <input type="password"id="password" name="password" className="signupform" onChange={(event) => this.onPasswordChange(event)}/>
-        <br />
-        <br />
-        <br />
-        <input type="button" id="signup" value="Signup" onClick={this.submitFn} className="signupform signupbutton" />
-        <br />
-        <br />
-        <br />
-        <br />
+        <label htmlFor="username"> Username </label>
+        <input type="text" id="username" name="username" onChange={event => this.onUsernameChange(event)} />
+        <label htmlFor="password"> Password </label>
+        <input type="password" id="password" name="password" onChange={event => this.onPasswordChange(event)} />
+        <input type="button" id="signup" value="Signup" onClick={this.submitFn} />
         Have an account?
         <Link to="/signin"> Sign in here</Link>
         <h2 className="error"> Username already exists! </h2>

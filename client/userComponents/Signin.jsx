@@ -78,18 +78,10 @@ class Signin extends React.Component {
         <h1> HackerWords </h1>
         <div className="signintitle"> Signin </div>
         <label htmlFor="username"> Username </label>
-        <input type="text" value={this.state.username} id="username" name="username" className="signinform" onChange={(event) => this.onUsernameChange(event)}/>
-        <br />
+        <input type="text" id="username" name="username" onChange={event => this.onUsernameChange(event)} />
         <label htmlFor="password"> Password </label>
-        <input type="password" value={this.state.password} id="password" name="password" className="signinform" onChange={(event) => this.onPasswordChange(event)}/>
-        <br />
-        <br />
-        <br />
-        <input type="button" id="signin" value="Signin" onClick={this.submitFn} className="signinform" />
-        <br />
-        <br />
-        <br />
-        <br />
+        <input type="password" id="password" name="password" onChange={event => this.onPasswordChange(event)} />
+        <input type="button" id="signin" value="Signin" onClick={this.submitFn} />
         Don't have an account?
         <Link to="/signup"> Sign up here</Link>
         <h2 className="error"> Invalid user or password! </h2>
