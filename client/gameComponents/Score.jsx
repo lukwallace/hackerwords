@@ -1,5 +1,13 @@
+/**
+ * @file Manages the score component.
+ */
+
 import React from 'react';
 
+/**
+ * Creates a new Score
+ * @class
+ */
 export default class Score extends React.Component {
   constructor(props) {
     super(props);

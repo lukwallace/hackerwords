@@ -1,5 +1,13 @@
+/**
+ * @file Manages the played words component.
+ */
+
 import React from 'react';
 
+/**
+ * Creates a new Played Words List.
+ * @class
+ */
 export default class PlayedWords extends React.Component {
   constructor(props) {
     super(props);

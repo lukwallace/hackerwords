@@ -1,7 +1,17 @@
+/**
+ * @file This has all the server-side utility functions needed to check authentication, get userID, etc
+ */
+
 const jwt = require('jwt-simple');
 const User = require('./users/userModel.js');
 
 /** Given a username, find the userId from database */
+/**
+  * This function is used to find the userId from database given a username.
+  * @method getUserIDFromUsername
+  * @param {object} req request object
+  * @param {object} res response object
+  */
 exports.getUserIDFromUsername = (username, callback) => {
   User.findOne({ username }, (err, result) => {
     callback(result._id);

@@ -1,3 +1,7 @@
+/**
+ * @file Manages the lobby component.
+ */
+
 import React from 'react';
 import { Link, withRouter } from 'react-router';
 import $ from 'jquery';
@@ -7,7 +11,10 @@ import Players from './Players.jsx';
 import Util from './../util.js';
 import GameHistory from './GameHistory.jsx';
 
-
+/**
+ * Creates a new Lobby.
+ * @class
+ */
 class Lobby extends React.Component {
   constructor(props) {
     super(props);
@@ -111,7 +118,10 @@ class Lobby extends React.Component {
     }
   }
 
-  /** Logout current user and destroy session token */
+  /**
+ * This function logs out the current user and destroys the session token.
+ * @method logOut
+ */
   logOut() {
     window.localStorage.removeItem('com.hackerwords');
     this.props.router.push('/signin');

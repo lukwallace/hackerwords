@@ -1,6 +1,14 @@
+/**
+ * @file Manages the challenges component.
+ */
+
 import React from 'react';
 import { Link, withRouter } from 'react-router';
 
+/**
+ * Creates a new list of Challenges.
+ * @class
+ */
 class Challenges extends React.Component {
   constructor(props) {
     super(props);

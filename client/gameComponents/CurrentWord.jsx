@@ -1,5 +1,13 @@
+/**
+ * @file Manages the current word component.
+ */
+
 import React from 'react';
 
+/**
+ * Creates a new Current Word.
+ * @class
+ */
 export default class CurrentWord extends React.Component {
   constructor(props) {
     super(props);

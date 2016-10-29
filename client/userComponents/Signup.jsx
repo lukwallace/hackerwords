@@ -1,9 +1,17 @@
+/**
+ * @file Manages the signup component.
+ */
+
 import React from 'react';
 import { Link, withRouter } from 'react-router';
 import $ from 'jquery';
 
 const util = require('../util.js');
 
+/**
+ * Creates a new Signup Component.
+ * @class
+ */
 class Signup extends React.Component {
   constructor(props) {
     super(props);

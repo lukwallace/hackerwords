@@ -1,5 +1,13 @@
+/**
+ * @file Manages the board component.
+ */
+
 import React from 'react';
 
+/**
+ * Creates a new Board.
+ * @class
+ */
 export default class Board extends React.Component {
   constructor(props) {
     super(props);

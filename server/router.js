@@ -1,3 +1,7 @@
+/**
+ * @file This has all of the server routes
+ */
+
 const userController = require('./users/userController');
 const boardTool = require('./board/BoardTools.js');
 const path = require('path');

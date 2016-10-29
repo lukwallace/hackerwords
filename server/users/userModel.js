@@ -1,3 +1,7 @@
+/**
+ * @file This is the server-side model for the Users
+ */
+
 const Q = require('q');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');
@@ -38,7 +42,12 @@ const userSchema = new Schema({
 // anonymous 'this' so they can carry the 'this' from outside their
 // scope - we don't be able to access the user if we use it.
 
-/** Compare provided password at signin and cross-check with password stored in database */
+  /**
+  * This function is used to compare provided password at signin and cross-check with password stored in database.
+  * @method comparePasswords
+  * @param {string} candidatePassword request object
+  * @returns {boolean}
+  */
 userSchema.methods.comparePasswords = function (candidatePassword) {
   const savedPassword = this.password;
   return new Q.Promise((resolve, reject) => {

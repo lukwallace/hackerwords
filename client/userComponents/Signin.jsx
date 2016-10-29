@@ -1,9 +1,17 @@
+/**
+ * @file Manages the signin component.
+ */
+
 import React from 'react';
 import { Link, withRouter } from 'react-router';
 import $ from 'jquery';
 
 const util = require('../util.js');
 
+/**
+ * Creates a new Signin Component.
+ * @class
+ */
 class Signin extends React.Component {
   constructor(props) {
     super(props);

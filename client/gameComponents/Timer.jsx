@@ -1,5 +1,13 @@
+/**
+ * @file Manages the timer component.
+ */
+
 import React from 'react';
 
+/**
+ * Creates a new Timer
+ * @class
+ */
 export default class Timer extends React.Component {
 
   constructor(props) {
@@ -10,7 +18,10 @@ export default class Timer extends React.Component {
     }
     var context = this;
 
-    /** Timer functionality, subtract 1 every second */
+    /**
+    * This function is used to make the timer work.
+    * @method timerInterval
+    */
     var timerInterval = setInterval(function() {
       context.setState({
         'timeLeft': context.state.timeLeft - 1

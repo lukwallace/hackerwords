@@ -1,3 +1,7 @@
+/**
+ * @file Manages the app component.
+ */
+
 import React from 'react';
 import { withRouter } from 'react-router';
 import $ from 'jquery';
@@ -7,6 +11,10 @@ import Score from './Score.jsx';
 import Util from './../util.js';
 
 
+/**
+ * Creates a new App.
+ * @class
+ */
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -106,7 +114,10 @@ class App extends React.Component {
     this.stopTimer();
   }
 
-  /** Get the index of the last letter clicked */
+  /**
+ * This function is to get the index of the last letter clicked.
+ * @method getLastClickIndex
+ */
   getLastClickIndex() {
     if (this.state.curIndexesUsed.length === 0) {
       return null;
@@ -114,24 +125,39 @@ class App extends React.Component {
     return this.state.curIndexesUsed[this.state.curIndexesUsed.length - 1];
   }
 
-  /** Get click index number */
+
+  /**
+ * This function is used to get the clicked index.
+ * @method getClickIndexNumber
+ * @param {object} input an array with indexes
+ * @returns {number} that index number
+ */
   getClickIndexNumber(ci) {
     return Number(ci.slice(1));
   }
 
-  /** Log the current user out */
+  /**
+ * This function is used to log the current user out.
+ * @method logOut
+ */
   logOut() {
     this.stopTimer();
     window.localStorage.removeItem('com.hackerwords');
     this.props.router.push('/signin');
   }
 
-  /** Route the user back to lobby on button click */
+     /**
+  * This function is used to route the user back to lobby on button click.
+  * @method backToLobby
+  */
   backToLobby() {
     this.props.router.push('/');
   }
 
-  /** Start the game timer */
+  /**
+  * This function is used to start the game timer.
+  * @method startTimer
+  */
   startTimer() {
     var context = this;
     this.timerInterval = setInterval(() => {
@@ -164,18 +190,30 @@ class App extends React.Component {
     }, 1000);
   }
 
-  /** Stop the timer */
+   /**
+  * This function is used to stop the game timer.
+  * @method stopTimer
+  */
   stopTimer() {
     clearInterval(this.timerInterval);
   }
 
-  /** Check to see if letter has been clicked previously in current word */
+
+   /**
+ * This function is used to check to see if letter has been clicked previously in current word.
+ * @method isInUsedIndexes
+ * @param {number} input is index of clicked letter
+ * @returns {boolean}
+ */
   isInUsedIndexes(clickIndex) {
     console.log(clickIndex, 'click index');
     return (this.state.curIndexesUsed.indexOf(clickIndex) !== -1);
   }
 
-  /** Send current finalized word */
+  /**
+ * This function is used to send the current finalized word to the server for verification.
+ * @method sendWord
+ */
   sendWord() {
     const word = this.state.curWord;
     //dont send a request if we have that word
@@ -192,15 +230,24 @@ class App extends React.Component {
     }
   }
 
-  /** Board function that enforces rules and changes the class of currently selected letters */
+   /**
+ * This function is used to enforce the board rules and changes the class of currently selected letters for UI.
+ * @method boardClick
+ * @param {object} event click event object
+ * @returns {boolean} true or false if rules are followed
+ */
   boardClick(event) {
+    console.log('event', event);
     if (this.state.gameOver) {
       return;
     }
     const clickLetter = event.target.innerHTML;
     const clickIndex = event.target.className.split(' ')[0];
 
-    /** Check if currently clicked letter is adjacent to last clicked letter for current word */
+     /**
+    * This function is used to check if currently clicked letter is adjacent to last clicked letter for current word.
+    * @method isAdjacent
+    */
     const isAdjacent = () => {
       const lastClick = this.getLastClickIndex();
 
@@ -228,7 +275,7 @@ class App extends React.Component {
       $('.selected').removeClass('selected');
       $('.lastclicked').removeClass('lastclicked');
 
-      // evaluate word her
+3
       this.sendWord();
 
       this.setState({

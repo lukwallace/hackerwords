@@ -1,15 +1,27 @@
+/**
+ * @file This is the server-side controller for the Users
+ */
+
 const Q = require('q');
 const jwt = require('jwt-simple');
 const User = require('./userModel.js');
 const Game = require('./../board/GameModel.js');
 const util = require('./../util.js');
-// Promisify a few mongoose methods with the `q` promise library
+
+/** Promisify a few mongoose methods with the `q` promise library */
 const findUser = Q.nbind(User.findOne, User);
 const createUser = Q.nbind(User.create, User);
 
 module.exports = {
 
-  /** Get all users from database */
+  /**
+  * This function is used to get all users from database.
+  * @method getAllUsers
+  * @param {object} req request object
+  * @param {object} res response object
+  * @param {object} next callback function to execute
+  * @returns {object} all users
+  */
   getAllUsers(req, res, next) {
     User.find({}, (err, result) => {
       const allUsers = result.map(userEntry => (userEntry.username));
@@ -17,7 +29,14 @@ module.exports = {
     });
   },
 
-  /** Get highest score of currently signed in user */
+  /**
+  * This function is used to get highest score of currently signed in user.
+  * @method getUserHighScore
+  * @param {object} req request object
+  * @param {object} res response object
+  * @param {object} next callback function to execute
+  * @returns {object} highest score
+  */
   getUserHighScore(req, res, next) {
     const username = req.url.split('=')[1];
      util.getUserIDFromUsername(username, (userID) => {
@@ -34,7 +53,14 @@ module.exports = {
      });
   },
 
-  /** Get all pending game challenges */
+  /**
+  * This function is used to get all pending game challenges.
+  * @method getPendingGames
+  * @param {object} req request object
+  * @param {object} res response object
+  * @param {object} next callback function to execute
+  * @returns {object} pending games
+  */
   getPendingGames(req, res, next) {
     const username = req.body.username;
     console.log('PENDING USERNAME', username);
@@ -56,7 +82,15 @@ module.exports = {
     */
   },
 
-  /** Signin a user if user exists in database and passwords match */
+
+  /**
+  * This function is used to signin a user if user exists in database and passwords match.
+  * @method signin
+  * @param {object} req request object
+  * @param {object} res response object
+  * @param {object} next callback function to execute
+  * @returns {object} if user is found, returns the user token
+  */
   signin(req, res, next) {
     console.log('signin in');
     const username = req.body.username;
@@ -81,7 +115,14 @@ module.exports = {
       });
   },
 
-  /** Signup a user if username doesn't exist in database */
+  /**
+  * This function is used to signup a user if username doesn't exist in database .
+  * @method signup
+  * @param {object} req request object
+  * @param {object} res response object
+  * @param {object} next callback function to execute
+  * @returns {object} if user is created successfully, returns the user token
+  */
   signup(req, res, next) {
     const username = req.body.username;
     const password = req.body.password;
@@ -110,7 +151,14 @@ module.exports = {
       });
   },
 
-  /** Check to see if the user is authenticated */
+  /**
+  * This function is used to signup a user if the user is authenticated.
+  * @method checkAuth
+  * @param {object} req request object
+  * @param {object} res response object
+  * @param {object} next callback function to execute
+  * @returns {number} status code
+  */
   checkAuth(req, res, next) {
 
     /** Grab the token in the header, if any */

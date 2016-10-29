@@ -1,15 +1,26 @@
+/**
+ * @file Manages the players component.
+ */
+
 import React from 'react';
 import { Link, withRouter } from 'react-router';
 import $ from 'jquery';
 import Util from './../util.js';
 
+/**
+ * Creates a new Players list.
+ * @class
+ */
 class Players extends React.Component {
   constructor(props) {
     super(props);
     this.makeChallenge = this.makeChallenge.bind(this);
   }
 
-  /** Challenge another player */
+  /**
+ * This function is used to challenge another player.
+ * @method makeChallenge
+ */
   makeChallenge() {
     const username = ($('#player').val());
 

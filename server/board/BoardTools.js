@@ -1,3 +1,7 @@
+/**
+ * @file This file holds all the tools needed for the board (board creation, create challenges, etc)
+ */
+
 'use strict';
 
 const Game = require('./GameModel.js');
@@ -41,7 +45,14 @@ module.exports = {
   },
 
 
-  /** Get the board from database */
+  /**
+  * This function is used to get the board from database.
+  * @method getBoard
+  * @param {object} req request object
+  * @param {object} res response object
+  * @param {object} next callback function to execute
+  * @returns {object} game board string
+  */
   getBoard(req, res, next) {
     const gameID = req.body.id;
     Game.findOne({ _id: gameID }).then((game) => {
@@ -49,7 +60,13 @@ module.exports = {
     });
   },
 
-  /** Make a challenge game for a fellow player */
+  /**
+  * This function is used to make a challenge game for a fellow player.
+  * @method makeChallengeGame
+  * @param {object} req request object
+  * @param {object} res response object
+  * @param {object} next callback function to execute
+  */
   makeChallengeGame(req, res, next) {
     util.getUserFromReq(req, next).then((user) => {
 
@@ -70,7 +87,11 @@ module.exports = {
     });
   },
 
-  /** Generate a random board */
+  /**
+  * This function is used to generate a random board string.
+  * @method generateRandomBoard
+  * @returns {string} random game board string
+  */
   generateRandomBoard() {
     const letters = 'aabcdeeefghiijklmnoopqrstuuvwxyz';
     let boardStr = '';
@@ -81,7 +102,13 @@ module.exports = {
     return boardStr;
   },
 
-  /** Start a challenge game */
+  /**
+  * This function is used to start a challenge game.
+  * @method initializeChallengeGame
+  * @param {object} req request object
+  * @param {object} user user object
+  * @param {string} opponentName name of opponent
+  */
   initializeChallengeGame(res, user, opponentName) {
     const boardStr = module.exports.generateRandomBoard();
     Game.create({ boardString: boardStr, user_id: user._id, opponentName: opponentName }).then((myGame) => {
@@ -97,7 +124,13 @@ module.exports = {
     });
   },
 
-  /** Finalize the current game and save game results */
+  /**
+  * This function is used to finalize the current game and save game results.
+  * @method finalizeGame
+  * @param {object} req request object
+  * @param {object} res response object
+  * @param {object} next callback function to execute
+  */
   finalizeGame(req, res, next) {
     const score = Number(req.body.score);
     const wordsUsed = req.body.wordsPlayed;
@@ -124,7 +157,13 @@ module.exports = {
 
   },
 
-  /** Make the board */
+  /**
+  * This function is used to make the board.
+  * @method makeBoard
+  * @param {object} req request object
+  * @param {object} res response object
+  * @param {object} next callback function to execute
+  */
   makeBoard(req, res, next) {
     const result = module.exports.generateRandomBoard();
     util.getUserFromReq(req, next).then((user) => {
@@ -136,6 +175,12 @@ module.exports = {
   },
 
   /** Assign points based on letters used in word */
+  /**
+  * This function is used to assign points based on letters used in word played.
+  * @method scoreWord
+  * @param {string} word word string
+  * @returns {number} word score
+  */
   scoreWord(word) {
     const letterScores = {
       a: 1,
@@ -192,7 +237,13 @@ module.exports = {
     return score;
   },
 
-  /** Check to see if it is a real word */
+  /**
+  * This function is used to check to see if it is a real word.
+  * @method checkWord
+  * @param {object} req request object
+  * @param {object} res response object
+  * @param {object} next callback function to execute
+  */
   checkWord(req, res, next) {
     const word = req.body.word;
     if (wordSet.has(word)) {
