@@ -1,6 +1,14 @@
+/**
+ * @file Manages the game history component.
+ */
+
 import React from 'react';
 import { Link, withRouter } from 'react-router';
 
+/**
+ * Shows the user his/her game history.
+ * @class
+ */
 class GameHistory extends React.Component {
   constructor(props) {
     super(props);

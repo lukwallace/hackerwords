@@ -2,6 +2,10 @@
  * @file This is where the routing middleware is located
  */
 
+/**
+ * @name Middleware
+ */
+
 const bodyParser = require('body-parser');
 const path = require('path');
 

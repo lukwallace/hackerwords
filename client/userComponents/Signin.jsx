@@ -51,7 +51,7 @@ class Signin extends React.Component {
     /** Grab username and password values from fields */
     const username = this.state.username;
     const password = this.state.password;
-    
+
     this.setState({ username:'', password:'' });
 
     /** Submit username and password for verification */

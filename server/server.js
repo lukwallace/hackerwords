@@ -2,6 +2,10 @@
  * @file This is the server
  */
 
+ /**
+ * @name Server
+ */
+
 
 const express = require('express');
 

@@ -2,15 +2,19 @@
  * @file This has all the server-side utility functions needed to check authentication, get userID, etc
  */
 
+ /**
+ * @name Util - Server-Side
+ */
+
 const jwt = require('jwt-simple');
 const User = require('./users/userModel.js');
 
-/** Given a username, find the userId from database */
 /**
   * This function is used to find the userId from database given a username.
   * @method getUserIDFromUsername
-  * @param {object} req request object
-  * @param {object} res response object
+  * @memberof! Util - Server-Side
+  * @param {string} username username
+  * @param {object} callback callback function
   */
 exports.getUserIDFromUsername = (username, callback) => {
   User.findOne({ username }, (err, result) => {
@@ -18,7 +22,13 @@ exports.getUserIDFromUsername = (username, callback) => {
   });
 };
 
-/** Get the username from the request */
+/**
+  * This function is used to get the username from the request object.
+  * @method getUsernameFromReq
+  * @memberof! Util - Server-Side
+  * @param {object} req req object
+  * @param {object} next callback function to execute next
+  */
 exports.getUsernameFromReq = (req, next) => {
 
   /** Recover username */
@@ -32,13 +42,28 @@ exports.getUsernameFromReq = (req, next) => {
   return username;
 };
 
-/** Get the user from the request */
+/**
+  * This function is used to get the user from the database.
+  * @method getUserFromReq
+  * @memberof! Util - Server-Side
+  * @param {object} req req object
+  * @param {object} next callback function to execute next
+  * @returns {object} returns user object
+  */
 exports.getUserFromReq = (req, next) => {
   const username = exports.getUsernameFromReq(req, next);
   return User.findOne({ username });
 };
 
-/** A middleware function to check authentication */
+/**
+  * This function is a middleware function to check authentication.
+  * @method checkAuth
+  * @memberof! Util - Server-Side
+  * @param {object} req request object
+  * @param {object} res response object
+  * @param {object} next callback function to execute next
+  * @returns {boolean}
+  */
 exports.checkAuth = (req, res, next) => {
   const token = req.headers['x-access-token'];
   if (!token) {
@@ -55,7 +80,14 @@ exports.checkAuth = (req, res, next) => {
   }
 };
 
-/** Check if user is real */
+/**
+  * This function is used to check if a user is real user in the database.
+  * @method checkIsRealUser
+  * @memberof! Util - Server-Side
+  * @param {string} username username
+  * @param {object} callback callback function to execute
+  * @returns {boolean}
+  */
 exports.checkIsRealUser = (username, callback) => {
   User.find({}, (err, result) => {
     const allUsers = result.map(userEntry => (userEntry.username));

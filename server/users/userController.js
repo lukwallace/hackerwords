@@ -2,6 +2,10 @@
  * @file This is the server-side controller for the Users
  */
 
+ /**
+ * @name UserController
+ */
+
 const Q = require('q');
 const jwt = require('jwt-simple');
 const User = require('./userModel.js');
@@ -17,6 +21,7 @@ module.exports = {
   /**
   * This function is used to get all users from database.
   * @method getAllUsers
+  * @memberof! UserController
   * @param {object} req request object
   * @param {object} res response object
   * @param {object} next callback function to execute
@@ -32,6 +37,7 @@ module.exports = {
   /**
   * This function is used to get highest score of currently signed in user.
   * @method getUserHighScore
+  * @memberof! UserController
   * @param {object} req request object
   * @param {object} res response object
   * @param {object} next callback function to execute
@@ -56,6 +62,7 @@ module.exports = {
   /**
   * This function is used to get all pending game challenges.
   * @method getPendingGames
+  * @memberof! UserController
   * @param {object} req request object
   * @param {object} res response object
   * @param {object} next callback function to execute
@@ -86,6 +93,7 @@ module.exports = {
   /**
   * This function is used to signin a user if user exists in database and passwords match.
   * @method signin
+  * @memberof! UserController
   * @param {object} req request object
   * @param {object} res response object
   * @param {object} next callback function to execute
@@ -118,6 +126,7 @@ module.exports = {
   /**
   * This function is used to signup a user if username doesn't exist in database .
   * @method signup
+  * @memberof! UserController
   * @param {object} req request object
   * @param {object} res response object
   * @param {object} next callback function to execute
@@ -154,6 +163,7 @@ module.exports = {
   /**
   * This function is used to signup a user if the user is authenticated.
   * @method checkAuth
+  * @memberof! UserController
   * @param {object} req request object
   * @param {object} res response object
   * @param {object} next callback function to execute

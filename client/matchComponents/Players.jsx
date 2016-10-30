@@ -17,9 +17,7 @@ class Players extends React.Component {
     this.makeChallenge = this.makeChallenge.bind(this);
   }
 
-  /**
- * This function is used to challenge another player.
- * @method makeChallenge
+  /**This function is used to challenge another player.
  */
   makeChallenge() {
     console.log('eh');

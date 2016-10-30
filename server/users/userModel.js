@@ -2,6 +2,10 @@
  * @file This is the server-side model for the Users
  */
 
+/**
+ * @name UserModel
+ */
+
 const Q = require('q');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt-nodejs');

@@ -2,6 +2,10 @@
  * @file This file holds all the tools needed for the board (board creation, create challenges, etc)
  */
 
+ /**
+ * @name BoardTools
+ */
+
 'use strict';
 
 const Game = require('./GameModel.js');
@@ -12,6 +16,14 @@ const Promise = require('bluebird');
 
 module.exports = {
 
+  /**
+  * This function is used to get a user's game history.
+  * @method getGameHistory
+  * @memberof! BoardTools
+  * @param {object} req request object
+  * @param {object} res response object
+  * @param {object} next callback function to execute
+  */
   getGameHistory(req, res, next) {
     const username = req.body.username;
     util.getUserIDFromUsername(username, (userID) => {
@@ -46,6 +58,7 @@ module.exports = {
   /**
   * This function is used to get the board from database.
   * @method getBoard
+  * @memberof! BoardTools
   * @param {object} req request object
   * @param {object} res response object
   * @param {object} next callback function to execute
@@ -61,6 +74,7 @@ module.exports = {
   /**
   * This function is used to make a challenge game for a fellow player.
   * @method makeChallengeGame
+  * @memberof! BoardTools
   * @param {object} req request object
   * @param {object} res response object
   * @param {object} next callback function to execute
@@ -88,6 +102,7 @@ module.exports = {
   /**
   * This function is used to generate a random board string.
   * @method generateRandomBoard
+  * @memberof! BoardTools
   * @returns {string} random game board string
   */
   generateRandomBoard() {
@@ -103,6 +118,7 @@ module.exports = {
   /**
   * This function is used to start a challenge game.
   * @method initializeChallengeGame
+  * @memberof! BoardTools
   * @param {object} req request object
   * @param {object} user user object
   * @param {string} opponentName name of opponent
@@ -125,6 +141,7 @@ module.exports = {
   /**
   * This function is used to finalize the current game and save game results.
   * @method finalizeGame
+  * @memberof! BoardTools
   * @param {object} req request object
   * @param {object} res response object
   * @param {object} next callback function to execute
@@ -157,6 +174,7 @@ module.exports = {
   /**
   * This function is used to make the board.
   * @method makeBoard
+  * @memberof! BoardTools
   * @param {object} req request object
   * @param {object} res response object
   * @param {object} next callback function to execute
@@ -176,6 +194,7 @@ module.exports = {
   /**
   * This function is used to assign points based on letters used in word played.
   * @method scoreWord
+  * @memberof! BoardTools
   * @param {string} word word string
   * @returns {number} word score
   */
@@ -238,6 +257,7 @@ module.exports = {
   /**
   * This function is used to check to see if it is a real word.
   * @method checkWord
+  * @memberof! BoardTools
   * @param {object} req request object
   * @param {object} res response object
   * @param {object} next callback function to execute
