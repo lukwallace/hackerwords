@@ -128,16 +128,20 @@ class Lobby extends React.Component {
   }
 
   refreshChallenges() {
-    const username = jwt.decode(Util.getToken(), 'secret').username;
-
-    $.post({
-        url: '/api/getPendingGames',
+  $.get({
+        url: '/api/getGameHistory',
         headers: { 'x-access-token': Util.getToken() },
         dataType: 'json',
-        data: { username },
         success: (data) => {
+
+          /** Only display scores above 0 and sort from highest to smallest */
+
+          let gamesAboveZero = data.games.filter((game) => game[0].points > 0).sort(function (a, b) {
+            return b[0].points-a[0].points;
+          });
+
           this.setState({
-            challenges: data.result,
+            gameHistory: gamesAboveZero,
           });
         },
         error: (data) => {

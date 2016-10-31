@@ -21,7 +21,6 @@ class Players extends React.Component {
   /**This function is used to challenge another player.
  */
   makeChallenge() {
-    console.log('eh');
     const username = ($('#player').val());
 
     /** Check to make sure username has been selected */
@@ -36,7 +35,6 @@ class Players extends React.Component {
       dataType: 'json',
       data: { username },
       success: (data) => {
-        console.log('challenge made', data);
         this.props.router.push('/game/' + data.id);
       },
       error: (data) => {
@@ -49,7 +47,7 @@ class Players extends React.Component {
   render() {
     return (
       <div className="players">
-        <h2> Challenge PLayers </h2>
+        <h2> Challenge Players </h2>
         <input id="player" list="players" /> &nbsp;
         <datalist id="players">
           {
