@@ -27,7 +27,9 @@ module.exports = {
   getBoard(req, res, next) {
     const gameID = req.body.id;
     Game.findOne({ _id: gameID }).then((game) => {
-      res.json({ boardString: game.boardString });
+      Game.update({ _id: gameID }, {pending: false}).then((game) => {
+        res.json({ boardString: game.boardString });
+      });
     });
   },
 
