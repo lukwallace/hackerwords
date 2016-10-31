@@ -68,6 +68,7 @@ class App extends React.Component {
       return;
     }
 
+
     if (!this.props.params.id) {
       /** Make a board for current user */
       $.get({
@@ -89,6 +90,7 @@ class App extends React.Component {
       });
     } else {
       /** Get an already-made board for current user */
+      console.log('GETTING A BOARD');
       $.post({
         url: '/api/getBoard',
         headers: { 'x-access-token': Util.getToken() },
@@ -109,32 +111,32 @@ class App extends React.Component {
     }
   }
 
-/** This function when invoked will finalize the current game to the database. */
-finalizeGame() {
-  $.ajax({
-          method: 'POST',
-          url: '/api/finalizeGame',
-          headers: { 'x-access-token': Util.getToken() },
-          dataType: 'json',
-          data: { score: this.state.score,
-                  wordsPlayed: this.state.wordsPlayed,
-                  gameID: this.state.gameID },
-          success: (data) => {
-            $('.gameEnded').css('display', 'block');
-          },
-          error: (data) => {
-            console.log(data);
-            console.log('Error: Game didn\'t end appropriately');
-          },
-        });
-}
+  /** This function when invoked will finalize the current game to the database. */
+  finalizeGame() {
+    $.ajax({
+      method: 'POST',
+      url: '/api/finalizeGame',
+      headers: { 'x-access-token': Util.getToken() },
+      dataType: 'json',
+      data: { score: this.state.score,
+              wordsPlayed: this.state.wordsPlayed,
+              gameID: this.state.gameID },
+      success: (data) => {
+        $('.gameEnded').css('display', 'block');
+      },
+      error: (data) => {
+        console.log(data);
+        console.log('Error: Game didn\'t end appropriately');
+      },
+    });
+  }
 
   /** componentWillUnmount() is invoked immediately before a component is unmounted and destroyed. This one stops the timer.
  */
 
   componentWillUnmount() {
     this.stopTimer();
-    if(this.state.gameOver === false) {
+    if (this.state.gameOver === false) {
       this.finalizeGame();
     }
   }
@@ -188,7 +190,6 @@ finalizeGame() {
       });
 
       /** If timer runs out, set gameOver state to true */
-
       if (this.state.timeLeft <= 0) {
         $('.selected').removeClass('selected');
         $('.lastclicked').removeClass('lastclicked');
@@ -198,7 +199,7 @@ finalizeGame() {
 
         /** Send back game results to server */
         this.finalizeGame();
-        clearInterval(this.timerInterval);      
+        clearInterval(this.timerInterval);
       }
     }, 1000);
   }
@@ -303,10 +304,6 @@ finalizeGame() {
       }
 
       $(event.target).addClass('selected');
-<<<<<<< Updated upstream
-=======
-      // console.log(event.target, 'EVENT TARGET FRANK');
->>>>>>> Stashed changes
       // re-evaluate using mutable objects as state params?
       this.setState({
         curWord: newCurWord,
