@@ -90,7 +90,6 @@ class App extends React.Component {
       });
     } else {
       /** Get an already-made board for current user */
-      console.log('GETTING A BOARD');
       $.post({
         url: '/api/getBoard',
         headers: { 'x-access-token': Util.getToken() },
