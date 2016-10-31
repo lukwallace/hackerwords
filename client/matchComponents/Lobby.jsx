@@ -110,8 +110,10 @@ class Lobby extends React.Component {
         data: { username },
         success: (data) => {
           console.log('Completed Games Data', data);
+          let gamesAboveZero = data.games.filter((game) => game[0].points > 0);
+
           this.setState({
-            gameHistory: data.games,
+            gameHistory: gamesAboveZero,
           });
         },
         error: (data) => {
