@@ -20,6 +20,7 @@ class Lobby extends React.Component {
   constructor(props) {
     super(props);
     this.logOut = this.logOut.bind(this);
+    this.refreshChallenges = this.refreshChallenges.bind(this);
     this.state = {
       players: [],
       challenges: [],
@@ -129,12 +130,33 @@ class Lobby extends React.Component {
     this.props.router.push('/signin');
   }
 
+  refreshChallenges() {
+    const username = jwt.decode(Util.getToken(), 'secret').username;
+
+    $.post({
+        url: '/api/getPendingGames',
+        headers: { 'x-access-token': Util.getToken() },
+        dataType: 'json',
+        data: { username },
+        success: (data) => {
+          this.setState({
+            challenges: data.result,
+          });
+        },
+        error: (data) => {
+          console.log('Error!');
+          console.log(data);
+        },
+      });
+  }
+
   render() {
     return (
       <div className="lobby">
         <h1>Lobby</h1>
         <Link to="/solo"> Single Player </Link>
         <Challenges entries={this.state.challenges} />
+        <button className="refreshChallenges" onClick={this.refreshChallenges}> Refresh Challenges </button>
         <Players entries={this.state.players} />
         <div> <h2> Your High Score: {this.state.highScore} </h2> </div>
         <button className="signoutButton" onClick={this.logOut}> Sign Out </button>

@@ -26,6 +26,7 @@ class App extends React.Component {
     };
 
     // Why do we need this code? Was 'this' not being set properly?
+    this.finalizeGame = this.finalizeGame.bind(this);
     this.getLastClickIndex = this.getLastClickIndex.bind(this);
     this.logOut = this.logOut.bind(this);
     this.backToLobby = this.backToLobby.bind(this);
@@ -112,11 +113,34 @@ class App extends React.Component {
     }
   }
 
+/** This function when invoked will finalize the current game to the database. */
+finalizeGame() {
+  $.ajax({
+          method: 'POST',
+          url: '/api/finalizeGame',
+          headers: { 'x-access-token': Util.getToken() },
+          dataType: 'json',
+          data: { score: this.state.score,
+                  wordsPlayed: this.state.wordsPlayed,
+                  gameID: this.state.gameID },
+          success: (data) => {
+            $('.gameEnded').css('display', 'block');
+          },
+          error: (data) => {
+            console.log(data);
+            console.log('Error: Game didn\'t end appropriately');
+          },
+        });
+}
+
   /** componentWillUnmount() is invoked immediately before a component is unmounted and destroyed. This one stops the timer.
  */
 
   componentWillUnmount() {
     this.stopTimer();
+    if(this.state.gameOver === false) {
+      this.finalizeGame();
+    }
   }
 
   /** This function is used to get the index of the last letter clicked.
@@ -144,6 +168,9 @@ class App extends React.Component {
 
   logOut() {
     this.stopTimer();
+    if(this.state.gameOver === false) {
+      this.finalizeGame();
+    }
     window.localStorage.removeItem('com.hackerwords');
     this.props.router.push('/signin');
   }
@@ -174,24 +201,9 @@ class App extends React.Component {
         });
 
         /** Send back game results to server */
-
+        this.finalizeGame();
         clearInterval(this.timerInterval);
-        $.ajax({
-          method: 'POST',
-          url: '/api/finalizeGame',
-          headers: { 'x-access-token': Util.getToken() },
-          dataType: 'json',
-          data: { score: this.state.score,
-                  wordsPlayed: this.state.wordsPlayed,
-                  gameID: this.state.gameID },
-          success: (data) => {
-            $('.gameEnded').css('display', 'block');
-          },
-          error: (data) => {
-            console.log(data);
-            console.log('Error: Game didn\'t end appropriately');
-          },
-        });
+        
       }
     }, 1000);
   }

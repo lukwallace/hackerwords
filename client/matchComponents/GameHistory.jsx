@@ -18,6 +18,7 @@ class GameHistory extends React.Component {
   render() {
     return (
       <div className="gameHistoryDiv">
+        <h2>Game History</h2>
         <table>
           <tbody>
           <tr><th>Solo Games</th></tr>
@@ -30,7 +31,7 @@ class GameHistory extends React.Component {
         </table>
         <table>
           <tbody>
-          <tr><th>Your Score</th><th>Opponent</th><th>Result</th></tr>
+          <tr><th>You</th><th>Opponent</th><th>Result</th></tr>
           {this.props.entries.filter((entry) => entry.length === 2).map((entry) => {
             return (
                 <tr className={entry[0].points > entry[1].points ? 'winRow' : 'lossRow'} key={entry[0]._id}>
