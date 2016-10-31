@@ -56,4 +56,9 @@ module.exports = (app) => {
 
   /** Check to see if username and password match and if so assign session token*/
   app.post('/api/signin', userController.signin);
+
+  /** If trying to access an invalid page, redirect to index.html */
+  app.get('*', (request, response) => {
+    response.redirect('/');
+  });
 };
