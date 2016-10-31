@@ -52,42 +52,23 @@ describe ('Client signin', () => {
     const passInput = wrapper.find('[id="password"]');
 
 
-    userInput.simulate('change', { target: { value: username} });
+    userInput.simulate('change', { target: { value: username } });
     passInput.simulate('change', { target: { value: password } });
 
 
     wrapper.find('[id="signin"]').simulate('click');
     expect($.ajax.calledOnce).to.be.true;
     const ajaxOptions = (typeof $.ajax.args[0][0] === 'object') ? $.ajax.args[0][0] : $.ajax.args[0][1];
-    
+
     expect(ajaxOptions.type).to.equal('post');
     expect(ajaxOptions.data.username).to.equal(username);
     expect(ajaxOptions.data.password).to.equal(password);
     done();
-    
   });
-
-  // it('Should route to the home page on succesful signin', () => {
-  //   Signin.prototype.componentWillUnmount = () => {
-  //     console.log('Unmount!');
-  //   };
-
-  //   sinon.spy(Signin.prototype, 'componentWillUnmount');
-  //   wrapper = mount(<Signin />);
-  //   const userInput = wrapper.find('[id="username"]');
-  //   const passInput = wrapper.find('[id="password"]');
-  //   userInput.simulate('change', { target: { value: 'a' } });
-  //   passInput.simulate('change', { target: { value: 'a' } });
-  //   wrapper.find('[id="signin"]').simulate('click');
-  //   expect(Signin.prototype.componentWillUnmount.callCount).to.equal(1);
-  // });
-
 });
 
 
-
-
-describe ('Client singup', () => {
+describe ('Client signup', () => {
   var wrapper;
   var ajaxSpy;
 
@@ -116,19 +97,17 @@ describe ('Client singup', () => {
     const passInput = wrapper.find('[id="password"]');
 
 
-    userInput.simulate('change', { target: { value: username} });
+    userInput.simulate('change', { target: { value: username } });
     passInput.simulate('change', { target: { value: password } });
 
 
     wrapper.find('[id="signup"]').simulate('click');
     expect($.ajax.calledOnce).to.be.true;
     const ajaxOptions = (typeof $.ajax.args[0][0] === 'object') ? $.ajax.args[0][0] : $.ajax.args[0][1];
-    
+
     expect(ajaxOptions.type).to.equal('post');
     expect(ajaxOptions.data.username).to.equal(username);
     expect(ajaxOptions.data.password).to.equal(password);
     done();
-    
   });
-
 });

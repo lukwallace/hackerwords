@@ -18,6 +18,7 @@ export default class Board extends React.Component {
         this.indices.push(i);
       }
     }
+    console.log(props.boardStr, this.indices);
   }
 
   render() {

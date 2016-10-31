@@ -63,82 +63,80 @@ class App extends React.Component {
   componentWillMount() {
     const token = Util.getToken();
 
+    if (!this.props.isTest && !token) {
+      this.props.router.push('/signin');
+      return;
+    }
 
-    if (!this.props.isTest) {
-      if (!token) {
-        this.props.router.push('/signin');
-        return;
-      }
 
-      if (!this.props.params.id) {
-
-        /** Make a board for current user */
-
-        $.get({
-          url: '/api/makeBoard',
-          headers: { 'x-access-token': Util.getToken() },
-          dataType: 'json',
-          success: (data) => {
-            this.setState({
-              gameID: data.id,
-              boardStr: data.boardString,
-            });
-          },
-          error: (data) => {
-            console.log('Error!');
-            console.log(data);
-          },
-        });
-      } else {
-
-        /** Get an already-made board for current user */
-
-        $.post({
-          url: '/api/getBoard',
-          headers: { 'x-access-token': Util.getToken() },
-          dataType: 'json',
-          data: { id: this.props.params.id },
-          success: (data) => {
-            this.setState({
-              gameID: this.props.params.id,
-              boardStr: data.boardString,
-            });
-          },
-          error: (data) => {
-            console.log('Error!');
-            console.log(data);
-          },
-        });
-      }
+    if (!this.props.params.id) {
+      /** Make a board for current user */
+      $.get({
+        url: '/api/makeBoard',
+        headers: { 'x-access-token': Util.getToken() },
+        dataType: 'json',
+        success: (data) => {
+          console.log('Here!', data);
+          console.log(data.boardString);
+          this.setState({
+            gameID: data.id,
+            boardStr: data.boardString,
+          });
+        },
+        error: (data) => {
+          console.log('Error!');
+          console.log(data);
+        },
+      });
+    } else {
+      /** Get an already-made board for current user */
+      console.log('GETTING A BOARD');
+      $.post({
+        url: '/api/getBoard',
+        headers: { 'x-access-token': Util.getToken() },
+        dataType: 'json',
+        data: { id: this.props.params.id },
+        success: (data) => {
+          console.log(data);
+          this.setState({
+            gameID: this.props.params.id,
+            boardStr: data.boardString,
+          });
+        },
+        error: (data) => {
+          console.log('Error!');
+          console.log(data);
+        },
+      });
     }
   }
 
-/** This function when invoked will finalize the current game to the database. */
-finalizeGame() {
-  $.ajax({
-          method: 'POST',
-          url: '/api/finalizeGame',
-          headers: { 'x-access-token': Util.getToken() },
-          dataType: 'json',
-          data: { score: this.state.score,
-                  wordsPlayed: this.state.wordsPlayed,
-                  gameID: this.state.gameID },
-          success: (data) => {
-            $('.gameEnded').css('display', 'block');
-          },
-          error: (data) => {
-            console.log(data);
-            console.log('Error: Game didn\'t end appropriately');
-          },
-        });
-}
+  /** This function when invoked will finalize the current game to the database. */
+  finalizeGame() {
+    $.ajax({
+      method: 'POST',
+      url: '/api/finalizeGame',
+      headers: { 'x-access-token': Util.getToken() },
+      dataType: 'json',
+      data: { score: this.state.score,
+              wordsPlayed: this.state.wordsPlayed,
+              gameID: this.state.gameID },
+      success: (data) => {
+        $('.gameEnded').css('display', 'block');
+      },
+      error: (data) => {
+        console.log(data);
+        console.log('Error: Game didn\'t end appropriately');
+      },
+    });
+  }
 
   /** componentWillUnmount() is invoked immediately before a component is unmounted and destroyed. This one stops the timer.
  */
 
   componentWillUnmount() {
     this.stopTimer();
-    if(this.state.gameOver === false) {
+    if (this.state.gameOver === false) {
       this.finalizeGame();
     }
   }
@@ -192,7 +190,6 @@ finalizeGame() {
       });
 
       /** If timer runs out, set gameOver state to true */
-
       if (this.state.timeLeft <= 0) {
         $('.selected').removeClass('selected');
         $('.lastclicked').removeClass('lastclicked');
@@ -202,7 +199,7 @@ finalizeGame() {
 
         /** Send back game results to server */
         this.finalizeGame();
-        clearInterval(this.timerInterval);      
+        clearInterval(this.timerInterval);
       }
     }, 1000);
   }
@@ -231,6 +228,7 @@ finalizeGame() {
     const word = this.state.curWord;
     // dont send a request if we have that word
     if (this.state.wordsPlayed.indexOf(word) === -1) {
+      console.log('request!');
       $.post('/api/checkWord', { word }, (data) => {
         if (data.isWord) {
           this.setState({
