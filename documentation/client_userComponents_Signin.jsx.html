@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: userComponents/Signin.jsx</title>
+    <title>JSDoc: Source: client/userComponents/Signin.jsx</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: userComponents/Signin.jsx</h1>
+    <h1 class="page-title">Source: client/userComponents/Signin.jsx</h1>
 
     
 
@@ -40,6 +40,7 @@ const util = require('../util.js');
  * Creates a new Signin Component.
  * @class
  */
+
 class Signin extends React.Component {
   constructor(props) {
     super(props);
@@ -49,8 +50,8 @@ class Signin extends React.Component {
     this.onPasswordChange = this.onPasswordChange.bind(this);
     this.state = {
       username: '',
-      password: ''
-    }
+      password: '',
+    };
     util.signOut();
   }
 
@@ -62,6 +63,8 @@ class Signin extends React.Component {
     this.setState({ password: event.target.value });
   }
 
+
+  /** componentDidMount() is invoked immediately after a component is mounted. This adds an event listener for the enter key on submit. If it records an enter, submit the form */
 
   componentDidMount() {
 
@@ -75,12 +78,15 @@ class Signin extends React.Component {
     });
   }
 
+
+  /** This function takes care of the submission process. It gets the values of the username/password and sends them to the server for verification and authentication */
+
   submitFn() {
     /** Grab username and password values from fields */
     const username = this.state.username;
     const password = this.state.password;
 
-    this.setState({username:'', password:''});
+    this.setState({ username:'', password:'' });
 
     /** Submit username and password for verification */
     $.post({
@@ -99,25 +105,16 @@ class Signin extends React.Component {
     });
   }
 
-  /** Render signin page */
   render() {
     return (
       &lt;div className="signin">
         &lt;h1> HackerWords &lt;/h1>
         &lt;div className="signintitle"> Signin &lt;/div>
         &lt;label htmlFor="username"> Username &lt;/label>
-        &lt;input type="text" value={this.state.username} id="username" name="username" className="signinform" onChange={(event) => this.onUsernameChange(event)}/>
-        &lt;br />
+        &lt;input type="text" id="username" name="username" onChange={event => this.onUsernameChange(event)} />
         &lt;label htmlFor="password"> Password &lt;/label>
-        &lt;input type="password" value={this.state.password} id="password" name="password" className="signinform" onChange={(event) => this.onPasswordChange(event)}/>
-        &lt;br />
-        &lt;br />
-        &lt;br />
-        &lt;input type="button" id="signin" value="Signin" onClick={this.submitFn} className="signinform" />
-        &lt;br />
-        &lt;br />
-        &lt;br />
-        &lt;br />
+        &lt;input type="password" id="password" name="password" onChange={event => this.onPasswordChange(event)} />
+        &lt;input type="button" id="signin" value="Signin" onClick={this.submitFn} />
         Don't have an account?
         &lt;Link to="/signup"> Sign up here&lt;/Link>
         &lt;h2 className="error"> Invalid user or password! &lt;/h2>
@@ -137,13 +134,13 @@ export default withRouter(Signin, { withRef: true });
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="Challenges.html">Challenges</a></li><li><a href="GameHistory.html">GameHistory</a></li><li><a href="Lobby.html">Lobby</a></li><li><a href="module.exports.html">exports</a></li><li><a href="Players.html">Players</a></li><li><a href="Signin.html">Signin</a></li><li><a href="Signup.html">Signup</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#signOut">signOut</a></li><li><a href="global.html#storeToken">storeToken</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Authentication%2520Utility%2520Client-Side%2520Functions.html">Authentication Utility Client-Side Functions</a></li><li><a href="module-Authentication%2520Utility%2520Server-Side%2520Functions.html">Authentication Utility Server-Side Functions</a></li><li><a href="module-Board.html">Board</a></li><li><a href="module-Board%2520Tools%2520Functions.html">Board Tools Functions</a></li><li><a href="module-Game%2520Model.html">Game Model</a></li><li><a href="module-Middleware.html">Middleware</a></li><li><a href="module-Played%2520Words.html">Played Words</a></li><li><a href="module-Router.html">Router</a></li><li><a href="module-Score.html">Score</a></li><li><a href="module-Server.html">Server</a></li><li><a href="module-User%2520Controller.html">User Controller</a></li><li><a href="module-User%2520Model.html">User Model</a></li></ul><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="Challenges.html">Challenges</a></li><li><a href="GameHistory.html">GameHistory</a></li><li><a href="Lobby.html">Lobby</a></li><li><a href="Players.html">Players</a></li><li><a href="Signin.html">Signin</a></li><li><a href="Signup.html">Signup</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Sun Oct 30 2016 11:37:17 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Sun Oct 30 2016 18:04:20 GMT-0700 (PDT)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -5,9 +5,9 @@
 import React from 'react';
 
 /**
- * Creates a new Board.
- * @class
+ * @module Board
  */
+
 export default class Board extends React.Component {
   constructor(props) {
     super(props);
@@ -21,7 +21,6 @@ export default class Board extends React.Component {
     console.log(this.indices, props.boardStr);
   }
 
-  /** Render current board */
   render() {
     return (
       <span className="gameboard">

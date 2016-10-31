@@ -23,6 +23,8 @@ class Signup extends React.Component {
   }
 
 
+   /** componentDidMount() is invoked immediately after a component is mounted. This adds an event listener for the enter key on submit. If it records an enter, submit the form */
+
   componentDidMount() {
     /** Makes pressing enter on any input box click submit */
     $('input').each(function () {
@@ -41,6 +43,9 @@ class Signup extends React.Component {
   onPasswordChange(event) {
     this.setState({ password: event.target.value });
   }
+
+
+  /** This function takes care of the submission process. It gets the values of the username/password and sends them to the server for verification and authentication */
 
   submitFn() {
     /** Grab username and password values from fields */

@@ -12,6 +12,7 @@ const util = require('../util.js');
  * Creates a new Signin Component.
  * @class
  */
+
 class Signin extends React.Component {
   constructor(props) {
     super(props);
@@ -35,6 +36,8 @@ class Signin extends React.Component {
   }
 
 
+  /** componentDidMount() is invoked immediately after a component is mounted. This adds an event listener for the enter key on submit. If it records an enter, submit the form */
+
   componentDidMount() {
 
     /** Makes pressing enter on any input box click submit */
@@ -46,6 +49,9 @@ class Signin extends React.Component {
       });
     });
   }
+
+
+  /** This function takes care of the submission process. It gets the values of the username/password and sends them to the server for verification and authentication */
 
   submitFn() {
     /** Grab username and password values from fields */
@@ -71,7 +77,6 @@ class Signin extends React.Component {
     });
   }
 
-  /** Render signin page */
   render() {
     return (
       <div className="signin">

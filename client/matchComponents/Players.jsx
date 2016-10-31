@@ -8,9 +8,10 @@ import $ from 'jquery';
 import Util from './../util.js';
 
 /**
- * Creates a new Players list.
+ * Creates a new Players list component.
  * @class
  */
+
 class Players extends React.Component {
   constructor(props) {
     super(props);
@@ -45,7 +46,6 @@ class Players extends React.Component {
     });
   }
 
-  /** Render list of players available for challenging */
   render() {
     return (
       <div className="players">

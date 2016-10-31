@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>JSDoc: Source: gameComponents/App.jsx</title>
+    <title>JSDoc: Source: client/gameComponents/App.jsx</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -17,7 +17,7 @@
 
 <div id="main">
 
-    <h1 class="page-title">Source: gameComponents/App.jsx</h1>
+    <h1 class="page-title">Source: client/gameComponents/App.jsx</h1>
 
     
 
@@ -30,7 +30,6 @@
  * @file Manages the app component.
  */
 
-
 import React from 'react';
 import { withRouter } from 'react-router';
 import $ from 'jquery';
@@ -41,9 +40,10 @@ import Util from './../util.js';
 
 
 /**
- * Creates a new App.
+ * Creates a new App component.
  * @class
  */
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -71,7 +71,8 @@ class App extends React.Component {
     }
 
     this.state = {
-      boardStr: 'abcdefghijklmnop',
+      gameID: null,
+      boardStr: 'shouldnotseethis',
       curWord: '',
       curIndexesUsed: [],
       wordsPlayed: [],
@@ -81,9 +82,10 @@ class App extends React.Component {
       score: 0,
     };
 
-
     this.startTimer();
   }
+
+  /** componentWillMount() is invoked immediately before mounting occurs. This one checks for a valid session token and if the token is valid and the user plays a single player game, it makes a random game board for the user. If player is playing challenge mode, it will retrieve the appropriate board */
 
   componentWillMount() {
     const token = Util.getToken();
@@ -99,15 +101,17 @@ class App extends React.Component {
       }
 
       if (!this.props.params.id) {
-
         /** Make a board for current user */
+
         $.get({
           url: '/api/makeBoard',
           headers: { 'x-access-token': Util.getToken() },
           dataType: 'json',
           success: (data) => {
+            console.log('Here!', data);
             console.log(data.boardString);
             this.setState({
+              gameID: data.id,
               boardStr: data.boardString,
             });
           },
@@ -119,6 +123,7 @@ class App extends React.Component {
       } else {
 
         /** Get an already-made board for current user */
+
         $.post({
           url: '/api/getBoard',
           headers: { 'x-access-token': Util.getToken() },
@@ -127,6 +132,7 @@ class App extends React.Component {
           success: (data) => {
             console.log(data);
             this.setState({
+              gameID: this.props.params.id,
               boardStr: data.boardString,
             });
           },
@@ -139,12 +145,16 @@ class App extends React.Component {
     }
   }
 
+  /** componentWillUnmount() is invoked immediately before a component is unmounted and destroyed. This one stops the timer.
+ */
+
   componentWillUnmount() {
     this.stopTimer();
   }
 
-  /** This function is to get the index of the last letter clicked.
+  /** This function is used to get the index of the last letter clicked.
  */
+
   getLastClickIndex() {
     if (this.state.curIndexesUsed.length === 0) {
       return null;
@@ -153,11 +163,13 @@ class App extends React.Component {
   }
 
 
-  /** This function is used to get the clicked index.
- * @param {object} input an array with indexes
- * @returns {number} that index number
+  /** This function is used to get the index of a particular index.
+ * @param {object} ci an array with all letters (indexes) that have been clicked for current word
+ * @returns {number} the index number
  */
+
   getClickIndexNumber(ci) {
+    console.log('CI', ci);
     return Number(ci.slice(1));
   }
 
@@ -178,33 +190,36 @@ class App extends React.Component {
   /** This function is used to start the game timer.
   */
   startTimer() {
-    var context = this;
     this.timerInterval = setInterval(() => {
       this.setState({
         timeLeft: this.state.timeLeft - 1,
       });
 
-      /** If timer runs out */
+      /** If timer runs out, set gameOver state to true */
       if (this.state.timeLeft &lt;= 0) {
         this.setState({
           gameOver: true,
         });
 
         /** Send back game results to server */
-        clearInterval(context.timerInterval);
+        clearInterval(this.timerInterval);
         $.ajax({
           method: 'POST',
           url: '/api/finalizeGame',
           headers: { 'x-access-token': Util.getToken() },
           dataType: 'json',
-          data: { score: context.state.score, wordsPlayed: context.state.wordsPlayed, boardStr: context.state.boardStr },
+          data: { score: this.state.score,
+                  wordsPlayed: this.state.wordsPlayed,
+                  gameID: this.state.gameID },
           success: (data) => {
-            console.log(data);
+            console.log('Game ended!', data);
             $('.gameEnded').css('display', 'block');
           },
+          error: (data) => {
+            console.log(data);
+            console.log('Error: Game didn\'t appropriately');
+          },
         });
-
-
       }
     }, 1000);
   }
@@ -217,7 +232,7 @@ class App extends React.Component {
 
 
    /**This function is used to check to see if letter has been clicked previously in current word.
- * @param {number} input is index of clicked letter
+ * @param {number} clickIndex index to check
  * @returns {boolean}
  */
   isInUsedIndexes(clickIndex) {
@@ -229,7 +244,7 @@ class App extends React.Component {
  */
   sendWord() {
     const word = this.state.curWord;
-    //dont send a request if we have that word
+    // dont send a request if we have that word
     if (this.state.wordsPlayed.indexOf(word) === -1) {
       $.post('/api/checkWord', { word }, (data) => {
         if (data.isWord) {
@@ -248,7 +263,7 @@ class App extends React.Component {
  * @returns {boolean} true or false if rules are followed
  */
   boardClick(event) {
-    console.log('event', event);
+    // console.log('event', event);
     if (this.state.gameOver) {
       return;
     }
@@ -284,7 +299,6 @@ class App extends React.Component {
       $('.selected').removeClass('selected');
       $('.lastclicked').removeClass('lastclicked');
 
-3
       this.sendWord();
 
       this.setState({
@@ -306,7 +320,7 @@ class App extends React.Component {
       }
 
       $(event.target).addClass('selected');
-        // re-evaluate using mutable objects as state params?
+      // re-evaluate using mutable objects as state params?
       this.setState({
         curWord: newCurWord,
         curIndexesUsed: newCurIndexes,
@@ -329,14 +343,13 @@ class App extends React.Component {
       &lt;div>
         &lt;div className="gameBoardApp" />
         &lt;h1> HackerWords &lt;/h1>
-        &lt;div className='timeLeft'>{this.state.timeLeft}&lt;/div>
-        &lt;div className='currentWord'>{this.state.curWord}&lt;/div>
-        &lt;div> &lt;button className='gameEnded' onClick={this.backToLobby}> Back to Lobby &lt;/button> &lt;/div>
+        &lt;div className="timeLeft">{this.state.timeLeft}&lt;/div>
+        &lt;div className="currentWord">{this.state.curWord}&lt;/div>
+        &lt;div> &lt;button className="gameEnded" onClick={this.backToLobby}> Back to Lobby &lt;/button> &lt;/div>
         &lt;div>&lt;Score score={this.state.score} />&lt;/div>
         &lt;Board boardStr={this.state.boardStr} clickHandler={this.boardClick} />
         &lt;PlayedWords wordsPlayed={this.state.wordsPlayed} wordScores={this.state.wordScores} />
-        &lt;button className='signoutButton' onClick={this.logOut}> Sign Out &lt;/button>
-
+        &lt;button className="signoutButton" onClick={this.logOut}> Sign Out &lt;/button>
       &lt;/div>
     );
   }
@@ -354,13 +367,13 @@ export default withRouter(App, { withRef: true });
 </div>
 
 <nav>
-    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="Challenges.html">Challenges</a></li><li><a href="GameHistory.html">GameHistory</a></li><li><a href="Lobby.html">Lobby</a></li><li><a href="module.exports.html">exports</a></li><li><a href="Players.html">Players</a></li><li><a href="Signin.html">Signin</a></li><li><a href="Signup.html">Signup</a></li></ul><h3>Global</h3><ul><li><a href="global.html#getToken">getToken</a></li><li><a href="global.html#render">render</a></li><li><a href="global.html#signOut">signOut</a></li><li><a href="global.html#storeToken">storeToken</a></li></ul>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Authentication%2520Utility%2520Client-Side%2520Functions.html">Authentication Utility Client-Side Functions</a></li><li><a href="module-Authentication%2520Utility%2520Server-Side%2520Functions.html">Authentication Utility Server-Side Functions</a></li><li><a href="module-Board.html">Board</a></li><li><a href="module-Board%2520Tools%2520Functions.html">Board Tools Functions</a></li><li><a href="module-Game%2520Model.html">Game Model</a></li><li><a href="module-Middleware.html">Middleware</a></li><li><a href="module-Played%2520Words.html">Played Words</a></li><li><a href="module-Router.html">Router</a></li><li><a href="module-Score.html">Score</a></li><li><a href="module-Server.html">Server</a></li><li><a href="module-User%2520Controller.html">User Controller</a></li><li><a href="module-User%2520Model.html">User Model</a></li></ul><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="Challenges.html">Challenges</a></li><li><a href="GameHistory.html">GameHistory</a></li><li><a href="Lobby.html">Lobby</a></li><li><a href="Players.html">Players</a></li><li><a href="Signin.html">Signin</a></li><li><a href="Signup.html">Signup</a></li></ul>
 </nav>
 
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Sun Oct 30 2016 11:37:17 GMT-0700 (PDT)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Sun Oct 30 2016 18:04:20 GMT-0700 (PDT)
 </footer>
 
 <script> prettyPrint(); </script>

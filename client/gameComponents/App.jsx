@@ -124,7 +124,7 @@ class App extends React.Component {
     this.stopTimer();
   }
 
-  /** This function is to get the index of the last letter clicked.
+  /** This function is used to get the index of the last letter clicked.
  */
 
   getLastClickIndex() {
@@ -167,7 +167,7 @@ class App extends React.Component {
         timeLeft: this.state.timeLeft - 1,
       });
 
-      /** If timer runs out */
+      /** If timer runs out, set gameOver state to true */
       if (this.state.timeLeft <= 0) {
         this.setState({
           gameOver: true,
@@ -204,7 +204,7 @@ class App extends React.Component {
 
 
    /**This function is used to check to see if letter has been clicked previously in current word.
- * @param {number} input is index of clicked letter
+ * @param {number} clickIndex index to check
  * @returns {boolean}
  */
   isInUsedIndexes(clickIndex) {

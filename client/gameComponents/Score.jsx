@@ -5,15 +5,14 @@
 import React from 'react';
 
 /**
- * Creates a new Score
- * @class
+ * @module Score
  */
+
 export default class Score extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  /** Render current score */
   render() {
     return (
       <div className="scoreboard">

@@ -4,16 +4,15 @@
 
 import React from 'react';
 
-/**
- * Creates a new Played Words List.
- * @class
+ /**
+ * @module Played Words
  */
+
 export default class PlayedWords extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  /** Render words played */
   render() {
     return (
       <span className="wordsPlayed">

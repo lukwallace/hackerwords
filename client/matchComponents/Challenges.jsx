@@ -6,15 +6,15 @@ import React from 'react';
 import { Link, withRouter } from 'react-router';
 
 /**
- * Creates a new list of Challenges.
+ * Creates a new Challenges list component.
  * @class
  */
+
 class Challenges extends React.Component {
   constructor(props) {
     super(props);
   }
 
-  /** Render list of game challenges */
   render() {
     return (
       <div className="challenges">

@@ -2,9 +2,10 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+/** @module Game Model */
+
 // mongoose.connect('mongodb://localhost/HackerWords');
 
-/** Game Schema */
 const gameSchema = new Schema({
   // ID of the player
   user_id: {

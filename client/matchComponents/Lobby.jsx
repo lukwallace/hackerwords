@@ -12,9 +12,10 @@ import Util from './../util.js';
 import GameHistory from './GameHistory.jsx';
 
 /**
- * Creates a new lobby
+ * Creates a new Lobby component.
  * @class
  */
+
 class Lobby extends React.Component {
   constructor(props) {
     super(props);
@@ -27,6 +28,7 @@ class Lobby extends React.Component {
     };
   }
 
+  /** componentWillMount() is invoked immediately before mounting occurs. This one checks for a valid session token and if the token is valid and the user plays a single player game, it makes a random game board for the user. If player is playing challenge mode, it will retrieve the appropriate board */
   componentWillMount() {
     const token = Util.getToken();
     if (token) {
@@ -99,6 +101,8 @@ class Lobby extends React.Component {
           console.log(data);
         },
       });
+
+      /** Get all game history */
       $.post({
         url: '/api/getGameHistory',
         headers: { 'x-access-token': token },
@@ -125,7 +129,6 @@ class Lobby extends React.Component {
     this.props.router.push('/signin');
   }
 
-  /** Render lobby page */
   render() {
     return (
       <div className="lobby">

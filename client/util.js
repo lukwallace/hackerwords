@@ -2,6 +2,8 @@
  * @file Utility functions used for client side authentication
  */
 
+/** @module Authentication Utility Client-Side Functions */
+
 module.exports = {
 
   /**
