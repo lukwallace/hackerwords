@@ -226,11 +226,6 @@ finalizeGame() {
   sendWord() {
     const word = this.state.curWord;
     // dont send a request if we have that word
-    console.log('Sending word ', word);
-<<<<<<< Updated upstream
-    console.log('words played', this.state.wordsPlayed);
-=======
->>>>>>> Stashed changes
     if (this.state.wordsPlayed.indexOf(word) === -1) {
       console.log('request!');
       $.post('/api/checkWord', { word }, (data) => {
