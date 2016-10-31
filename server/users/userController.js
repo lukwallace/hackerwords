@@ -105,7 +105,7 @@ module.exports = {
               const token = jwt.encode(user, 'secret');
               return res.json({ token });
             }
-            return next(new Error('Wrong password'));
+            return res.json({Error:'Wrong password'});
           });
       })
       .fail((error) => {
