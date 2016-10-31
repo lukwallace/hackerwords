@@ -17,17 +17,31 @@ class GameHistory extends React.Component {
 
   render() {
     return (
-      <div>
-        {this.props.entries.map((entry) => {
-          return (
-            <div key={entry[0]._id}>
-              {entry.length === 1 ?
-                'Solo Game: ' + entry[0].points + ' points' :
-                'Challenge Game: ' + entry[1].opponentName + ' - ' + entry[0].points + ' points, ' + entry[0].opponentName + ' - ' + (entry[1].pending ? 'pending' : entry[1].points + ' points' )
-              }
-            </div>
-          );
-        })}
+      <div className="gameHistoryDiv">
+        <table>
+          <tbody>
+          <tr><th>Solo Games</th></tr>
+          {this.props.entries.filter((entry) => entry.length === 1).map((entry) => {
+            return (
+                <tr className="soloRow" key={entry[0]._id}><td key={entry[0]._id}>{entry[0].points + ' points'}</td></tr>
+              );
+          })}
+          </tbody>
+        </table>
+        <table>
+          <tbody>
+          <tr><th>Your Score</th><th>Opponent</th><th>Result</th></tr>
+          {this.props.entries.filter((entry) => entry.length === 2).map((entry) => {
+            return (
+                <tr className={entry[0].points > entry[1].points ? 'winRow' : 'lossRow'} key={entry[0]._id}>
+                  <td key={entry[0]._id}>{entry[0].points + ' points'}</td>
+                  <td key={entry[1]._id}>{entry[0].opponentName + ': ' + entry[1].points + ' points.'}</td>
+                  <td>{entry[0].points > entry[1].points ? 'You Won! :-)' : 'You Lost! :-('}</td>
+                </tr>
+              );
+          })}
+          </tbody>
+        </table>
       </div>
     );
   }
