@@ -303,6 +303,7 @@ class App extends React.Component {
       }
 
       $(event.target).addClass('selected');
+      console.log(event.target, 'EVENT TARGET FRANK');
       // re-evaluate using mutable objects as state params?
       this.setState({
         curWord: newCurWord,
