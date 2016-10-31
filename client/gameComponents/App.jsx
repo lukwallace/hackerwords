@@ -61,9 +61,6 @@ class App extends React.Component {
 
   componentWillMount() {
     const token = Util.getToken();
-    if (token) {
-      console.log('APPTOKEN', token);
-    }
 
 
     if (!this.props.isTest) {
@@ -81,8 +78,6 @@ class App extends React.Component {
           headers: { 'x-access-token': Util.getToken() },
           dataType: 'json',
           success: (data) => {
-            console.log('Here!', data);
-            console.log(data.boardString);
             this.setState({
               gameID: data.id,
               boardStr: data.boardString,
@@ -103,7 +98,6 @@ class App extends React.Component {
           dataType: 'json',
           data: { id: this.props.params.id },
           success: (data) => {
-            console.log(data);
             this.setState({
               gameID: this.props.params.id,
               boardStr: data.boardString,
@@ -142,7 +136,6 @@ class App extends React.Component {
  */
 
   getClickIndexNumber(ci) {
-    console.log('CI', ci);
     return Number(ci.slice(1));
   }
 
@@ -192,12 +185,11 @@ class App extends React.Component {
                   wordsPlayed: this.state.wordsPlayed,
                   gameID: this.state.gameID },
           success: (data) => {
-            console.log('Game ended!', data);
             $('.gameEnded').css('display', 'block');
           },
           error: (data) => {
             console.log(data);
-            console.log('Error: Game didn\'t appropriately');
+            console.log('Error: Game didn\'t end appropriately');
           },
         });
       }
@@ -218,7 +210,6 @@ class App extends React.Component {
  */
 
   isInUsedIndexes(clickIndex) {
-    console.log(clickIndex, 'click index');
     return (this.state.curIndexesUsed.indexOf(clickIndex) !== -1);
   }
 
@@ -247,7 +238,6 @@ class App extends React.Component {
  */
 
   boardClick(event) {
-    // console.log('event', event);
     if (this.state.gameOver) {
       return;
     }
@@ -305,7 +295,6 @@ class App extends React.Component {
       }
 
       $(event.target).addClass('selected');
-      console.log(event.target, 'EVENT TARGET FRANK');
       // re-evaluate using mutable objects as state params?
       this.setState({
         curWord: newCurWord,
