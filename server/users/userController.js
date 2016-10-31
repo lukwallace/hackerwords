@@ -25,9 +25,14 @@ module.exports = {
   * @returns {object} all users
   */
   getAllUsers(req, res, next) {
-    User.find({}, (err, result) => {
-      const allUsers = result.map(userEntry => (userEntry.username));
-      res.json({ allUsers });
+    util.getUserFromReq(req, next).then((user) => {
+      User.find({}, (err, result) => {
+        var allUsers = result.map(userEntry => (userEntry.username));
+        allUsers = allUsers.filter((item) => {
+          return (item !== user.username)
+        });
+        res.json({ allUsers });
+      });
     });
   },
 
