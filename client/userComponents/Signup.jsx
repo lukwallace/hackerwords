@@ -1,18 +1,32 @@
+/**
+ * @file Manages the signup component.
+ */
+
 import React from 'react';
 import { Link, withRouter } from 'react-router';
 import $ from 'jquery';
 
 const util = require('../util.js');
 
+/**
+ * Creates a new Signup Component.
+ * @class
+ */
 class Signup extends React.Component {
   constructor(props) {
     super(props);
     this.submitFn = this.submitFn.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
+    this.onUsernameChange = this.onUsernameChange.bind(this);
+    this.onPasswordChange = this.onPasswordChange.bind(this);
     util.signOut();
   }
 
+
+   /** componentDidMount() is invoked immediately after a component is mounted. This adds an event listener for the enter key on submit. If it records an enter, submit the form */
+
   componentDidMount() {
-    // Makes pressing enter on any input box click submit
+    /** Makes pressing enter on any input box click submit */
     $('input').each(function () {
       $(this).keypress((e) => {
         if (e.which === 13) {
@@ -22,12 +36,25 @@ class Signup extends React.Component {
     });
   }
 
-  submitFn() {
-    const username = $('#username').val();
-    const password = $('#password').val();
-    $('#username').val('');
-    $('#password').val('');
+  onUsernameChange(event) {
+    this.setState({ username: event.target.value });
+  }
 
+  onPasswordChange(event) {
+    this.setState({ password: event.target.value });
+  }
+
+
+  /** This function takes care of the submission process. It gets the values of the username/password and sends them to the server for verification and authentication */
+
+  submitFn() {
+    /** Grab username and password values from fields */
+    const username = this.state.username;
+    const password = this.state.password;
+
+    this.setState({ username:'', password:'' });
+
+    /** Submit username and password for verification and creation */
     $.post({
       url: '/api/signup',
       dataType: 'json',
@@ -39,36 +66,25 @@ class Signup extends React.Component {
       },
       error: (error) => {
         console.error(error);
-        $('#error').show();
+        $('.error').show();
       },
     });
   }
 
+  /** Render signup page */
   render() {
     return (
       <div className="signup">
-        <h1 className="signuph1"> HackerWords </h1>
-        <br />
+        <h1> HackerWords </h1>
         <div className="signuptitle"> Signup </div>
-        <br />
-        <br />
-        <br />
-        <label htmlFor="username" className="signuplabel">Username </label>
-        <input type="text" id="username" name="username" className="signupform" />
-        <br />
-        <label htmlFor="password" className="signuplabel"> Password </label>
-        <input type="password"id="password" name="password" className="signupform" />
-        <br />
-        <br />
-        <br />
-        <input type="button" id="signup" value="Signup" onClick={this.submitFn} className="signupform signupbutton" />
-        <br />
-        <br />
-        <br />
-        <br />
+        <label htmlFor="username"> Username </label>
+        <input type="text" id="username" name="username" onChange={event => this.onUsernameChange(event)} />
+        <label htmlFor="password"> Password </label>
+        <input type="password" id="password" name="password" onChange={event => this.onPasswordChange(event)} />
+        <input type="button" id="signup" value="Signup" onClick={this.submitFn} />
         Have an account?
         <Link to="/signin"> Sign in here</Link>
-        <h2 id="error"> Username already exists! </h2>
+        <h2 className="error"> Username already exists! </h2>
       </div>
     );
   }

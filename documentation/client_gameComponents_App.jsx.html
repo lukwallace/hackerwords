@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: client/gameComponents/App.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: client/gameComponents/App.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file Manages the app component.
+ */
+
+import React from 'react';
+import { withRouter } from 'react-router';
+import $ from 'jquery';
+import Board from './Board.jsx';
+import PlayedWords from './PlayedWords.jsx';
+import Score from './Score.jsx';
+import Util from './../util.js';
+
+
+/**
+ * Creates a new App component.
+ * @class
+ */
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+
+
+    this.setStateCallback = (stateObj) => {
+      // console.log('setting state to', stateObj);
+    };
+
+    // Why do we need this code? Was 'this' not being set properly?
+    this.getLastClickIndex = this.getLastClickIndex.bind(this);
+    this.logOut = this.logOut.bind(this);
+    this.backToLobby = this.backToLobby.bind(this);
+    this.startTimer = this.startTimer.bind(this);
+    this.stopTimer = this.stopTimer.bind(this);
+    this.isInUsedIndexes = this.isInUsedIndexes.bind(this);
+    this.sendWord = this.sendWord.bind(this);
+    this.boardClick = this.boardClick.bind(this);
+    this.setState = this.setState.bind(this);
+    this.setStateCallback = this.setStateCallback.bind(this);
+    if (props.rowSize) {
+      this.rowSize = props.rowSize;
+    } else {
+      this.rowSize = 4;
+    }
+
+    this.state = {
+      gameID: null,
+      boardStr: 'shouldnotseethis',
+      curWord: '',
+      curIndexesUsed: [],
+      wordsPlayed: [],
+      wordScores: [],
+      timeLeft: 15,
+      gameOver: false,
+      score: 0,
+    };
+
+    this.startTimer();
+  }
+
+  /** componentWillMount() is invoked immediately before mounting occurs. This one checks for a valid session token and if the token is valid and the user plays a single player game, it makes a random game board for the user. If player is playing challenge mode, it will retrieve the appropriate board */
+
+  componentWillMount() {
+    const token = Util.getToken();
+    if (token) {
+      console.log('APPTOKEN', token);
+    }
+
+
+    if (!this.props.isTest) {
+      if (!token) {
+        this.props.router.push('/signin');
+        return;
+      }
+
+      if (!this.props.params.id) {
+        /** Make a board for current user */
+
+        $.get({
+          url: '/api/makeBoard',
+          headers: { 'x-access-token': Util.getToken() },
+          dataType: 'json',
+          success: (data) => {
+            console.log('Here!', data);
+            console.log(data.boardString);
+            this.setState({
+              gameID: data.id,
+              boardStr: data.boardString,
+            });
+          },
+          error: (data) => {
+            console.log('Error!');
+            console.log(data);
+          },
+        });
+      } else {
+
+        /** Get an already-made board for current user */
+
+        $.post({
+          url: '/api/getBoard',
+          headers: { 'x-access-token': Util.getToken() },
+          dataType: 'json',
+          data: { id: this.props.params.id },
+          success: (data) => {
+            console.log(data);
+            this.setState({
+              gameID: this.props.params.id,
+              boardStr: data.boardString,
+            });
+          },
+          error: (data) => {
+            console.log('Error!');
+            console.log(data);
+          },
+        });
+      }
+    }
+  }
+
+  /** componentWillUnmount() is invoked immediately before a component is unmounted and destroyed. This one stops the timer.
+ */
+
+  componentWillUnmount() {
+    this.stopTimer();
+  }
+
+  /** This function is used to get the index of the last letter clicked.
+ */
+
+  getLastClickIndex() {
+    if (this.state.curIndexesUsed.length === 0) {
+      return null;
+    }
+    return this.state.curIndexesUsed[this.state.curIndexesUsed.length - 1];
+  }
+
+
+  /** This function is used to get the index of a particular index.
+ * @param {object} ci an array with all letters (indexes) that have been clicked for current word
+ * @returns {number} the index number
+ */
+
+  getClickIndexNumber(ci) {
+    console.log('CI', ci);
+    return Number(ci.slice(1));
+  }
+
+  /**This function is used to log the current user out.
+ */
+  logOut() {
+    this.stopTimer();
+    window.localStorage.removeItem('com.hackerwords');
+    this.props.router.push('/signin');
+  }
+
+     /** This function is used to route the user back to lobby on button click.
+  */
+  backToLobby() {
+    this.props.router.push('/');
+  }
+
+  /** This function is used to start the game timer.
+  */
+  startTimer() {
+    this.timerInterval = setInterval(() => {
+      this.setState({
+        timeLeft: this.state.timeLeft - 1,
+      });
+
+      /** If timer runs out, set gameOver state to true */
+      if (this.state.timeLeft &lt;= 0) {
+        this.setState({
+          gameOver: true,
+        });
+
+        /** Send back game results to server */
+        clearInterval(this.timerInterval);
+        $.ajax({
+          method: 'POST',
+          url: '/api/finalizeGame',
+          headers: { 'x-access-token': Util.getToken() },
+          dataType: 'json',
+          data: { score: this.state.score,
+                  wordsPlayed: this.state.wordsPlayed,
+                  gameID: this.state.gameID },
+          success: (data) => {
+            console.log('Game ended!', data);
+            $('.gameEnded').css('display', 'block');
+          },
+          error: (data) => {
+            console.log(data);
+            console.log('Error: Game didn\'t appropriately');
+          },
+        });
+      }
+    }, 1000);
+  }
+
+   /**This function is used to stop the game timer.
+  */
+  stopTimer() {
+    clearInterval(this.timerInterval);
+  }
+
+
+   /**This function is used to check to see if letter has been clicked previously in current word.
+ * @param {number} clickIndex index to check
+ * @returns {boolean}
+ */
+  isInUsedIndexes(clickIndex) {
+    console.log(clickIndex, 'click index');
+    return (this.state.curIndexesUsed.indexOf(clickIndex) !== -1);
+  }
+
+  /**This function is used to send the current finalized word to the server for verification.
+ */
+  sendWord() {
+    const word = this.state.curWord;
+    // dont send a request if we have that word
+    if (this.state.wordsPlayed.indexOf(word) === -1) {
+      $.post('/api/checkWord', { word }, (data) => {
+        if (data.isWord) {
+          this.setState({
+            wordsPlayed: this.state.wordsPlayed.concat(word),
+            wordScores: this.state.wordScores.concat(data.score),
+            score: this.state.score + data.score,
+          });
+        }
+      });
+    }
+  }
+
+   /**This function is used to enforce the board rules and changes the class of currently selected letters for UI.
+ * @param {object} event click event object
+ * @returns {boolean} true or false if rules are followed
+ */
+  boardClick(event) {
+    // console.log('event', event);
+    if (this.state.gameOver) {
+      return;
+    }
+    const clickLetter = event.target.innerHTML;
+    const clickIndex = event.target.className.split(' ')[0];
+
+     /**This function is used to check if currently clicked letter is adjacent to last clicked letter for current word.
+    */
+    const isAdjacent = () => {
+      const lastClick = this.getLastClickIndex();
+
+      if (lastClick === null) {
+        return true;
+      }
+      const lastClickIndex = this.getClickIndexNumber(lastClick);
+      const thisClickIndex = this.getClickIndexNumber(clickIndex);
+
+      const lastClickRow = Math.floor(lastClickIndex / this.rowSize);
+      const lastClickCol = (lastClickIndex % this.rowSize);
+      const thisClickRow = Math.floor(thisClickIndex / this.rowSize);
+      const thisClickCol = (thisClickIndex % this.rowSize);
+
+      if (Math.abs(lastClickRow - thisClickRow) > 1) {
+        return false;
+      }
+      if (Math.abs(lastClickCol - thisClickCol) > 1) {
+        return false;
+      }
+      return true;
+    };
+
+    if (clickIndex === this.getLastClickIndex()) {
+      $('.selected').removeClass('selected');
+      $('.lastclicked').removeClass('lastclicked');
+
+      this.sendWord();
+
+      this.setState({
+        curWord: '',
+        curIndexesUsed: [],
+      });
+    } else if (isAdjacent() &amp;&amp; !this.isInUsedIndexes(clickIndex)) {
+      const newCurWord = this.state.curWord + clickLetter;
+      const newCurIndexes = this.state.curIndexesUsed.concat(clickIndex);
+      $('.' + lastClickIndex).removeClass('lastclicked');
+
+      const lastClickIndex = newCurIndexes[newCurIndexes.length - 1];
+
+      $('.' + lastClickIndex).addClass('lastclicked');
+      for (var i = 0; i &lt; newCurIndexes.length; i++) {
+        if (i &lt; newCurIndexes.length - 1) {
+          $('.' + newCurIndexes[i]).removeClass('lastclicked');
+        }
+      }
+
+      $(event.target).addClass('selected');
+      // re-evaluate using mutable objects as state params?
+      this.setState({
+        curWord: newCurWord,
+        curIndexesUsed: newCurIndexes,
+      });
+    }
+  }
+
+  // could use this to add a callback for set state
+  // However, its unclear how to set it with Enzyme
+  setState(stateObj) {
+    if (this.setStateCallback) {
+      super.setState.call(this, stateObj, this.setStateCallback(stateObj));
+    } else {
+      super.setState.call(this, stateObj);
+    }
+  }
+
+  render() {
+    return (
+      &lt;div>
+        &lt;div className="gameBoardApp" />
+        &lt;h1> HackerWords &lt;/h1>
+        &lt;div className="timeLeft">{this.state.timeLeft}&lt;/div>
+        &lt;div className="currentWord">{this.state.curWord}&lt;/div>
+        &lt;div> &lt;button className="gameEnded" onClick={this.backToLobby}> Back to Lobby &lt;/button> &lt;/div>
+        &lt;div>&lt;Score score={this.state.score} />&lt;/div>
+        &lt;Board boardStr={this.state.boardStr} clickHandler={this.boardClick} />
+        &lt;PlayedWords wordsPlayed={this.state.wordsPlayed} wordScores={this.state.wordScores} />
+        &lt;button className="signoutButton" onClick={this.logOut}> Sign Out &lt;/button>
+      &lt;/div>
+    );
+  }
+
+}
+
+export default withRouter(App, { withRef: true });
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Authentication%2520Utility%2520Client-Side%2520Functions.html">Authentication Utility Client-Side Functions</a></li><li><a href="module-Authentication%2520Utility%2520Server-Side%2520Functions.html">Authentication Utility Server-Side Functions</a></li><li><a href="module-Board.html">Board</a></li><li><a href="module-Board%2520Tools%2520Functions.html">Board Tools Functions</a></li><li><a href="module-Game%2520Model.html">Game Model</a></li><li><a href="module-Middleware.html">Middleware</a></li><li><a href="module-Played%2520Words.html">Played Words</a></li><li><a href="module-Router.html">Router</a></li><li><a href="module-Score.html">Score</a></li><li><a href="module-Server.html">Server</a></li><li><a href="module-User%2520Controller.html">User Controller</a></li><li><a href="module-User%2520Model.html">User Model</a></li></ul><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="Challenges.html">Challenges</a></li><li><a href="GameHistory.html">GameHistory</a></li><li><a href="Lobby.html">Lobby</a></li><li><a href="Players.html">Players</a></li><li><a href="Signin.html">Signin</a></li><li><a href="Signup.html">Signup</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Sun Oct 30 2016 18:04:20 GMT-0700 (PDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: client/matchComponents/Lobby.jsx</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: client/matchComponents/Lobby.jsx</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file Manages the lobby component.
+ */
+
+import React from 'react';
+import { Link, withRouter } from 'react-router';
+import $ from 'jquery';
+import jwt from 'jwt-simple';
+import Challenges from './Challenges.jsx';
+import Players from './Players.jsx';
+import Util from './../util.js';
+import GameHistory from './GameHistory.jsx';
+
+/**
+ * Creates a new Lobby component.
+ * @class
+ */
+
+class Lobby extends React.Component {
+  constructor(props) {
+    super(props);
+    this.logOut = this.logOut.bind(this);
+    this.state = {
+      players: [],
+      challenges: [],
+      highScore: 0,
+      gameHistory: [],
+    };
+  }
+
+  /** componentWillMount() is invoked immediately before mounting occurs. This one checks for a valid session token and if the token is valid and the user plays a single player game, it makes a random game board for the user. If player is playing challenge mode, it will retrieve the appropriate board */
+  componentWillMount() {
+    const token = Util.getToken();
+    if (token) {
+      console.log('APPTOKEN', token);
+    }
+
+    if (!token) {
+      this.props.router.push('/signin');
+    } else {
+      // try {
+      //   const username = jwt.decode(token, 'secret').username;
+      // } catch (e) {
+      //   console.error('Invalid Token!');
+      // }
+
+      /** Get current signed in username */
+      const username = jwt.decode(token, 'secret').username;
+
+      /** Get all users */
+      $.get({
+        url: '/api/getAllUsers',
+        headers: { 'x-access-token': Util.getToken() },
+        dataType: 'json',
+        success: (data) => {
+          console.log('Player data:', data);
+          this.setState({
+            players: data.allUsers.filter((user) => {
+              return user !== username;
+            }),
+          });
+        },
+        error: (data) => {
+          console.log('Error!');
+          console.log(data);
+        },
+      });
+
+      /** Get highest score of currently signed in user */
+      $.get({
+        url: '/api/getHighScore',
+        headers: { 'x-access-token': token },
+        dataType: 'json',
+        data: { username },
+        success: (data) => {
+          console.log('Player high score:', data);
+          this.setState({
+            highScore: data.highestScore,
+          });
+        },
+        error: (data) => {
+          console.log('Error!');
+          console.log(data);
+        },
+      });
+
+      /** Get all pending game challenges */
+      $.post({
+        url: '/api/getPendingGames',
+        headers: { 'x-access-token': token },
+        dataType: 'json',
+        data: { username },
+        success: (data) => {
+          console.log('Pending game data:', data);
+          this.setState({
+            challenges: data.result,
+          });
+        },
+        error: (data) => {
+          console.log('Error!');
+          console.log(data);
+        },
+      });
+
+      /** Get all game history */
+      $.post({
+        url: '/api/getGameHistory',
+        headers: { 'x-access-token': token },
+        dataType: 'json',
+        data: { username },
+        success: (data) => {
+          console.log('Completed Games Data', data);
+          this.setState({
+            gameHistory: data.games,
+          });
+        },
+        error: (data) => {
+          console.log('Error!');
+          console.log(data);
+        },
+      });
+    }
+  }
+
+  /** This function logs out the current user and destroys the session token.
+ */
+  logOut() {
+    window.localStorage.removeItem('com.hackerwords');
+    this.props.router.push('/signin');
+  }
+
+  render() {
+    return (
+      &lt;div className="lobby">
+        &lt;h1>Lobby&lt;/h1>
+        &lt;Link to="/solo"> Single Player &lt;/Link>
+        &lt;Challenges entries={this.state.challenges} />
+        &lt;Players entries={this.state.players} />
+        &lt;div> &lt;h2> Your High Score: {this.state.highScore} &lt;/h2> &lt;/div>
+        &lt;button className="signoutButton" onClick={this.logOut}> Sign Out &lt;/button>
+        &lt;GameHistory entries={this.state.gameHistory} />
+      &lt;/div>
+    );
+  }
+}
+
+export default withRouter(Lobby, { withRef: true });
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Authentication%2520Utility%2520Client-Side%2520Functions.html">Authentication Utility Client-Side Functions</a></li><li><a href="module-Authentication%2520Utility%2520Server-Side%2520Functions.html">Authentication Utility Server-Side Functions</a></li><li><a href="module-Board.html">Board</a></li><li><a href="module-Board%2520Tools%2520Functions.html">Board Tools Functions</a></li><li><a href="module-Game%2520Model.html">Game Model</a></li><li><a href="module-Middleware.html">Middleware</a></li><li><a href="module-Played%2520Words.html">Played Words</a></li><li><a href="module-Router.html">Router</a></li><li><a href="module-Score.html">Score</a></li><li><a href="module-Server.html">Server</a></li><li><a href="module-User%2520Controller.html">User Controller</a></li><li><a href="module-User%2520Model.html">User Model</a></li></ul><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="Challenges.html">Challenges</a></li><li><a href="GameHistory.html">GameHistory</a></li><li><a href="Lobby.html">Lobby</a></li><li><a href="Players.html">Players</a></li><li><a href="Signin.html">Signin</a></li><li><a href="Signup.html">Signup</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Sun Oct 30 2016 18:04:20 GMT-0700 (PDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

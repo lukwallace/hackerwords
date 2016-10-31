@@ -2,10 +2,12 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+/** @module Game Model */
+
 // mongoose.connect('mongodb://localhost/HackerWords');
 
-
 const gameSchema = new Schema({
+  // ID of the player
   user_id: {
     type: 'ObjectId',
     required: true,
@@ -22,10 +24,12 @@ const gameSchema = new Schema({
     type: [String],
     default: [],
   },
+  // Whether or not the game has finished
   pending: {
     type: Boolean,
     default: true,
   },
+  // ID of the opponent's mirrored game
   opponent: {
     type: String,
     default: null,

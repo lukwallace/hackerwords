@@ -1,18 +1,46 @@
+/**
+ * @file Manages the signin component.
+ */
+
 import React from 'react';
 import { Link, withRouter } from 'react-router';
 import $ from 'jquery';
 
 const util = require('../util.js');
 
+/**
+ * Creates a new Signin Component.
+ * @class
+ */
+
 class Signin extends React.Component {
   constructor(props) {
     super(props);
     this.submitFn = this.submitFn.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
+    this.onUsernameChange = this.onUsernameChange.bind(this);
+    this.onPasswordChange = this.onPasswordChange.bind(this);
+    this.state = {
+      username: '',
+      password: '',
+    };
     util.signOut();
   }
 
+  onUsernameChange(event) {
+    this.setState({ username: event.target.value });
+  }
+
+  onPasswordChange(event) {
+    this.setState({ password: event.target.value });
+  }
+
+
+  /** componentDidMount() is invoked immediately after a component is mounted. This adds an event listener for the enter key on submit. If it records an enter, submit the form */
+
   componentDidMount() {
-    // Makes pressing enter on any input box click submit
+
+    /** Makes pressing enter on any input box click submit */
     $('input').each(function () {
       $(this).keypress((e) => {
         if (e.which === 13) {
@@ -22,11 +50,17 @@ class Signin extends React.Component {
     });
   }
 
+
+  /** This function takes care of the submission process. It gets the values of the username/password and sends them to the server for verification and authentication */
+
   submitFn() {
-    const username = $('#username').val();
-    const password = $('#password').val();
-    $('#username').val('');
-    $('#password').val('');
+    /** Grab username and password values from fields */
+    const username = this.state.username;
+    const password = this.state.password;
+
+    this.setState({ username:'', password:'' });
+
+    /** Submit username and password for verification */
     $.post({
       url: '/api/signin',
       dataType: 'json',
@@ -38,7 +72,7 @@ class Signin extends React.Component {
       },
       error: (error) => {
         console.error(error);
-        $('#error').show();
+        $('.error').show();
       },
     });
   }
@@ -47,27 +81,15 @@ class Signin extends React.Component {
     return (
       <div className="signin">
         <h1> HackerWords </h1>
-        <br />
         <div className="signintitle"> Signin </div>
-        <br />
-        <br />
-        <br />
         <label htmlFor="username"> Username </label>
-        <input type="text" id="username" name="username" className="signinform" />
-        <br />
+        <input type="text" id="username" name="username" onChange={event => this.onUsernameChange(event)} />
         <label htmlFor="password"> Password </label>
-        <input type="password"id="password" name="password" className="signinform" />
-        <br />
-        <br />
-        <br />
-        <input type="button" id="signin" value="Signin" onClick={this.submitFn} className="signinform" />
-        <br />
-        <br />
-        <br />
-        <br />
+        <input type="password" id="password" name="password" onChange={event => this.onPasswordChange(event)} />
+        <input type="button" id="signin" value="Signin" onClick={this.submitFn} />
         Don't have an account?
         <Link to="/signup"> Sign up here</Link>
-        <h2 id="error"> Invalid user or password! </h2>
+        <h2 className="error"> Invalid user or password! </h2>
       </div>
     );
   }

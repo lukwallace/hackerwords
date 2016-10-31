@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: server/users/userController.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: server/users/userController.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @file This is the server-side controller for the Users
+ */
+
+/** @module User Controller */
+
+const Q = require('q');
+const jwt = require('jwt-simple');
+const User = require('./userModel.js');
+const Game = require('./../board/GameModel.js');
+const util = require('./../util.js');
+
+/** Promisify a few mongoose methods with the `q` promise library */
+const findUser = Q.nbind(User.findOne, User);
+const createUser = Q.nbind(User.create, User);
+
+module.exports = {
+
+  /**
+  * This function is used to get all users from database.
+  * @method getAllUsers
+  * @param {object} req request object
+  * @param {object} res response object
+  * @param {object} next callback function to execute
+  * @returns {object} all users
+  */
+  getAllUsers(req, res, next) {
+    User.find({}, (err, result) => {
+      const allUsers = result.map(userEntry => (userEntry.username));
+      res.json({ allUsers });
+    });
+  },
+
+  /**
+  * This function is used to get highest score of currently signed in user.
+  * @method getUserHighScore
+  * @param {object} req request object
+  * @param {object} res response object
+  * @param {object} next callback function to execute
+  * @returns {object} highest score
+  */
+  getUserHighScore(req, res, next) {
+    const username = req.url.split('=')[1];
+     util.getUserIDFromUsername(username, (userID) => {
+      Game.find({user_id: userID}, (err, result) => {
+        let highestScore = 0;
+        result.forEach(function(game) {
+          if (game.points > highestScore) {
+            highestScore = game.points;
+            console.log(highestScore);
+          }
+        });
+        res.json({ highestScore });
+      });
+     });
+  },
+
+  /**
+  * This function is used to get all pending game challenges.
+  * @method getPendingGames
+  * @param {object} req request object
+  * @param {object} res response object
+  * @param {object} next callback function to execute
+  * @returns {object} pending games
+  */
+  getPendingGames(req, res, next) {
+    const username = req.body.username;
+    console.log('PENDING USERNAME', username);
+    util.getUserIDFromUsername(username, (userID) => {
+      console.log('PENDING USER ID', userID);
+      const query = { user_id: userID, pending: true };
+      Game.find(query, (err, result) => {
+        console.log('PENDING RESULT', result);
+        res.json({ result });
+      });
+    });
+
+    /*
+    const username = req.body.username;
+    const query = { username: username, pending: true };
+    Game.find(query, (result) => {
+      res.json({ result });
+    });
+    */
+  },
+
+
+  /**
+  * This function is used to signin a user if user exists in database and passwords match.
+  * @method signin
+  * @param {object} req request object
+  * @param {object} res response object
+  * @param {object} next callback function to execute
+  * @returns {object} if user is found, returns the user token
+  */
+  signin(req, res, next) {
+    console.log('signin in');
+    const username = req.body.username;
+    const password = req.body.password;
+
+    findUser({ username })
+      .then((user) => {
+        if (!user) {
+          return next(new Error('User does not exist'));
+        }
+        return user.comparePasswords(password)
+          .then((foundUser) => {
+            if (foundUser) {
+              const token = jwt.encode(user, 'secret');
+              return res.json({ token });
+            }
+            return next(new Error('Wrong password'));
+          });
+      })
+      .fail((error) => {
+        next(error);
+      });
+  },
+
+  /**
+  * This function is used to signup a user if username doesn't exist in database .
+  * @method signup
+  * @param {object} req request object
+  * @param {object} res response object
+  * @param {object} next callback function to execute
+  * @returns {object} if user is created successfully, returns the user token
+  */
+  signup(req, res, next) {
+    const username = req.body.username;
+    const password = req.body.password;
+
+    /** Check to see if username exists already */
+    findUser({ username })
+      .then((user) => {
+        if (user) {
+          return next(new Error('User already exist!'));
+        }
+
+        /** Make a new user entry in database if username doesn't exist */
+        return createUser({
+          username,
+          password,
+        });
+      })
+      .then((user) => {
+
+        /** Create a session token and send back for authorization */
+        const token = jwt.encode(user, 'secret');
+        res.json({ token });
+      })
+      .fail((error) => {
+        next(error);
+      });
+  },
+
+  /**
+  * This function is used to signup a user if the user is authenticated.
+  * @method checkAuth
+  * @param {object} req request object
+  * @param {object} res response object
+  * @param {object} next callback function to execute
+  * @returns {number} status code
+  */
+  checkAuth(req, res, next) {
+
+    /** Grab the token in the header, if any */
+    console.log('HEADERS =', req.headers);
+    const token = req.headers['x-access-token'];
+    if (!token) {
+      next(new Error('No token'));
+    } else {
+
+      /** Decode the token */
+      const user = jwt.decode(token, 'secret');
+
+      /** Check to see if that user exists in the database and respond with right status code */
+      findUser({ username: user.username })
+        .then((foundUser) => {
+          if (foundUser) {
+            res.send(200);
+          } else {
+            res.send(401);
+          }
+        })
+        .fail((error) => {
+          next(error);
+        });
+    }
+  },
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-Authentication%2520Utility%2520Client-Side%2520Functions.html">Authentication Utility Client-Side Functions</a></li><li><a href="module-Authentication%2520Utility%2520Server-Side%2520Functions.html">Authentication Utility Server-Side Functions</a></li><li><a href="module-Board.html">Board</a></li><li><a href="module-Board%2520Tools%2520Functions.html">Board Tools Functions</a></li><li><a href="module-Game%2520Model.html">Game Model</a></li><li><a href="module-Middleware.html">Middleware</a></li><li><a href="module-Played%2520Words.html">Played Words</a></li><li><a href="module-Router.html">Router</a></li><li><a href="module-Score.html">Score</a></li><li><a href="module-Server.html">Server</a></li><li><a href="module-User%2520Controller.html">User Controller</a></li><li><a href="module-User%2520Model.html">User Model</a></li></ul><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="Challenges.html">Challenges</a></li><li><a href="GameHistory.html">GameHistory</a></li><li><a href="Lobby.html">Lobby</a></li><li><a href="Players.html">Players</a></li><li><a href="Signin.html">Signin</a></li><li><a href="Signup.html">Signup</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.2</a> on Sun Oct 30 2016 18:04:20 GMT-0700 (PDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

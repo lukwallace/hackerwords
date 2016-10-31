@@ -1,7 +1,16 @@
+/**
+ * @file Manages the players component.
+ */
+
 import React from 'react';
 import { Link, withRouter } from 'react-router';
 import $ from 'jquery';
 import Util from './../util.js';
+
+/**
+ * Creates a new Players list component.
+ * @class
+ */
 
 class Players extends React.Component {
   constructor(props) {
@@ -9,12 +18,18 @@ class Players extends React.Component {
     this.makeChallenge = this.makeChallenge.bind(this);
   }
 
+  /**This function is used to challenge another player.
+ */
   makeChallenge() {
+    console.log('eh');
     const username = ($('#player').val());
-    // check to make sure username has been selected
+
+    /** Check to make sure username has been selected */
     if (!username) {
       return;
     }
+
+    /** Complete game challenge creation */
     $.post({
       url: '/api/makeChallengeGame',
       headers: { 'x-access-token': Util.getToken() },
@@ -33,19 +48,15 @@ class Players extends React.Component {
 
   render() {
     return (
-      <div>
-        <p> Challenge PLayers: </p>
-        <input id='player' list="players" />
+      <div className="players">
+        <h2> Challenge PLayers </h2>
+        <input id="player" list="players" /> &nbsp;
         <datalist id="players">
           {
-            this.props.entries.map((user) => {
-              return (
-                <option key={user}> {user} </option>
-              );
-            })
+            this.props.entries.map(user => (<option key={user}> {user} </option>))
           }
         </datalist>
-        <input type="button" className="lobbyButton" value="Challenge" onClick={this.makeChallenge} />
+        <input type="button" value="Challenge" onClick={this.makeChallenge} />
       </div>
     );
   }
