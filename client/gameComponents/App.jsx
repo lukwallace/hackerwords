@@ -174,6 +174,8 @@ class App extends React.Component {
       /** If timer runs out, set gameOver state to true */
 
       if (this.state.timeLeft <= 0) {
+        $('.selected').removeClass('selected');
+        $('.lastclicked').removeClass('lastclicked');
         this.setState({
           gameOver: true,
         });
