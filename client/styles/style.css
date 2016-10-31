@@ -191,6 +191,25 @@ button {
   display: inline-block;
 }
 
+.gameHistoryDiv table {
+  margin-left: 10px;
+  margin-right: 10px;
+  display:inline-block;
+  vertical-align: top
+}
+
+.gameHistoryDiv .winRow {
+  background-color: green;
+}
+
+.gameHistoryDiv .lossRow {
+  background-color: red;
+}
+
+.gameHistoryDiv .soloRow {
+  background-color: yellow;
+}
+
 
 /**************/
 /* GAME BOARD */
