@@ -110,7 +110,12 @@ class Lobby extends React.Component {
         data: { username },
         success: (data) => {
           console.log('Completed Games Data', data);
-          let gamesAboveZero = data.games.filter((game) => game[0].points > 0);
+
+          /** Only display scores above 0 and sort from highest to smallest */
+
+          let gamesAboveZero = data.games.filter((game) => game[0].points > 0).sort(function (a, b) {
+            return b[0].points-a[0].points;
+          });
 
           this.setState({
             gameHistory: gamesAboveZero,
