@@ -5,7 +5,6 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router';
 import $ from 'jquery';
-import jwt from 'jwt-simple';
 import Challenges from './Challenges.jsx';
 import Players from './Players.jsx';
 import Util from './../util.js';
@@ -36,15 +35,6 @@ class Lobby extends React.Component {
     if (!token) {
       this.props.router.push('/signin');
     } else {
-      // try {
-      //   const username = jwt.decode(token, 'secret').username;
-      // } catch (e) {
-      //   console.error('Invalid Token!');
-      // }
-
-      /** Get current signed in username */
-      const username = jwt.decode(token, 'secret').username;
-
       /** Get all users */
       $.get({
         url: '/api/getAllUsers',
@@ -52,9 +42,7 @@ class Lobby extends React.Component {
         dataType: 'json',
         success: (data) => {
           this.setState({
-            players: data.allUsers.filter((user) => {
-              return user !== username;
-            }),
+            players: data.allUsers,
           });
         },
         error: (data) => {
@@ -101,9 +89,7 @@ class Lobby extends React.Component {
         headers: { 'x-access-token': token },
         dataType: 'json',
         success: (data) => {
-
           /** Only display scores above 0 and sort from highest to smallest */
-
           let gamesAboveZero = data.games.filter((game) => game[0].points > 0).sort(function (a, b) {
             return b[0].points-a[0].points;
           });
