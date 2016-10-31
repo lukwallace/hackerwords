@@ -70,7 +70,7 @@ module.exports = {
 
   getGameHistory(req, res, next) {
     util.getUserFromReq(req, next).then((user) => {
-      Game.find({ user_id: userID, pending: false }).then((games) => {
+      Game.find({ user_id: user._id, pending: false }).then((games) => {
         const getOppGame = (gameObj) => {
           return new Promise((resolve, reject) => {
             if (gameObj.opponent === null) {
