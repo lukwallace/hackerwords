@@ -43,7 +43,6 @@ module.exports = {
 
   makeChallengeGame(req, res, next) {
     util.getUserFromReq(req, next).then((user) => {
-
       /** Make sure its a valid opponent */
       const opponentName = req.body.username;
       if (opponentName ===  user.username) {
@@ -70,8 +69,7 @@ module.exports = {
   */
 
   getGameHistory(req, res, next) {
-    const username = req.body.username;
-    util.getUserIDFromUsername(username, (userID) => {
+    util.getUserFromReq(req, next).then((user) => {
       Game.find({ user_id: userID, pending: false }).then((games) => {
         const getOppGame = (gameObj) => {
           return new Promise((resolve, reject) => {
