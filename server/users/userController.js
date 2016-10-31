@@ -97,7 +97,8 @@ module.exports = {
     findUser({ username })
       .then((user) => {
         if (!user) {
-          return next(new Error('User does not exist'));
+          //return next(new Error('User does not exist'));
+          return res.status(403).json({Error:'No user exists'});
         }
         return user.comparePasswords(password)
           .then((foundUser) => {
@@ -105,7 +106,7 @@ module.exports = {
               const token = jwt.encode(user, 'secret');
               return res.json({ token });
             }
-            return res.json({Error:'Wrong password'});
+            return res.status(403).json({Error:'Wrong password'});
           });
       })
       .fail((error) => {
