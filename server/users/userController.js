@@ -47,7 +47,6 @@ module.exports = {
         result.forEach(function(game) {
           if (game.points > highestScore) {
             highestScore = game.points;
-            console.log(highestScore);
           }
         });
         res.json({ highestScore });
@@ -65,12 +64,9 @@ module.exports = {
   */
   getPendingGames(req, res, next) {
     const username = req.body.username;
-    console.log('PENDING USERNAME', username);
     util.getUserIDFromUsername(username, (userID) => {
-      console.log('PENDING USER ID', userID);
       const query = { user_id: userID, pending: true };
       Game.find(query, (err, result) => {
-        console.log('PENDING RESULT', result);
         res.json({ result });
       });
     });

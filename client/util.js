@@ -31,7 +31,6 @@ module.exports = {
   * @method signOut
   */
   signOut() {
-    console.log('SIGN OUT');
     window.localStorage.removeItem('com.hackerwords');
   },
 };

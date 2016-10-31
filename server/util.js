@@ -28,7 +28,6 @@ exports.getUserIDFromUsername = (username, callback) => {
 exports.getUsernameFromReq = (req, next) => {
 
   /** Recover username */
-  console.log('HEADERS = ', req.headers);
   const token = req.headers['x-access-token'];
   if (!token) {
     next(new Error('No token'));

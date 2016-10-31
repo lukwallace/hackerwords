@@ -21,7 +21,7 @@ module.exports = {
   * @param {object} req request object
   * @param {object} res response object
   * @param {object} next callback function to execute
-  * @returns {object} game board string
+  * @returns {object} game board boardString
   */
 
   getBoard(req, res, next) {
@@ -90,7 +90,6 @@ module.exports = {
         });
 
         Promise.all(promises).then((results) => {
-          console.log('RESULTS', results);
           res.json({ games: results });
         });
       });

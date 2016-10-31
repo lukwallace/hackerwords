@@ -61,9 +61,6 @@ class App extends React.Component {
 
   componentWillMount() {
     const token = Util.getToken();
-    if (token) {
-      console.log('APPTOKEN', token);
-    }
 
 
     if (!this.props.isTest) {
@@ -73,6 +70,7 @@ class App extends React.Component {
       }
 
       if (!this.props.params.id) {
+
         /** Make a board for current user */
 
         $.get({
@@ -80,8 +78,6 @@ class App extends React.Component {
           headers: { 'x-access-token': Util.getToken() },
           dataType: 'json',
           success: (data) => {
-            console.log('Here!', data);
-            console.log(data.boardString);
             this.setState({
               gameID: data.id,
               boardStr: data.boardString,
@@ -102,7 +98,6 @@ class App extends React.Component {
           dataType: 'json',
           data: { id: this.props.params.id },
           success: (data) => {
-            console.log(data);
             this.setState({
               gameID: this.props.params.id,
               boardStr: data.boardString,
@@ -141,12 +136,12 @@ class App extends React.Component {
  */
 
   getClickIndexNumber(ci) {
-    console.log('CI', ci);
     return Number(ci.slice(1));
   }
 
   /**This function is used to log the current user out.
  */
+
   logOut() {
     this.stopTimer();
     window.localStorage.removeItem('com.hackerwords');
@@ -155,12 +150,14 @@ class App extends React.Component {
 
      /** This function is used to route the user back to lobby on button click.
   */
+
   backToLobby() {
     this.props.router.push('/');
   }
 
   /** This function is used to start the game timer.
   */
+
   startTimer() {
     this.timerInterval = setInterval(() => {
       this.setState({
@@ -168,12 +165,16 @@ class App extends React.Component {
       });
 
       /** If timer runs out, set gameOver state to true */
+
       if (this.state.timeLeft <= 0) {
+        $('.selected').removeClass('selected');
+        $('.lastclicked').removeClass('lastclicked');
         this.setState({
           gameOver: true,
         });
 
         /** Send back game results to server */
+
         clearInterval(this.timerInterval);
         $.ajax({
           method: 'POST',
@@ -184,12 +185,11 @@ class App extends React.Component {
                   wordsPlayed: this.state.wordsPlayed,
                   gameID: this.state.gameID },
           success: (data) => {
-            console.log('Game ended!', data);
             $('.gameEnded').css('display', 'block');
           },
           error: (data) => {
             console.log(data);
-            console.log('Error: Game didn\'t appropriately');
+            console.log('Error: Game didn\'t end appropriately');
           },
         });
       }
@@ -198,6 +198,7 @@ class App extends React.Component {
 
    /**This function is used to stop the game timer.
   */
+
   stopTimer() {
     clearInterval(this.timerInterval);
   }
@@ -207,13 +208,14 @@ class App extends React.Component {
  * @param {number} clickIndex index to check
  * @returns {boolean}
  */
+
   isInUsedIndexes(clickIndex) {
-    console.log(clickIndex, 'click index');
     return (this.state.curIndexesUsed.indexOf(clickIndex) !== -1);
   }
 
   /**This function is used to send the current finalized word to the server for verification.
  */
+
   sendWord() {
     const word = this.state.curWord;
     // dont send a request if we have that word
@@ -234,8 +236,8 @@ class App extends React.Component {
  * @param {object} event click event object
  * @returns {boolean} true or false if rules are followed
  */
+
   boardClick(event) {
-    // console.log('event', event);
     if (this.state.gameOver) {
       return;
     }
@@ -244,6 +246,7 @@ class App extends React.Component {
 
      /**This function is used to check if currently clicked letter is adjacent to last clicked letter for current word.
     */
+
     const isAdjacent = () => {
       const lastClick = this.getLastClickIndex();
 

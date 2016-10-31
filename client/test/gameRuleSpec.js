@@ -29,10 +29,10 @@ describe('The Board should be created properly', () => {
     expect(gameApp.contains(<div className="gameBoardApp" />)).to.equal(true);
   });
 
-  it('Should have a button with character a', () => {
+  it('Should have a button with character s', () => {
     const upperLeft = gameApp.find('.b0');
     expect(upperLeft).to.exist;
-    expect(upperLeft.text()).to.equal('a');
+    expect(upperLeft.text()).to.equal('s');
   });
 });
 
