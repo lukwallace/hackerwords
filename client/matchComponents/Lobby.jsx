@@ -67,7 +67,6 @@ class Lobby extends React.Component {
         url: '/api/getHighScore',
         headers: { 'x-access-token': token },
         dataType: 'json',
-        data: { username },
         success: (data) => {
           this.setState({
             highScore: data.highestScore,
@@ -80,11 +79,10 @@ class Lobby extends React.Component {
       });
 
       /** Get all pending game challenges */
-      $.post({
+      $.get({
         url: '/api/getPendingGames',
         headers: { 'x-access-token': token },
         dataType: 'json',
-        data: { username },
         success: (data) => {
           this.setState({
             challenges: data.result,
@@ -97,11 +95,10 @@ class Lobby extends React.Component {
       });
 
       /** Get all game history */
-      $.post({
+      $.get({
         url: '/api/getGameHistory',
         headers: { 'x-access-token': token },
         dataType: 'json',
-        data: { username },
         success: (data) => {
 
           /** Only display scores above 0 and sort from highest to smallest */

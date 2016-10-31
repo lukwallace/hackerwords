@@ -40,8 +40,8 @@ module.exports = {
   * @returns {object} highest score
   */
   getUserHighScore(req, res, next) {
-    const username = req.url.split('=')[1];
-     util.getUserIDFromUsername(username, (userID) => {
+    util.getUserFromReq(req, next).then((user) => {
+      const user_id = user._id;
       Game.find({user_id: userID}, (err, result) => {
         let highestScore = 0;
         result.forEach(function(game) {
@@ -63,8 +63,8 @@ module.exports = {
   * @returns {object} pending games
   */
   getPendingGames(req, res, next) {
-    const username = req.body.username;
-    util.getUserIDFromUsername(username, (userID) => {
+    util.getUserFromReq(req, next).then((user) => {
+      const user_id = user._id;
       const query = { user_id: userID, pending: true };
       Game.find(query, (err, result) => {
         res.json({ result });
@@ -90,7 +90,6 @@ module.exports = {
   * @returns {object} if user is found, returns the user token
   */
   signin(req, res, next) {
-    console.log('signin in');
     const username = req.body.username;
     const password = req.body.password;
 
