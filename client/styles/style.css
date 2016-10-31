@@ -245,13 +245,6 @@ span {
   color: #02AC1E;
 }
 
-.selected {
-  background-color: #02AC1E;
-  border: 7px solid black;
-  border-radius:70px;
-  color: black;
-}
-
 .currentWord {
   margin-left: auto;
   margin-right: auto;
@@ -311,8 +304,17 @@ span {
   margin-bottom: 15px;
 }
 
+
+
+.selected {
+  background-color: #02AC1E !important;
+  border: 7px solid black !important;
+  border-radius:70px !important;
+  color: white !important;
+}
+
 .lastclicked {
   background-color: black !important;
-  color: white;
-  border: 7px solid white;
+  color: white !important;
+  border: 7px solid white !important;
 }
