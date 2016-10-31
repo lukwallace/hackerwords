@@ -63,53 +63,49 @@ class App extends React.Component {
   componentWillMount() {
     const token = Util.getToken();
 
+    if (!this.props.isTest && !token) {
+      this.props.router.push('/signin');
+      return;
+    }
 
-    if (!this.props.isTest) {
-      if (!token) {
-        this.props.router.push('/signin');
-        return;
-      }
-
-      if (!this.props.params.id) {
-
-        /** Make a board for current user */
-
-        $.get({
-          url: '/api/makeBoard',
-          headers: { 'x-access-token': Util.getToken() },
-          dataType: 'json',
-          success: (data) => {
-            this.setState({
-              gameID: data.id,
-              boardStr: data.boardString,
-            });
-          },
-          error: (data) => {
-            console.log('Error!');
-            console.log(data);
-          },
-        });
-      } else {
-
-        /** Get an already-made board for current user */
-
-        $.post({
-          url: '/api/getBoard',
-          headers: { 'x-access-token': Util.getToken() },
-          dataType: 'json',
-          data: { id: this.props.params.id },
-          success: (data) => {
-            this.setState({
-              gameID: this.props.params.id,
-              boardStr: data.boardString,
-            });
-          },
-          error: (data) => {
-            console.log('Error!');
-            console.log(data);
-          },
-        });
-      }
+    if (!this.props.params.id) {
+      /** Make a board for current user */
+      $.get({
+        url: '/api/makeBoard',
+        headers: { 'x-access-token': Util.getToken() },
+        dataType: 'json',
+        success: (data) => {
+          console.log('Here!', data);
+          console.log(data.boardString);
+          this.setState({
+            gameID: data.id,
+            boardStr: data.boardString,
+          });
+        },
+        error: (data) => {
+          console.log('Error!');
+          console.log(data);
+        },
+      });
+    } else {
+      /** Get an already-made board for current user */
+      $.post({
+        url: '/api/getBoard',
+        headers: { 'x-access-token': Util.getToken() },
+        dataType: 'json',
+        data: { id: this.props.params.id },
+        success: (data) => {
+          console.log(data);
+          this.setState({
+            gameID: this.props.params.id,
+            boardStr: data.boardString,
+          });
+        },
+        error: (data) => {
+          console.log('Error!');
+          console.log(data);
+        },
+      });
     }
   }
 
@@ -230,7 +226,13 @@ finalizeGame() {
   sendWord() {
     const word = this.state.curWord;
     // dont send a request if we have that word
+    console.log('Sending word ', word);
+<<<<<<< Updated upstream
+    console.log('words played', this.state.wordsPlayed);
+=======
+>>>>>>> Stashed changes
     if (this.state.wordsPlayed.indexOf(word) === -1) {
+      console.log('request!');
       $.post('/api/checkWord', { word }, (data) => {
         if (data.isWord) {
           this.setState({
@@ -306,6 +308,10 @@ finalizeGame() {
       }
 
       $(event.target).addClass('selected');
+<<<<<<< Updated upstream
+=======
+      // console.log(event.target, 'EVENT TARGET FRANK');
+>>>>>>> Stashed changes
       // re-evaluate using mutable objects as state params?
       this.setState({
         curWord: newCurWord,
