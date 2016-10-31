@@ -90,7 +90,6 @@ module.exports = {
         });
 
         Promise.all(promises).then((results) => {
-          console.log('RESULTS', results);
           res.json({ games: results });
         });
       });

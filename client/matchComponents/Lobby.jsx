@@ -31,9 +31,6 @@ class Lobby extends React.Component {
   /** componentWillMount() is invoked immediately before mounting occurs. This one checks for a valid session token and if the token is valid and the user plays a single player game, it makes a random game board for the user. If player is playing challenge mode, it will retrieve the appropriate board */
   componentWillMount() {
     const token = Util.getToken();
-    if (token) {
-      console.log('APPTOKEN', token);
-    }
 
     if (!token) {
       this.props.router.push('/signin');
@@ -53,7 +50,6 @@ class Lobby extends React.Component {
         headers: { 'x-access-token': Util.getToken() },
         dataType: 'json',
         success: (data) => {
-          console.log('Player data:', data);
           this.setState({
             players: data.allUsers.filter((user) => {
               return user !== username;
@@ -73,7 +69,6 @@ class Lobby extends React.Component {
         dataType: 'json',
         data: { username },
         success: (data) => {
-          console.log('Player high score:', data);
           this.setState({
             highScore: data.highestScore,
           });
@@ -91,7 +86,6 @@ class Lobby extends React.Component {
         dataType: 'json',
         data: { username },
         success: (data) => {
-          console.log('Pending game data:', data);
           this.setState({
             challenges: data.result,
           });
@@ -109,7 +103,6 @@ class Lobby extends React.Component {
         dataType: 'json',
         data: { username },
         success: (data) => {
-          console.log('Completed Games Data', data);
 
           /** Only display scores above 0 and sort from highest to smallest */
 
