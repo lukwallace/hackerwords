@@ -202,8 +202,7 @@ finalizeGame() {
 
         /** Send back game results to server */
         this.finalizeGame();
-        clearInterval(this.timerInterval);
-        
+        clearInterval(this.timerInterval);      
       }
     }, 1000);
   }

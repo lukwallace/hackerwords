@@ -9,9 +9,12 @@ import Score from '../gameComponents/Score';
 
 describe('The Board should be created properly', () => {
   var gameApp;
+  var instance;
 
   beforeEach( () => {
     gameApp = mount(<App isTest='true' />);
+    instance = gameApp.nodes[0].getWrappedInstance();
+    instance.setState({'boardStr':'abcdppkmnortrekt'});
   });
   
   it('Should call render', () => {
