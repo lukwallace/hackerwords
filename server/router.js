@@ -40,10 +40,10 @@ module.exports = (app) => {
   app.post('/api/makeChallengeGame', util.checkAuth, boardTool.makeChallengeGame);
 
   /** Get all pending challenges */
-  app.post('/api/getPendingGames', util.checkAuth, userController.getPendingGames);
+  app.get('/api/getPendingGames', util.checkAuth, userController.getPendingGames);
 
   /** Get finalized Game History of a User */
-  app.post('/api/getGameHistory', util.checkAuth, boardTool.getGameHistory);
+  app.get('/api/getGameHistory', util.checkAuth, boardTool.getGameHistory);
 
 
   /** UNRESTRICTED */
